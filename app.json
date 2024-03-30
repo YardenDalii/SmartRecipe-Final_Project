@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "name": "SmartRecipe-Final_Project",
+    "slug": "SmartRecipe-Final_Project"
+  }
+}

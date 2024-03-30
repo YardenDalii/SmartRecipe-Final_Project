@@ -1,1 +1,0 @@
-EDAMAM_api_key = ''
