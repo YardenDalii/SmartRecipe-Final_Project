@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "github:expo/vector-icons",
     "axios": "^1.6.8",
     "expo": "^50.0.1",
     "expo-constants": "~15.4.5",
