@@ -18,6 +18,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  capturedImage: {
+    width: 300,
+    height: 300,
+    borderRadius: 10,
+  },
+  detectionResult: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 10,
+  },
+  detectionText: {
+    color: 'white',
+    fontSize: 14,
+  },
 });
 
 export default styles;
