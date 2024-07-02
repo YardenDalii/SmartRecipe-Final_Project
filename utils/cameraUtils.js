@@ -27,7 +27,7 @@ export const openCameraAndSendImage = async () => {
     try {
       if (Platform.OS === 'web') {
         const response = await fetch(capturedImageUri);
-        const blob = await response.blob();
+        const blob = await response.blob(); //blob represent the image as a binary large object
         base64Image = await convertBlobToBase64(blob);
       } else {
         base64Image = await FileSystem.readAsStringAsync(capturedImageUri, {
