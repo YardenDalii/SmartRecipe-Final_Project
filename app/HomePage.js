@@ -1,4 +1,3 @@
-
 // // import React, { useState } from 'react';
 // // import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button } from 'react-native';
 // // import styles from '../stylesheets/HomePageStyles';
@@ -280,11 +279,13 @@
 
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button } from 'react-native';
+
 import styles from '../stylesheets/HomePageStyles';
 import { Entypo } from '@expo/vector-icons';
 import NavigationBar from '../app/NavigationBar';
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
+
 
 const HomePage = ({ user, fullName, handleLogout }) => {
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
@@ -358,7 +359,7 @@ const HomePage = ({ user, fullName, handleLogout }) => {
 
   const renderHeader = (title) => (
     <View style={styles.header}>
-      <Text style={styles.headerText}>{title}</Text>
+      <Text style={styles.headerText}>Welcome User!</Text>
       <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
         <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileImage} />
       </TouchableOpacity>
