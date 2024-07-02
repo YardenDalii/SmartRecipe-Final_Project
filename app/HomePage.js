@@ -1,3 +1,4 @@
+
 // import React, { useState } from 'react';
 // import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button } from 'react-native';
 // import styles from '../stylesheets/HomePageStyles';
@@ -134,13 +135,16 @@
 
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button } from 'react-native';
+import { useRouter } from 'expo-router';
 import styles from '../stylesheets/HomePageStyles';
 import { Entypo } from '@expo/vector-icons';
 import NavigationBar from '../app/NavigationBar';
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
 
+
 const HomePage = ({ user, fullName, handleLogout }) => {
+  const router = useRouter();
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
 
   const handleProfilePress = () => {
@@ -151,10 +155,14 @@ const HomePage = ({ user, fullName, handleLogout }) => {
     setModalVisible(false); // Hide the modal
   };
 
+  const handleSearchPress = () => {
+    router.push('/SearchScreen');
+  };
+
   const data = [
     {
       type: `header`,
-      title: `Welcome ${fullName}!`,
+      title: `Welcome User!`,
     },
     {
       type: `subHeader`,
@@ -183,6 +191,7 @@ const HomePage = ({ user, fullName, handleLogout }) => {
     switch (item.type) {
       case `header`:
         return renderHeader(item.title);
+
       case `subHeader`:
         return <Text style={styles.subHeader}>{item.text}</Text>
       case `savedRecipes`:
@@ -209,6 +218,7 @@ const HomePage = ({ user, fullName, handleLogout }) => {
         return null;
     }
   };
+
 
   const renderHeader = (title) => (
     <View style={styles.header}>
@@ -241,6 +251,7 @@ const HomePage = ({ user, fullName, handleLogout }) => {
         keyExtractor={(item, index) => `main-${index}`}
       />
       <Button title="Logout" onPress={handleLogout} color="#e74c3c" />
+
       <NavigationBar showHomeIcon={false} /> 
 
       {/* Profile Modal */}
@@ -263,4 +274,6 @@ const HomePage = ({ user, fullName, handleLogout }) => {
   );
 };
 
+
 export default HomePage;
+
