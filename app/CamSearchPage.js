@@ -3,6 +3,7 @@ import { View, Text, Image, ScrollView, TextInput, TouchableOpacity } from 'reac
 import { useRoute } from '@react-navigation/native';
 import { fetchRecipesFromEdamam } from '../utils/recipeService';
 import styles from '../stylesheets/CamSearchPageStyles';
+import NavigationBar from '../app/NavigationBar';
 
 const CamSearchPage = () => {
   const route = useRoute();
@@ -55,6 +56,7 @@ const CamSearchPage = () => {
           <Text style={{ fontSize: 18, textAlign: 'center' }}>No recipes available</Text>
         )}
       </ScrollView>
+      <NavigationBar  />
     </View>
   );
 };
