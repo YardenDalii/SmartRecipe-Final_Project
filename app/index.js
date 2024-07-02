@@ -175,6 +175,7 @@ export default App = () => {
   const handleRegister = async () => {
     if (password !== confirmPassword) {
       console.error('Passwords do not match!');
+      // TODO: add password regex
       return;
     }
 
@@ -187,10 +188,10 @@ export default App = () => {
         lastName,
         email: user.email,
       });
-
+      
       console.log('User created and stored in Firestore successfully!');
-      router.navigate
-      return switchToLogin; // Redirect to login page after successful signup
+      switchToLogin(); // Redirect to login page after successful signup
+      return (<LoginPage/>);
     } catch (error) {
       console.error('Registration error:', error.message);
     }
@@ -201,7 +202,8 @@ export default App = () => {
       await signOut(auth);
       console.log('User signed out successfully!');
       setUser(null);
-      return switchToLogin; // Switch back to login page after logout
+      switchToLogin(); // Switch back to login page after logout
+      return;
     } catch (error) {
       console.error('Logout error:', error.message);
     }
