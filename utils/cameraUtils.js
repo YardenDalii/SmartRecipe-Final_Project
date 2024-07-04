@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, navigation } from 'react-native';
 import { fetchRecipesFromEdamam } from '../utils/recipeService';
 
 const convertBlobToBase64 = (blob) => {
@@ -14,37 +14,53 @@ const convertBlobToBase64 = (blob) => {
 };
 
 export const openCameraAndSendImage = async () => {
-  const { status } = await ImagePicker.requestCameraPermissionsAsync();
-  if (status !== 'granted') {
-    Alert.alert('Camera Permission Denied', 'Please grant camera access to take photos.');
-    return { predictions: [], recipes: [] };
-  }
-
-  let result = await ImagePicker.launchCameraAsync();
-  if (!result.cancelled) {
-    const capturedImageUri = result.uri || (result.assets && result.assets[0].uri);
-    let base64Image;
-    try {
-      if (Platform.OS === 'web') {
-        const response = await fetch(capturedImageUri);
-        const blob = await response.blob(); //blob represent the image as a binary large object
-        base64Image = await convertBlobToBase64(blob);
-      } else {
-        base64Image = await FileSystem.readAsStringAsync(capturedImageUri, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
-      }
-      return await sendImageToRoboflow(base64Image);
-    } catch (error) {
-      console.error('Error converting image to base64:', error);
-      Alert.alert('Error', 'Failed to process the image.');
+  try {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Camera Permission Denied', 'Please grant camera access to take photos.');
       return { predictions: [], recipes: [] };
     }
-  } else {
-    Alert.alert('Image capture cancelled or failed.');
+
+    let result = await ImagePicker.launchCameraAsync();
+    if (!result.cancelled) {
+      const capturedImageUri = result.uri || (result.assets && result.assets[0].uri);
+      let base64Image;
+      try {
+        if (Platform.OS === 'web') {
+          const response = await fetch(capturedImageUri);
+          const blob = await response.blob();
+          base64Image = await convertBlobToBase64(blob);
+        } else {
+          base64Image = await FileSystem.readAsStringAsync(capturedImageUri, {
+            encoding: FileSystem.EncodingType.Base64,
+          });
+        }
+        const { predictions, recipes } = await sendImageToRoboflow(base64Image);
+        
+        if (predictions.length === 0) {
+          Alert.alert(
+            'No Ingredients Detected',
+            'No ingredients were detected in the captured image. Please try again.'
+          );
+        }
+        
+        return { predictions, recipes };
+      } catch (error) {
+        console.error('Error converting image to base64:', error);
+        Alert.alert('Error', 'Failed to process the image.');
+        return { predictions: [], recipes: [] };
+      }
+    } else {
+      Alert.alert('Image capture cancelled or failed.');
+      return { predictions: [], recipes: [] };
+    }
+  } catch (error) {
+    console.error('Error opening camera:', error);
+    Alert.alert('Error', 'Failed to open camera.');
     return { predictions: [], recipes: [] };
   }
 };
+
 
 const sendImageToRoboflow = async (base64Image) => {
   try {
