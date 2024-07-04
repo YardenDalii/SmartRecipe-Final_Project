@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Linking  } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Linking } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { fetchRecipesFromEdamam } from '../utils/recipeService';
 import styles from '../stylesheets/CamSearchPageStyles';
@@ -8,10 +8,17 @@ import NavigationBar from '../app/NavigationBar';
 const CamSearchPage = () => {
   const route = useRoute();
   const { predictions } = route.params || {};
+  
+  // Initialize predictionText in state using predictions from route params
   const initialPredictionText = predictions ? predictions.map(pred => pred.class).join(', ') : '';
   const [predictionText, setPredictionText] = useState(initialPredictionText);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedRecipes, setUpdatedRecipes] = useState([]);
+
+  // Update predictionText when predictions change
+  useEffect(() => {
+    setPredictionText(predictions ? predictions.map(pred => pred.class).join(', ') : '');
+  }, [predictions]);
 
   const handleDoneEditing = () => {
     setIsEditing(false);
@@ -28,6 +35,7 @@ const CamSearchPage = () => {
       console.error('Error fetching recipes:', error);
     }
   };
+
   const handleOpenURL = (url) => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
@@ -35,7 +43,7 @@ const CamSearchPage = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-      <Text style={styles.title}>The Ingredients:</Text>
+        <Text style={styles.title}>The Ingredients:</Text>
         <View style={styles.predictionContainer}>
           <TextInput
             style={[styles.textInput, styles.boldText]}
