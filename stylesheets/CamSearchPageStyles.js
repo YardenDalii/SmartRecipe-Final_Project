@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#007BFF',
     marginTop: 5,
-    textDecorationLine: 'underline', // Optional: makes the text look more like a link
+    textDecorationLine: 'underline',
   },
 });
 
