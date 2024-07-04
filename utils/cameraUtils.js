@@ -13,7 +13,7 @@ const convertBlobToBase64 = (blob) => {
   });
 };
 
-export const openCameraAndSendImage = async () => {
+export const openCameraAndSendImage = async (navigation) => {
   try {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
@@ -42,6 +42,7 @@ export const openCameraAndSendImage = async () => {
             'No Ingredients Detected',
             'No ingredients were detected in the captured image. Please try again.'
           );
+          navigation.navigate('CamSearchPage');
         }
         
         return { predictions, recipes };

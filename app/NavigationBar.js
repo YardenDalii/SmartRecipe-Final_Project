@@ -23,7 +23,7 @@ const NavigationBar = ({ showHomeIcon = true, showSearchIcon = true }) => {
     setPredictions([]); // Reset predictions before capturing a new image
     setRecipes([]); // Reset recipes
     setLoading(true); // Set loading to true
-    const { predictions: newPredictions, recipes: newRecipes } = await openCameraAndSendImage();
+    const { predictions: newPredictions, recipes: newRecipes } = await openCameraAndSendImage(navigation);
     setPredictions(newPredictions); // Set the new predictions after the image is processed
     setRecipes(newRecipes); // Set the new recipes
     setLoading(false); // Set loading to false
