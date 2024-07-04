@@ -29,7 +29,7 @@ const CamSearchPage = () => {
   const handleSearch = async () => {
     try {
       const editedPredictions = predictionText.split(',').map(item => item.trim());
-      const newRecipes = await fetchRecipesFromEdamam(editedPredictions);
+      const newRecipes = await fetchRecipesFromEdamam(editedPredictions, '', 1);
       setUpdatedRecipes(newRecipes);
     } catch (error) {
       console.error('Error fetching recipes:', error);

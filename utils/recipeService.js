@@ -1,13 +1,18 @@
 import axios from 'axios';
 
-const fetchRecipesFromEdamam = async (classes) => {
+const fetchRecipesFromEdamam = async (classes = [], recName = "", option) => {
   const appId = 'c16fb94a';
   const appKey = '12d51a7d52eb0848281f09c84de1bc11';
 
   const baseUrl = `https://api.edamam.com/search`;
-  const query = classes.join('+'); 
-  console.log('query', query)
+  let query = '';
   try {
+    if (option === 1){
+      query = classes.join('+'); 
+      console.log('query', query)
+    }else if (option === 2){
+      query = recName
+    } 
     const response = await axios.get(baseUrl, {
       params: {
         q: query,
