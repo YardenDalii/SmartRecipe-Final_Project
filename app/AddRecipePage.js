@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
+import NavigationBar from '../app/NavigationBar';
+
 
 const AddRecipePage = () => {
     const [recipeName, setRecipeName] = useState('');
@@ -43,7 +45,11 @@ const AddRecipePage = () => {
                 title="Save"
                 onPress={handleSave}
             />
+            <NavigationBar  />
         </ScrollView>
+
+        
+        
     );
 };
 
