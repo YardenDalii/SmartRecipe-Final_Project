@@ -82,6 +82,39 @@ const styles = StyleSheet.create({
     marginTop: 5,
     textDecorationLine: 'underline',
   },
+  meatInputContainer: {
+    margin: 5,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    width: '100%',
+  },
+  meatInput: {
+    height: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    textAlignVertical: 'top',
+    color: '#000',
+  },
+  meatInputButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
+  },
+  meatInputButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  meatInputLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default styles;
