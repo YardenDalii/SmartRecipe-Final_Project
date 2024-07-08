@@ -9,21 +9,35 @@ const CamSearchPage = () => {
   const route = useRoute();
   const { predictions } = route.params || {};
   
-  // Initialize predictionText in state using predictions from route params
   const initialPredictionText = predictions ? predictions.map(pred => pred.class).join(', ') : '';
   const [predictionText, setPredictionText] = useState(initialPredictionText);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedRecipes, setUpdatedRecipes] = useState([]);
+  const [meatType, setMeatType] = useState('');
+  const [showMeatInput, setShowMeatInput] = useState(false);
 
-  // Update predictionText when predictions change
   useEffect(() => {
-    setPredictionText(predictions ? predictions.map(pred => pred.class).join(', ') : '');
+    const initialText = predictions ? predictions.map(pred => pred.class).join(', ') : '';
+    console.log("initialText",initialText);
+    setPredictionText(initialText);
+    if (initialText.toLowerCase().includes('beef')) {
+      setShowMeatInput(true);
+    } else {
+      setShowMeatInput(false);
+    }
+    console.log("showMeatInput",showMeatInput);
   }, [predictions]);
 
   const handleDoneEditing = () => {
     setIsEditing(false);
     const editedPredictions = predictionText.split(',').map(item => item.trim());
     setEditedPredictions(editedPredictions);
+    console.log("predictionText",predictionText);
+    if (predictionText.toLowerCase().includes('beef')) {
+      setShowMeatInput(true);
+    } else {
+      setShowMeatInput(false);
+    }
   };
 
   const handleSearch = async () => {
@@ -40,6 +54,12 @@ const CamSearchPage = () => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
+  const handleMeatTypeSubmit = () => {
+    const updatedText = predictionText.replace(/beef/gi, `beef (${meatType})`);
+    setPredictionText(updatedText);
+    setShowMeatInput(false);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
@@ -53,6 +73,19 @@ const CamSearchPage = () => {
             multiline
           />
         </View>
+        {showMeatInput && (
+          <View style={styles.meatInputContainer}>
+            <Text style={styles.meatInputLabel}>Please specify the type of meat:</Text>
+            <TextInput
+              style={styles.meatInput}
+              value={meatType}
+              onChangeText={setMeatType}
+            />
+            <TouchableOpacity style={styles.meatInputButton} onPress={handleMeatTypeSubmit}>
+              <Text style={styles.meatInputButtonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         <TouchableOpacity style={styles.editButton} onPress={() => setIsEditing(!isEditing)}>
           <Text style={styles.buttonText}>{isEditing ? 'Done' : 'Edit'}</Text>
         </TouchableOpacity>
@@ -61,6 +94,7 @@ const CamSearchPage = () => {
             <Text style={styles.searchButtonText}>Search</Text>
           </TouchableOpacity>
         )}
+        
         {updatedRecipes && updatedRecipes.length > 0 && (
           updatedRecipes.map((recipeData, index) => {
             const { recipe } = recipeData;

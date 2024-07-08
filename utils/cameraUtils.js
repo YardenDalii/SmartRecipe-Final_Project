@@ -94,11 +94,7 @@ const sendImageToRoboflow = async (base64Image) => {
 
       const classes = Array.from(predictionsMap.values()).map(prediction => prediction.class);
       const recipes = await fetchRecipesFromEdamam(classes);
-
-      console.log('Fetched recipes:', recipes.url); 
-
       const updatedPredictions = Array.from(predictionsMap.values());
-      console.log('Predictions:', updatedPredictions);
       return { predictions: updatedPredictions, recipes }; // Pass recipes
     } else {
       return { predictions: [], recipes: [] }; // Return empty arrays if no predictions
