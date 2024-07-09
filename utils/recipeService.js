@@ -49,6 +49,24 @@ const fetchRecipesFromEdamam = async (classes = [], recName = "", option, select
   }
 };
 
+const fetchRecipesByMealType = async (mealType) => {
+  const params = {
+    app_id: appId,
+    app_key: appKey,
+    q: '', // Empty query to fetch random recipes
+    mealType: mealType
+  };
+
+  try {
+    const response = await axios.get(baseUrl, { params });
+    const recipes = response.data.hits;
+    const randomRecipes = recipes.sort(() => 0.5 - Math.random()).slice(0, 5);
+    return randomRecipes;
+  } catch (error) {
+    console.error('Error fetching recipes from Edamam:', error);
+    throw error;
+  }
+};
 
 
-export { fetchRecipesFromEdamam, filters };
+export { fetchRecipesFromEdamam, filters, fetchRecipesByMealType };

@@ -277,18 +277,45 @@
 // export default HomePage;
 
 
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button } from 'react-native';
-
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button, Linking } from 'react-native';
 import styles from '../stylesheets/HomePageStyles';
 import { Entypo } from '@expo/vector-icons';
 import NavigationBar from '../app/NavigationBar';
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
-
+import { fetchRecipesByMealType } from '../utils/recipeService';
 
 const HomePage = ({ user, fullName, handleLogout }) => {
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
+  const [recipes, setRecipes] = useState([]);
+  const [mealType, setMealType] = useState('');
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      const currentHour = new Date().getHours();
+      let mealType = '';
+
+      if (currentHour >= 5 && currentHour < 12) {
+        mealType = 'Breakfast';
+      } else if (currentHour >= 12 && currentHour < 16) {
+        mealType = 'Lunch';
+      } else if (currentHour >= 16 && currentHour < 22) {
+        mealType = 'Dinner';
+      }
+
+      setMealType(mealType);
+
+      try {
+        const fetchedRecipes = await fetchRecipesByMealType(mealType);
+        setRecipes(fetchedRecipes);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
 
   const handleProfilePress = () => {
     setModalVisible(true); // Show the modal
@@ -298,97 +325,41 @@ const HomePage = ({ user, fullName, handleLogout }) => {
     setModalVisible(false); // Hide the modal
   };
 
-  const data = [
-    {
-      type: `header`,
-      title: `Welcome ${fullName}!`,
-    },
-    {
-      type: `subHeader`,
-      text: `Saved Recipes`,
-    },
-    {
-      type: `savedRecipes`,
-      data: [
-        { title: <Text>Lorem ipsum</Text>, image: 'https://via.placeholder.com/150' },
-        { title: <Text>Lorem ipsum</Text>, image: 'https://via.placeholder.com/150' },
-        { title: <Text>Lorem ipsum</Text>, image: 'https://via.placeholder.com/150' },
-      ],
-    },
-    {
-      type: `category`,
-      data: [
-        { name: `Breakfast`, icon: `archive` },
-        { name: `Lunch`, icon: `archive` },
-        { name: `Dinner`, icon: `moon` },
-        { name: `Healthy`, icon: `heart` },
-      ],
-    },
-  ];
-
-  const renderItem = ({ item }) => {
-    switch (item.type) {
-      case `header`:
-        return renderHeader(item.title);
-      case `subHeader`:
-        return <Text style={styles.subHeader}>{item.text}</Text>
-      case `savedRecipes`:
-        return (
-          <FlatList
-            horizontal
-            data={item.data}
-            renderItem={renderRecipeItem}
-            keyExtractor={(item, index) => `saved-${index}`}
-            showsHorizontalScrollIndicator={false}
-          />
-        );
-      case `category`:
-        return (
-          <FlatList
-            data={item.data}
-            renderItem={renderCategoryItem}
-            keyExtractor={(item, index) => `category-${index}`}
-            numColumns={2}
-            scrollEnabled={false}
-          />
-        );
-      default:
-        return null;
-    }
+  const handleOpenURL = (url) => {
+    Linking.openURL(url);
   };
 
-  const renderHeader = (title) => (
-    <View style={styles.header}>
-      <Text style={styles.headerText}>Welcome User!</Text>
-      <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
-        <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileImage} />
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderRecipeItem = ({ item }) => (
-    <View style={styles.recipeCard}>
-      <Image source={{ uri: item.image }} style={styles.recipeImage} />
-      <Text style={styles.recipeTitle}>{item.title}</Text>
-    </View>
-  );
-
-  const renderCategoryItem = ({ item }) => (
-    <TouchableOpacity style={styles.categoryButton}>
-      <Entypo name={item.icon} size={48} color="#000" />
-      <Text style={styles.categoryText}>{item.name}</Text>
-    </TouchableOpacity>
-  );
+  const renderRecipeItem = ({ item, index }) => {
+    const { recipe } = item;
+    return (
+      <View key={index} style={styles.recipeCard}>
+        <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
+        <Text style={styles.recipeTitle}>{recipe.label}</Text>
+        <TouchableOpacity onPress={() => handleOpenURL(recipe.url)}>
+          <Text style={styles.recipeUrl}>{recipe.url}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Welcome {fullName}!</Text>
+        <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
+          <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileImage} />
+        </TouchableOpacity>
+      </View>
+      
+      <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
       <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `main-${index}`}
+        data={recipes}
+        renderItem={renderRecipeItem}
+        keyExtractor={(item, index) => `recipe-${index}`}
       />
+      
       <Button title="Logout" onPress={handleLogout} color="#e74c3c" />
-      <NavigationBar showHomeIcon={false} /> 
+      <NavigationBar showHomeIcon={false} />
 
       {/* Profile Modal */}
       <Modal
