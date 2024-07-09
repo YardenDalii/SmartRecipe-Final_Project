@@ -14,12 +14,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     marginBottom: 10,
+    borderRadius: 70,
   },
   searchButton: {
     backgroundColor: '#007BFF',
     padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 50,
+    marginBottom: 30,
+    marginTop: 10,
+    marginHorizontal:117,
+    width: '40%', 
+    alignItems: 'center',
   },
   searchButtonText: {
     color: '#fff',
@@ -31,9 +36,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
-  filterButtonText: {
-    color: '#fff',
-    textAlign: 'center',
+  filterImageButton: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+      },
+  filterImage: {
+    width: '100%',
+    height: '100%',
+    padding: 10,
   },
   modalOverlay: {
     flex: 1,
@@ -63,11 +74,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filterSection: {
-    marginVertical: 10,
-  },
-  filterTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    marginVertical: 20,
+    marginHorizontal: 20,
   },
   recipeCard: {
     borderColor: '#ccc',

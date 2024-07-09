@@ -51,8 +51,11 @@ const SearchScreen = () => {
         value={searchTerm}
         multiline
       />
-      <TouchableOpacity style={styles.filterButton} onPress={toggleModal}>
-        <Text style={styles.filterButtonText}>Filters</Text>
+      <TouchableOpacity style={styles.filterImageButton} onPress={toggleModal}>
+        <Image
+          source={require('../assets/filter.jpg')}
+          style={styles.filterImage}
+        />
       </TouchableOpacity>
       <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
         <Text style={styles.searchButtonText}>Search</Text>
