@@ -1,10 +1,22 @@
 import axios from 'axios';
 
-const fetchRecipesFromEdamam = async (classes = [], recName = "", option) => {
-  const appId = 'c16fb94a';
-  const appKey = '12d51a7d52eb0848281f09c84de1bc11';
 
-  const baseUrl = `https://api.edamam.com/search`;
+const appId = 'c16fb94a';
+const appKey = '12d51a7d52eb0848281f09c84de1bc11';
+const baseUrl = `https://api.edamam.com/search`;
+const filters = {"diet": ["none","balanced", "high-fiber", "high-protein", "low-carb", "low-fat", "low-sodium"],
+  "health": ["none","alcohol-cocktail","alcohol-free","celery-free","crustacean-free","dairy-free","DASH","egg-free","fish-free","fodmap-free","gluten-free",
+"immuno-supportive","keto-friendly","kidney-friendly","kosher","low-fat-abs","low-potassium","low-sugar","lupine-free","Mediterranean",
+"mollusk-free","mustard-free","no-oil-added","paleo","peanut-free","pescatarian","pork-free","red-meat-free","sesame-free",
+"shellfish-free","soy-free","sugar-conscious","sulfite-free","tree-nut-free","vegan","vegetarian","wheat-free"],
+   "cuisine type":  ["none","American","Asian","British","Caribbean","Central Europe","Chinese","Eastern Europe","French","Indian",
+  "Italian","Japanese","Kosher","Mediterranean","Mexican","Middle Eastern","Nordic","South American","South East Asian"],
+  "meal type": ["none","Breakfast", "Dinner","Lunch","Snack","Teatime"],
+  "dish type": ["none","Biscuits and cookies","Bread","Cereals","Condiments and sauces","Desserts","Drinks","Main course","Pancake","Preps","Preserve",
+    "Salad","Sandwiches","Side dish","Soup","Starter","Sweets"]           
+}
+
+const fetchRecipesFromEdamam = async (classes = [], recName = "", option) => {
   let query = '';
   try {
     if (option === 1){
@@ -28,4 +40,34 @@ const fetchRecipesFromEdamam = async (classes = [], recName = "", option) => {
   }
 };
 
-export { fetchRecipesFromEdamam };
+const fetchRecipesFromEdamamByName = async (selectedFilters, recName = "", option) => {
+  let query = '';
+  try {
+    if (option === 1) {
+      query = classes.join('+'); 
+    } else if (option === 2) {
+      query = recName;
+    }
+
+    const params = {
+      q: query,
+      app_id: appId,
+      app_key: appKey,
+    };
+
+    // Add filters to the request params if they are not set to "none"
+    Object.keys(selectedFilters).forEach(filterCategory => {
+      if (selectedFilters[filterCategory] !== 'none') {
+        params[filterCategory.replace(' ', '_')] = selectedFilters[filterCategory];
+      }
+    });
+
+    const response = await axios.get(baseUrl, { params });
+    return response.data.hits;
+  } catch (error) {
+    console.error('Error fetching recipes from Edamam:', error);
+    throw error;
+  }
+};
+
+export { fetchRecipesFromEdamam, fetchRecipesFromEdamamByName, filters };
