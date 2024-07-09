@@ -16,46 +16,24 @@ const filters = {"diet": ["none","balanced", "high-fiber", "high-protein", "low-
     "Salad","Sandwiches","Side dish","Soup","Starter","Sweets"]           
 }
 
-const fetchRecipesFromEdamam = async (classes = [], recName = "", option) => {
+const fetchRecipesFromEdamam = async (classes = [], recName = "", option, selectedFilters = {}) => {
   let query = '';
-  try {
-    if (option === 1){
-      query = classes.join('+'); 
-      console.log('query', query)
-    }else if (option === 2){
-      query = recName
-    } 
-    const response = await axios.get(baseUrl, {
-      params: {
-        q: query,
-        app_id: appId,
-        app_key: appKey,
-      },
-    });
-    console.log('response.data', response.data.hits)
-    return response.data.hits;
-  } catch (error) {
-    console.error('Error fetching recipes from Edamam:', error);
-    throw error;
-  }
-};
+  let params = {
+    app_id: appId,
+    app_key: appKey
+  };
 
-const fetchRecipesFromEdamamByName = async (selectedFilters, recName = "", option) => {
-  let query = '';
   try {
     if (option === 1) {
-      query = classes.join('+'); 
+      query = classes.join('+');
+      console.log('query', query);
     } else if (option === 2) {
       query = recName;
     }
 
-    const params = {
-      q: query,
-      app_id: appId,
-      app_key: appKey,
-    };
+    params.q = query;
+    console.log("param", params);
 
-    // Add filters to the request params if they are not set to "none"
     Object.keys(selectedFilters).forEach(filterCategory => {
       if (selectedFilters[filterCategory] !== 'none') {
         params[filterCategory.replace(' ', '_')] = selectedFilters[filterCategory];
@@ -63,6 +41,7 @@ const fetchRecipesFromEdamamByName = async (selectedFilters, recName = "", optio
     });
 
     const response = await axios.get(baseUrl, { params });
+    console.log('response.data', response.data.hits);
     return response.data.hits;
   } catch (error) {
     console.error('Error fetching recipes from Edamam:', error);
@@ -70,4 +49,6 @@ const fetchRecipesFromEdamamByName = async (selectedFilters, recName = "", optio
   }
 };
 
-export { fetchRecipesFromEdamam, fetchRecipesFromEdamamByName, filters };
+
+
+export { fetchRecipesFromEdamam, filters };

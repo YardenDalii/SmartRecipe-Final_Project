@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, ScrollView, TouchableOpacity, Text, Image, Linking, Modal } from 'react-native';
 import styles from '../stylesheets/SearchScreenStyles';
 import NavigationBar from '../app/NavigationBar';
-import { fetchRecipesFromEdamamByName, filters } from '../utils/recipeService';
+import { fetchRecipesFromEdamam, filters } from '../utils/recipeService';
 import { Picker } from '@react-native-picker/picker';
 
 const SearchScreen = () => {
@@ -19,7 +19,7 @@ const SearchScreen = () => {
 
   const handleSearch = async () => {
     try {
-      const recipes = await fetchRecipesFromEdamamByName(selectedFilters, searchTerm, 2);
+      const recipes = await fetchRecipesFromEdamam([], searchTerm, 2, selectedFilters);
       setUpdatedRecipes(recipes);
     } catch (error) {
       console.error('error fetching recipes:', error);

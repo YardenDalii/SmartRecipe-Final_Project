@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Linking } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Linking, Modal } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { fetchRecipesFromEdamam } from '../utils/recipeService';
+import { fetchRecipesFromEdamam, filters } from '../utils/recipeService';
 import styles from '../stylesheets/CamSearchPageStyles';
 import NavigationBar from '../app/NavigationBar';
+import { Picker } from '@react-native-picker/picker';
+
 
 const CamSearchPage = () => {
   const route = useRoute();
-  const { predictions } = route.params || {};
-  
+  const { predictions } = route.params || {};  
   const initialPredictionText = predictions ? predictions.map(pred => pred.class).join(', ') : '';
   const [predictionText, setPredictionText] = useState(initialPredictionText);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedRecipes, setUpdatedRecipes] = useState([]);
   const [meatType, setMeatType] = useState('');
   const [showMeatInput, setShowMeatInput] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({
+    diet: 'none',
+    health: 'none',
+    cuisineType: 'none',
+    mealType: 'none',
+    dishType: 'none'
+  });
+  const [isModalVisible, setModalVisible] = useState(false);
+
 
   useEffect(() => {
     const initialText = predictions ? predictions.map(pred => pred.class).join(', ') : '';
@@ -43,7 +53,7 @@ const CamSearchPage = () => {
   const handleSearch = async () => {
     try {
       const editedPredictions = predictionText.split(',').map(item => item.trim());
-      const newRecipes = await fetchRecipesFromEdamam(editedPredictions, '', 1);
+      const newRecipes = await fetchRecipesFromEdamam(editedPredictions, '', 1, selectedFilters);
       setUpdatedRecipes(newRecipes);
     } catch (error) {
       console.error('Error fetching recipes:', error);
@@ -58,6 +68,17 @@ const CamSearchPage = () => {
     const updatedText = predictionText.replace(/beef/gi, `beef (${meatType})`);
     setPredictionText(updatedText);
     setShowMeatInput(false);
+  };
+
+  const handleFilterChange = (category, value) => {
+    setSelectedFilters(prevFilters => ({
+      ...prevFilters,
+      [category]: value
+    }));
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   return (
@@ -89,6 +110,12 @@ const CamSearchPage = () => {
         <TouchableOpacity style={styles.editButton} onPress={() => setIsEditing(!isEditing)}>
           <Text style={styles.buttonText}>{isEditing ? 'Done' : 'Edit'}</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.filterImageButton} onPress={toggleModal}>
+        <Image
+          source={require('../assets/filter.jpg')}
+          style={styles.filterImage}
+        />
+      </TouchableOpacity>
         {!isEditing && (
           <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
             <Text style={styles.searchButtonText}>Search</Text>
@@ -110,6 +137,36 @@ const CamSearchPage = () => {
           })
         )}
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Filters</Text>
+            <ScrollView>
+              {Object.keys(filters).map(category => (
+                <View key={category} style={styles.filterSection}>
+                  <Text style={styles.filterTitle}>{category}</Text>
+                  <Picker
+                    selectedValue={selectedFilters[category]}
+                    onValueChange={value => handleFilterChange(category, value)}
+                  >
+                    {filters[category].map(option => (
+                      <Picker.Item key={option} label={option} value={option} />
+                    ))}
+                  </Picker>
+                </View>
+              ))}
+            </ScrollView>
+            <TouchableOpacity style={styles.modalCloseButton} onPress={toggleModal}>
+              <Text style={styles.modalCloseButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <NavigationBar />
     </View>
   );
