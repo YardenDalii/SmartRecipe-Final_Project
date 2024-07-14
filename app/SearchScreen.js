@@ -5,7 +5,7 @@ import NavigationBar from '../app/NavigationBar';
 import { fetchRecipesFromEdamam, filters } from '../utils/recipeService';
 import { Picker } from '@react-native-picker/picker';
 
-const SearchScreen = () => {
+const SearchScreen = (user) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [updatedRecipes, setUpdatedRecipes] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -109,7 +109,8 @@ const SearchScreen = () => {
           })
         )}
       </ScrollView>
-      <NavigationBar showSearchIcon={false} />
+      
+      <NavigationBar showSearchIcon={false} user = {user}/>
     </View>
   );
 };

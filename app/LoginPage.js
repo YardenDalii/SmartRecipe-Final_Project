@@ -48,8 +48,15 @@
 import React from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import styles from '../stylesheets/LoginPageStyles';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switchToRegister }) => {
+    const navigation = useNavigation();
+    
+    const continueWithoutLogin = () => {
+        navigation.navigate('AboutPage');
+    };
+
     return (
         <View style={styles.authContainer}>
             <Text style={styles.title}>Sign In</Text>
@@ -70,12 +77,15 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                 secureTextEntry
             />
             <View style={styles.buttonContainer}>
-                <Button title="Sign In" onPress={handleLogin} color="#3498db" />
+                <Button title="Sign In" onPress={() => handleLogin(navigation)} color="#3498db" />
             </View>
             <View style={styles.bottomContainer}>
                 <Text style={styles.toggleText} onPress={switchToRegister}>
                     Need an account? Sign Up
                 </Text>
+            </View>
+            <View style={styles.buttonContainer}>
+                <Button title="Continue without Login" onPress={continueWithoutLogin} color="#2ecc71" />
             </View>
         </View>
     );

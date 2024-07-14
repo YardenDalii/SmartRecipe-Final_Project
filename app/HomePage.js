@@ -285,11 +285,13 @@ import NavigationBar from '../app/NavigationBar';
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
 import { fetchRecipesByMealType } from '../utils/recipeService';
+import { useNavigation } from '@react-navigation/native';
 
 const HomePage = ({ user, fullName, handleLogout }) => {
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const [recipes, setRecipes] = useState([]);
   const [mealType, setMealType] = useState('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -346,9 +348,11 @@ const HomePage = ({ user, fullName, handleLogout }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome {fullName}!</Text>
-        <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
-          <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileImage} />
-        </TouchableOpacity>
+        {user && ( // Display profile button only if user is logged in
+          <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
+            <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileImage} />
+          </TouchableOpacity>
+        )}
       </View>
       
       <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
@@ -358,8 +362,11 @@ const HomePage = ({ user, fullName, handleLogout }) => {
         keyExtractor={(item, index) => `recipe-${index}`}
       />
       
-      <Button title="Logout" onPress={handleLogout} color="#e74c3c" />
-      <NavigationBar showHomeIcon={false} />
+      {user && ( // Display logout button only if user is logged in
+        <Button title="Logout" onPress={handleLogout} color="#e74c3c" />
+      )}
+      
+      <NavigationBar showHomeIcon={false} navigation={navigation} user = {user} />
 
       {/* Profile Modal */}
       <Modal

@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../stylesheets/NavigationBarStyles';
 import { openCameraAndSendImage } from '../utils/cameraUtils';
 
-const NavigationBar = ({ showHomeIcon = true, showSearchIcon = true }) => {
+const NavigationBar = ({ showHomeIcon = true, showSearchIcon = true, user }) => {
   const navigation = useNavigation();
   const [predictions, setPredictions] = useState([]);
   const [recipes, setRecipes] = useState([]);
@@ -53,9 +53,11 @@ const NavigationBar = ({ showHomeIcon = true, showSearchIcon = true }) => {
       <TouchableOpacity style={styles.navIcon} onPress={handleCameraPress}>
         <Feather name="camera" size={24} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navIcon} onPress={handlePlusPress}>
-        <Feather name="plus" size={24} color="black" />
-      </TouchableOpacity>
+      {user && (
+        <TouchableOpacity style={styles.navIcon} onPress={handlePlusPress}>
+          <Feather name="plus" size={24} color="black" />
+        </TouchableOpacity>
+      )}
       {loading && (
          <View style={[StyleSheet.absoluteFill, { justifyContent: 'center', alignItems: 'center' }]}>
           <ActivityIndicator size="large" color="#0000ff" />
