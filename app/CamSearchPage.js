@@ -7,7 +7,7 @@ import NavigationBar from '../app/NavigationBar';
 import { Picker } from '@react-native-picker/picker';
 
 
-const CamSearchPage = () => {
+const CamSearchPage = (user) => {
   const route = useRoute();
   const { predictions } = route.params || {};  
   const initialPredictionText = predictions ? predictions.map(pred => pred.class).join(', ') : '';
@@ -167,7 +167,7 @@ const CamSearchPage = () => {
           </View>
         </View>
       </Modal>
-      <NavigationBar />
+      <NavigationBar user = {user} />
     </View>
   );
 };

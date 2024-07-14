@@ -39,16 +39,17 @@ export default App = () => {
     return () => unsubscribe();
   }, [auth]);
 
-  const handleLogin = async () => {
+  const handleLogin = async (navigation) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log('User signed in successfully!');
+      navigation.navigate('AboutPage', { user: userCredential.user });
     } catch (error) {
       console.error('Login error:', error.message);
     }
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (navigation) => {
     // TODO: add password regex
     if (password !== confirmPassword) {
       console.error('Passwords do not match!');
@@ -66,7 +67,7 @@ export default App = () => {
       });
 
       console.log('User created and stored in Firestore successfully!');
-      switchToLogin();
+      navigation.navigate('LoginPage');
       return; // Redirect to login page after successful signup
     } catch (error) {
       console.error('Registration error:', error.message);
