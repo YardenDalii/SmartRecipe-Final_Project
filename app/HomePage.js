@@ -285,9 +285,16 @@ import NavigationBar from '../app/NavigationBar';
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
 import { fetchRecipesByMealType } from '../utils/recipeService';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const HomePage = ({ user, fullName, handleLogout }) => {
+
+const HomePage = () => {
+  const route = useRoute();
+  const { user, fullName, handleLogout } = route.params || {};
+
+  console.log("user info", user);
+  console.log("full name", fullName);
+  
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const [recipes, setRecipes] = useState([]);
   const [mealType, setMealType] = useState('');

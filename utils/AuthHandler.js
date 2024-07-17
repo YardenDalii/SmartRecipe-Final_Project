@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginPage from '../app/LoginPage';
 import RegisterPage from '../app/RegisterPage';
 import HomePage from '../app/HomePage';
@@ -7,10 +9,10 @@ import styles from '../stylesheets/LoginPageStyles';
 import { auth, db } from '../firebase';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
-import { Route } from 'expo-router/build/Route';
-import { router } from 'expo-router';
 
-export default App = () => {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,6 +21,7 @@ export default App = () => {
   const [user, setUser] = useState(null); // Track user authentication state
   const [fullName, setFullName] = useState(''); // Store full name
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and register
+  const navigation = useNavigation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -37,19 +40,39 @@ export default App = () => {
     });
 
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
-  const handleLogin = async (navigation) => {
+  const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Fetch user details from Firestore
+      const docRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        const fullName = `${userData.firstName} ${userData.lastName}`;
+        setFullName(fullName);
+
+        // Navigate to HomePage and pass user information
+        navigation.navigate('HomePage', { 
+          user,
+          fullName,
+          handleLogout
+        });
+      } else {
+        console.log('No such document!');
+      }
+
       console.log('User signed in successfully!');
-      navigation.navigate('AboutPage', { user: userCredential.user });
     } catch (error) {
       console.error('Login error:', error.message);
     }
   };
 
-  const handleRegister = async (navigation) => {
+  const handleRegister = async () => {
     // TODO: add password regex
     if (password !== confirmPassword) {
       console.error('Passwords do not match!');
@@ -68,7 +91,6 @@ export default App = () => {
 
       console.log('User created and stored in Firestore successfully!');
       navigation.navigate('LoginPage');
-      return; // Redirect to login page after successful signup
     } catch (error) {
       console.error('Registration error:', error.message);
     }
@@ -79,8 +101,11 @@ export default App = () => {
       await signOut(auth);
       console.log('User signed out successfully!');
       setUser(null);
-      switchToLogin();
-      return (<LoginPage />); // Switch back to login page after logout
+      setIsLogin(true); // Ensure isLogin state is set to true
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'LoginPage' }],
+      });
     } catch (error) {
       console.error('Logout error:', error.message);
     }
@@ -105,36 +130,51 @@ export default App = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {user ? (
-        <HomePage user={user} fullName={fullName} handleLogout={handleLogout} />
-      ) : (
-        isLogin ? (
-          <LoginPage
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-            switchToRegister={switchToRegister}
-          />
+    <NavigationContainer independent={true}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {user ? (
+          <Stack.Screen name="HomePage">
+            {(props) => <HomePage {...props} user={user} fullName={fullName} handleLogout={handleLogout} />}
+          </Stack.Screen>
         ) : (
-          <RegisterPage
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            confirmPassword={confirmPassword}
-            setConfirmPassword={setConfirmPassword}
-            firstName={firstName}
-            setFirstName={setFirstName}
-            lastName={lastName}
-            setLastName={setLastName}
-            handleRegister={handleRegister}
-            switchToLogin={switchToLogin}
-          />
-        )
-      )}
-    </ScrollView>
+          <>
+            <Stack.Screen name="LoginPage">
+              {(props) => (
+                <LoginPage
+                  {...props}
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                  handleLogin={handleLogin}
+                  switchToRegister={switchToRegister}
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="RegisterPage">
+              {(props) => (
+                <RegisterPage
+                  {...props}
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                  confirmPassword={confirmPassword}
+                  setConfirmPassword={setConfirmPassword}
+                  firstName={firstName}
+                  setFirstName={setFirstName}
+                  lastName={lastName}
+                  setLastName={setLastName}
+                  handleRegister={handleRegister}
+                  switchToLogin={switchToLogin}
+                />
+              )}
+            </Stack.Screen>
+          </>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
+
+export default App;
