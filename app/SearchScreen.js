@@ -5,7 +5,8 @@ import NavigationBar from '../app/NavigationBar';
 import { fetchRecipesFromEdamam, filters } from '../utils/recipeService';
 import { Picker } from '@react-native-picker/picker';
 
-const SearchScreen = (user) => {
+const SearchScreen = ( { route } ) => {
+  const { user } = route.params;
   const [searchTerm, setSearchTerm] = useState('');
   const [updatedRecipes, setUpdatedRecipes] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -16,7 +17,7 @@ const SearchScreen = (user) => {
     dishType: 'none'
   });
   const [isModalVisible, setModalVisible] = useState(false);
-
+  console.log("user info 2", user);
   const handleSearch = async () => {
     try {
       const recipes = await fetchRecipesFromEdamam([], searchTerm, 2, selectedFilters);

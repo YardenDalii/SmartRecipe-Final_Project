@@ -12,11 +12,11 @@ const NavigationBar = ({ showHomeIcon = true, showSearchIcon = true, user }) => 
   const [loading, setLoading] = useState(false);
 
   const handleHomePress = () => {
-    navigation.navigate('HomePage');
+    navigation.navigate('HomePage', { user: user } );
   };
 
   const handleSearchPress = () => {
-    navigation.navigate('SearchScreen');
+    navigation.navigate('SearchScreen', { user: user } );
   };
 
   const handleCameraPress = async () => {
@@ -30,12 +30,14 @@ const NavigationBar = ({ showHomeIcon = true, showSearchIcon = true, user }) => 
     setLoading(false); // Set loading to false
     if (newPredictions.length > 0) {
       console.log('Predictions:', newPredictions);
-      navigation.navigate('CamSearchPage', { predictions: newPredictions, recipes: newRecipes });
+      navigation.navigate('CamSearchPage', { predictions: newPredictions, recipes: newRecipes, user: user });
     }
   };
 
   const handlePlusPress = () => {
-    navigation.navigate('AddRecipePage');
+    console.log("user info", user);
+    navigation.navigate('AddRecipePage', { user: user } );
+
   };
 
   return (

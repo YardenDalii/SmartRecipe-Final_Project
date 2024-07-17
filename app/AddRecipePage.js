@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
 import NavigationBar from '../app/NavigationBar';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 
 const AddRecipePage = () => {
+    const route = useRoute();
+    const { user } = route.params;
+    console.log('user details', user);
     const [recipeName, setRecipeName] = useState('');
     const [ingredients, setIngredients] = useState('');
     const [productionSteps, setProductionSteps] = useState('');
