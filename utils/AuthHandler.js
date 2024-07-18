@@ -13,6 +13,7 @@ import SearchScreen from '../app/SearchScreen';
 import AddRecipePage from '../app/AddRecipePage';
 import CamSearchPage from '../app/CamSearchPage';
 import AboutPage from '../app/AboutPage';
+import MyRecipesPage from '../app/MyRecipesPage'; 
 
 const Stack = createNativeStackNavigator();
 
@@ -193,6 +194,7 @@ const App = () => {
         <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
         <Stack.Screen name="CamSearchPage" component={CamSearchPage} />
         <Stack.Screen name="AboutPage" component={AboutPage} />
+        <Stack.Screen name="MyRecipesPage" component={MyRecipesPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
