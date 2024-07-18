@@ -421,7 +421,7 @@ const HomePage = () => {
       >
         <View style={modalStyles.modalContainer}>
           <View style={modalStyles.modalContent}>
-            <ProfilePage />
+            <ProfilePage user={user} onClose={handleCloseModal} />
             <TouchableOpacity onPress={handleCloseModal} style={modalStyles.closeButton}>
               <Text style={modalStyles.closeButtonText}>Close</Text>
             </TouchableOpacity>
