@@ -126,7 +126,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Layout from './_layout';
 import AuthHandler from '../utils/AuthHandler';
-import NavigationBar from './NavigationBar';
 
 const App = () => {
   return (

@@ -285,20 +285,30 @@ import NavigationBar from '../app/NavigationBar';
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
 import { fetchRecipesByMealType } from '../utils/recipeService';
-import { useNavigation, useRoute } from '@react-navigation/native';
-
+import { useNavigation } from '@react-navigation/native';
+import { auth } from '../firebase'; // Import Firebase auth
 
 const HomePage = () => {
-  const route = useRoute();
-  const { user, fullName, handleLogout } = route.params || {};
-
-  console.log("user info", user);
-  console.log("full name", fullName);
-  
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const [recipes, setRecipes] = useState([]);
   const [mealType, setMealType] = useState('');
+  const [user, setUser] = useState(null); // State to hold user information
+  const [fullName, setFullName] = useState(''); // State to hold user's full name
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        setFullName(user.displayName || ''); // Assuming the user's display name is set
+      } else {
+        setUser(null);
+        setFullName('');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -338,6 +348,19 @@ const HomePage = () => {
     Linking.openURL(url);
   };
 
+  const handleLogout = () => {
+    auth.signOut()
+      .then(() => {
+        // Sign-out successful.
+        setUser(null);
+        setFullName('');
+        navigation.navigate('LoginPage'); // Assuming you have a login page to navigate to
+      })
+      .catch((error) => {
+        console.error('Error signing out:', error);
+      });
+  };
+
   const renderRecipeItem = ({ item, index }) => {
     const { recipe } = item;
     return (
@@ -373,7 +396,7 @@ const HomePage = () => {
         <Button title="Logout" onPress={handleLogout} color="#e74c3c" />
       )}
       
-      <NavigationBar showHomeIcon={false} navigation={navigation} user = {user} />
+      <NavigationBar showHomeIcon={false} navigation={navigation} user={user} />
 
       {/* Profile Modal */}
       <Modal
