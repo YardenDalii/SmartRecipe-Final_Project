@@ -35,7 +35,7 @@ const NavigationBar = ({ showHomeIcon = true, showSearchIcon = true, user }) => 
   };
 
   const handlePlusPress = () => {
-    console.log("user info", user);
+    console.log("user info plus", user);
     navigation.navigate('AddRecipePage', { user: user } );
 
   };
