@@ -26,24 +26,24 @@ const App = () => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and register
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const docRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(docRef);
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
+  //     if (user) {
+  //       const docRef = doc(db, 'users', user.uid);
+  //       const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          setFullName(`${userData.firstName} ${userData.lastName}`);
-        }
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
+  //       if (docSnap.exists()) {
+  //         const userData = docSnap.data();
+  //         setFullName(`${userData.firstName} ${userData.lastName}`);
+  //       }
+  //       setUser(user);
+  //     } else {
+  //       setUser(null);
+  //     }
+  //   });
 
-    return () => unsubscribe();
-  }, []);
+  //   return () => unsubscribe();
+  // }, []);
 
   const handleLogin = async () => {
     try {
