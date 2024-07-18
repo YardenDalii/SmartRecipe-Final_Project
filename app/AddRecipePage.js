@@ -49,7 +49,7 @@ const AddRecipePage = () => {
                 title="Save"
                 onPress={handleSave}
             />
-            <NavigationBar  />
+            <NavigationBar user={user} showPlusButton={false}/>
         </ScrollView>
 
         
