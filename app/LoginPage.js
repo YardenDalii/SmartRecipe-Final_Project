@@ -48,7 +48,7 @@
 import React from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import styles from '../stylesheets/LoginPageStyles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switchToRegister }) => {
     const navigation = useNavigation();
@@ -56,6 +56,16 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
     const continueWithoutLogin = () => {
         navigation.navigate('AboutPage');
     };
+    
+    // Use useFocusEffect to reset fields when the screen is focused
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                setEmail('');
+                setPassword('');
+            };
+        }, [])
+    );
 
     return (
         <View style={styles.authContainer}>
@@ -80,7 +90,7 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                 <Button title="Sign In" onPress={() => handleLogin(navigation)} color="#3498db" />
             </View>
             <View style={styles.bottomContainer}>
-                <Text style={styles.toggleText} onPress={switchToRegister}>
+                <Text style={styles.toggleText} onPress={() => switchToRegister(navigation)}>
                     Need an account? Sign Up
                 </Text>
             </View>

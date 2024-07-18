@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,7 +11,8 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import { setDoc, doc, getDoc } from 'firebase/firestore';
 import SearchScreen from '../app/SearchScreen'; 
 import AddRecipePage from '../app/AddRecipePage';
-
+import CamSearchPage from '../app/CamSearchPage';
+import AboutPage from '../app/AboutPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,27 +26,30 @@ const App = () => {
   const [fullName, setFullName] = useState(''); // Store full name
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and register
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false); 
+    const listenerRef = useRef(null); 
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
-  //     if (user) {
-  //       const docRef = doc(db, 'users', user.uid);
-  //       const docSnap = await getDoc(docRef);
+    useEffect(() => {
+      listenerRef.current = onAuthStateChanged(auth, async (user) => {
+          if (loading) return; // If loading, bypass setting user state
+          if (user) {
+              const docRef = doc(db, 'users', user.uid);
+              const docSnap = await getDoc(docRef);
 
-  //       if (docSnap.exists()) {
-  //         const userData = docSnap.data();
-  //         setFullName(`${userData.firstName} ${userData.lastName}`);
-  //       }
-  //       setUser(user);
-  //     } else {
-  //       setUser(null);
-  //     }
-  //   });
+              if (docSnap.exists()) {
+                  const userData = docSnap.data();
+                  setFullName(`${userData.firstName} ${userData.lastName}`);
+              }
+              setUser(user);
+          } else {
+              setUser(null);
+          }
+      });
 
-  //   return () => unsubscribe();
-  // }, []);
+      return () => listenerRef.current();
+  }, [loading]);
 
-  const handleLogin = async () => {
+  const handleLogin = async (navigation) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -75,10 +79,12 @@ const App = () => {
     }
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (navigation) => {
+    setLoading(true);
     // TODO: add password regex
     if (password !== confirmPassword) {
       console.error('Passwords do not match!');
+      setLoading(false);
       return;
     }
 
@@ -93,9 +99,14 @@ const App = () => {
       });
 
       console.log('User created and stored in Firestore successfully!');
-      navigation.navigate('LoginPage');
+      // Sign out the user immediately after registration
+      await signOut(auth);
+      setUser(null);
+      setLoading(false);
+      switchToLogin(navigation);
     } catch (error) {
       console.error('Registration error:', error.message);
+      setLoading(false);
     }
   };
 
@@ -105,6 +116,7 @@ const App = () => {
       console.log('User signed out successfully!');
       setUser(null);
       setIsLogin(true); // Ensure isLogin state is set to true
+      switchToLogin(navigation);
       navigation.reset({
         index: 0,
         routes: [{ name: 'LoginPage' }],
@@ -114,22 +126,24 @@ const App = () => {
     }
   };
 
-  const switchToLogin = () => {
+  const switchToLogin = (navigation) => {
     setIsLogin(true);
     setEmail('');
     setPassword('');
     setConfirmPassword('');
     setFirstName('');
     setLastName('');
+    navigation.navigate('LoginPage');
   };
 
-  const switchToRegister = () => {
+  const switchToRegister = (navigation) => {
     setIsLogin(false);
     setEmail('');
     setPassword('');
     setConfirmPassword('');
     setFirstName('');
     setLastName('');
+    navigation.navigate('RegisterPage');
   };
 
   return (
@@ -149,8 +163,8 @@ const App = () => {
                   setEmail={setEmail}
                   password={password}
                   setPassword={setPassword}
-                  handleLogin={handleLogin}
-                  switchToRegister={switchToRegister}
+                  handleLogin={(navigation) => handleLogin(navigation)}
+                  switchToRegister={(navigation) => switchToRegister(navigation)}
                 />
               )}
             </Stack.Screen>
@@ -168,16 +182,17 @@ const App = () => {
                   setFirstName={setFirstName}
                   lastName={lastName}
                   setLastName={setLastName}
-                  handleRegister={handleRegister}
-                  switchToLogin={switchToLogin}
+                  handleRegister={(navigation) => handleRegister(navigation)}
+                  switchToLogin={(navigation) => switchToLogin(navigation)}
                 />
               )}
             </Stack.Screen>
-            <Stack.Screen name="SearchScreen" component={SearchScreen} />
-            <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
-
           </>
         )}
+        <Stack.Screen name="SearchScreen" component={SearchScreen} />
+        <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
+        <Stack.Screen name="CamSearchPage" component={CamSearchPage} />
+        <Stack.Screen name="AboutPage" component={AboutPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

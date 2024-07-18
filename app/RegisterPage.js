@@ -50,7 +50,7 @@ const RegisterPage = ({ email, setEmail, password, setPassword, confirmPassword,
                 <Button title="Sign Up" onPress={() => handleRegister(navigation)} color="#3498db" />
             </View>
             <View style={styles.bottomContainer}>
-                <Text style={styles.toggleText} onPress={switchToLogin}>
+                <Text style={styles.toggleText} onPress={() => switchToLogin(navigation)}>
                     Already have an account? Sign In
                 </Text>
             </View>
