@@ -9,6 +9,9 @@ import styles from '../stylesheets/LoginPageStyles';
 import { auth, db } from '../firebase';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
+import SearchScreen from '../app/SearchScreen'; 
+import AddRecipePage from '../app/AddRecipePage';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -170,6 +173,9 @@ const App = () => {
                 />
               )}
             </Stack.Screen>
+            <Stack.Screen name="SearchScreen" component={SearchScreen} />
+            <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
+
           </>
         )}
       </Stack.Navigator>
