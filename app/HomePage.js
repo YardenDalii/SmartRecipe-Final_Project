@@ -286,7 +286,8 @@ import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
 import { fetchRecipesByMealType } from '../utils/recipeService';
 import { useNavigation } from '@react-navigation/native';
-import { auth } from '../firebase'; // Import Firebase auth
+import { db, auth } from '../firebase'; // Import Firebase auth
+import { doc, getDoc } from 'firebase/firestore';
 
 const HomePage = () => {
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
@@ -297,10 +298,23 @@ const HomePage = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUser(user);
-        setFullName(user.displayName || ''); // Assuming the user's display name is set
+
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setFullName(`${userData.firstName} ${userData.lastName}`);
+          } else {
+            console.error('User document not found');
+          }
+        } catch (error) {
+          console.error('Error fetching user:', error);
+        }
       } else {
         setUser(null);
         setFullName('');
