@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import profilePageStyles from '../stylesheets/ProfilePageStyles'; // Import the profile page styles
 import { useNavigation } from '@react-navigation/native'; 
 import { db, auth } from '../firebase'; // Import Firebase auth and db
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, deleteDoc  } from 'firebase/firestore';
+import { deleteUser } from 'firebase/auth';
 
 const ProfilePage = ({ user, onClose }) => {
   const navigation = useNavigation();
@@ -57,6 +58,33 @@ const ProfilePage = ({ user, onClose }) => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteUser(user);
+      await deleteDoc(doc(db, 'users', user.uid));
+      console.log('User account deleted successfully');
+      navigation.navigate('LoginPage');
+    } catch (error) {
+      console.error('Error deleting user account:', error);
+    }
+  };
+
+  const confirmDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'Yes', onPress: handleDeleteAccount },
+      ],
+      { cancelable: false }
+    );
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
@@ -108,13 +136,17 @@ const ProfilePage = ({ user, onClose }) => {
           <Text style={profilePageStyles.buttonText}>Edit</Text>
         </TouchableOpacity>
       )}
-<     TouchableOpacity style={profilePageStyles.button} onPress={handleFavoriteRecipesPress}>
+
+      <TouchableOpacity style={profilePageStyles.button} onPress={handleFavoriteRecipesPress}>
         <Text style={profilePageStyles.buttonText}>Favorite Recipes</Text>
       </TouchableOpacity>
       <TouchableOpacity style={profilePageStyles.button} onPress={handleMyRecipesPress}>
         <Text style={profilePageStyles.buttonText}>My Recipes</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity style={[profilePageStyles.button, profilePageStyles.deleteButton]} onPress={confirmDeleteAccount}>
+        <Text style={profilePageStyles.buttonText}>Delete Account</Text>
+      </TouchableOpacity>
     </View>
   );
 };

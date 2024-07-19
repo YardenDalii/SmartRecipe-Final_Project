@@ -66,9 +66,8 @@ const App = () => {
 
         // Navigate to HomePage and pass user information
         navigation.navigate('HomePage', { 
-          user,
+          uid: user.uid,
           fullName,
-          handleLogout
         });
       } else {
         console.log('No such document!');

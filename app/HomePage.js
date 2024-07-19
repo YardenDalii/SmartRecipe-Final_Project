@@ -387,6 +387,14 @@ const HomePage = () => {
       </View>
     );
   };
+  
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button onPress={handleLogout} title="Logout" color="#e74c3c" />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>

@@ -68,23 +68,23 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
     );
 
     return (
-        <View style={styles.authContainer}>
-            <Text style={styles.title}>Sign In</Text>
+        <View style={styles.container}>
+            <View style={styles.authContainer}>
+            <Text style={styles.title}>Login</Text>
             <TextInput
-                style={styles.input}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Email"
-                placeholderTextColor="gray"
-                autoCapitalize="none"
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
             />
             <TextInput
-                style={styles.input}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Password"
-                placeholderTextColor="gray"
-                secureTextEntry
+            style={styles.input}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
             />
             <View style={styles.buttonContainer}>
                 <Button title="Sign In" onPress={() => handleLogin(navigation)} color="#3498db" />
@@ -96,6 +96,7 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
             </View>
             <View style={styles.buttonContainer}>
                 <Button title="Continue without Login" onPress={continueWithoutLogin} color="#2ecc71" />
+            </View>
             </View>
         </View>
     );
