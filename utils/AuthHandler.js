@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Alert } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginPage from '../app/LoginPage';
@@ -7,13 +7,15 @@ import RegisterPage from '../app/RegisterPage';
 import HomePage from '../app/HomePage';
 import styles from '../stylesheets/LoginPageStyles';
 import { auth, db } from '../firebase';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
-import { setDoc, doc, getDoc } from 'firebase/firestore';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
+import { collection, query, where, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
 import SearchScreen from '../app/SearchScreen'; 
 import AddRecipePage from '../app/AddRecipePage';
 import CamSearchPage from '../app/CamSearchPage';
 import AboutPage from '../app/AboutPage';
 import MyRecipesPage from '../app/MyRecipesPage'; 
+import PasswordResetPage from '../app/PasswordResetPage';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -96,6 +98,7 @@ const App = () => {
         firstName,
         lastName,
         email: user.email,
+        // TODO: add personal variables for custom prefrences.
       });
 
       console.log('User created and stored in Firestore successfully!');
@@ -109,6 +112,36 @@ const App = () => {
       setLoading(false);
     }
   };
+
+  
+  const handleResetPass = async (navigation) => {
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', email));
+      const result = await getDocs(q);
+      const userDoc = result.docs[0].data()
+      console.log(userDoc)
+
+      if (userDoc){
+        await sendPasswordResetEmail(auth, email)
+        console.log("Password reset link has been sent to: ", email)
+        navigation.navigate('LoginPage')
+      } else {
+        Alert.alert(
+          "Invalid Email",
+          "Can't find user related to the given email, Please try again.",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ],
+          { cancelable: false }
+        )
+      }
+    } catch (error) {
+      console.error("Error sending reset password email: ", error.message)
+      setLoading(false);
+    }
+  };
+  
 
   const handleLogout = async () => {
     try {
@@ -146,6 +179,18 @@ const App = () => {
     navigation.navigate('RegisterPage');
   };
 
+  
+  const switchToReset = (navigation) => {
+    setIsLogin(false);
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setFirstName('');
+    setLastName('');
+    navigation.navigate("PasswordResetPage")
+  };
+
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -165,6 +210,7 @@ const App = () => {
                   setPassword={setPassword}
                   handleLogin={(navigation) => handleLogin(navigation)}
                   switchToRegister={(navigation) => switchToRegister(navigation)}
+                  switchToReset={(navigation) => switchToReset(navigation)}
                 />
               )}
             </Stack.Screen>
@@ -184,6 +230,17 @@ const App = () => {
                   setLastName={setLastName}
                   handleRegister={(navigation) => handleRegister(navigation)}
                   switchToLogin={(navigation) => switchToLogin(navigation)}
+                />
+              )}
+            </Stack.Screen>
+            <Stack.Screen name="PasswordResetPage">
+              {(props) => (
+                <PasswordResetPage
+                {...props}
+                email={email}
+                setEmail={setEmail}
+                handleResetPass={(navigation) => handleResetPass(navigation)}
+                switchToLogin={(navigation) => switchToLogin(navigation)}
                 />
               )}
             </Stack.Screen>
