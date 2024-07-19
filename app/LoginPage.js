@@ -50,7 +50,7 @@ import { View, Text, Button, TextInput } from 'react-native';
 import styles from '../stylesheets/LoginPageStyles';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
-const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switchToRegister }) => {
+const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switchToRegister, switchToReset }) => {
     const navigation = useNavigation();
     
     const continueWithoutLogin = () => {
@@ -86,6 +86,9 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
             onChangeText={setPassword}
             secureTextEntry
             />
+            <View style={styles.buttonContainer}>
+                <Button title="Forgot your password?" onPress={() => switchToReset(navigation)} color="3498db"></Button>
+            </View>
             <View style={styles.buttonContainer}>
                 <Button title="Sign In" onPress={() => handleLogin(navigation)} color="#3498db" />
             </View>
