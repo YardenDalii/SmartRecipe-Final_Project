@@ -33,6 +33,9 @@ const profilePageStyles = StyleSheet.create({
   closeButton: {
     backgroundColor: 'red',
   },
+  deleteButton: {
+    backgroundColor: '#e74c3c', // Red color for delete button
+  },
 });
 
 export default profilePageStyles;

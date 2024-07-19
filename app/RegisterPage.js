@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 const RegisterPage = ({ email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, firstName, setFirstName, lastName, setLastName, handleRegister, switchToLogin }) => {
     const navigation = useNavigation();
     return (
-        <View style={styles.authContainer}>
+        <View style={styles.container}>
+            <View style={styles.authContainer}>
             <Text style={styles.title}>Sign Up</Text>
             <TextInput
                 style={styles.input}
@@ -54,6 +55,7 @@ const RegisterPage = ({ email, setEmail, password, setPassword, confirmPassword,
                     Already have an account? Sign In
                 </Text>
             </View>
+        </View>
         </View>
     );
 };
