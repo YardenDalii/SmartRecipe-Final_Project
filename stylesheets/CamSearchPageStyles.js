@@ -55,6 +55,53 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  filterImageButton: {
+    width: 30,
+    height: 30,
+    marginRight: 300,
+      },
+  filterImage: {
+    width: '100%',
+    height: '100%',
+    padding: 10,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  modalCloseButton: {
+    backgroundColor: '#dc3545',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  modalCloseButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+  filterButton: {
+    backgroundColor: '#28a745',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  filterSection: {
+    marginVertical: 20,
+    marginHorizontal: 20,
+  },
   recipeCard: {
     marginVertical: 10,
     padding: 10,
@@ -81,6 +128,39 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     marginTop: 5,
     textDecorationLine: 'underline',
+  },
+  meatInputContainer: {
+    margin: 5,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    width: '100%',
+  },
+  meatInput: {
+    height: 50,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    textAlignVertical: 'top',
+    color: '#000',
+  },
+  meatInputButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
+  },
+  meatInputButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  meatInputLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

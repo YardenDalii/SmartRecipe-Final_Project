@@ -1,10 +1,13 @@
 import React from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import styles from '../stylesheets/LoginPageStyles';
+import { useNavigation } from '@react-navigation/native';
 
 const RegisterPage = ({ email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, firstName, setFirstName, lastName, setLastName, handleRegister, switchToLogin }) => {
+    const navigation = useNavigation();
     return (
-        <View style={styles.authContainer}>
+        <View style={styles.container}>
+            <View style={styles.authContainer}>
             <Text style={styles.title}>Sign Up</Text>
             <TextInput
                 style={styles.input}
@@ -45,13 +48,14 @@ const RegisterPage = ({ email, setEmail, password, setPassword, confirmPassword,
                 secureTextEntry
             />
             <View style={styles.buttonContainer}>
-                <Button title="Sign Up" onPress={handleRegister} color="#3498db" />
+                <Button title="Sign Up" onPress={() => handleRegister(navigation)} color="#3498db" />
             </View>
             <View style={styles.bottomContainer}>
-                <Text style={styles.toggleText} onPress={switchToLogin}>
+                <Text style={styles.toggleText} onPress={() => switchToLogin(navigation)}>
                     Already have an account? Sign In
                 </Text>
             </View>
+        </View>
         </View>
     );
 };
