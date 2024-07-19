@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
 import NavigationBar from '../app/NavigationBar';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { db, auth, createCustomRecipe} from '../firebase';
 
 
 const AddRecipePage = () => {
@@ -12,12 +13,15 @@ const AddRecipePage = () => {
     const [ingredients, setIngredients] = useState('');
     const [productionSteps, setProductionSteps] = useState('');
 
-    const handleSave = () => {
+    const handleSave = async () => {
+        const formattedIngredients = ingredients.split('\n').map(ingredient => ({ name: ingredient.split(':')[0].trim(), quantity: ingredient.split(':')[1].trim() }));
+        const formattedProductionSteps = productionSteps.split('\n');
         // Implement save logic here, e.g., send data to backend or store locally
         console.log('Recipe Name:', recipeName);
         console.log('Ingredients:', ingredients);
         console.log('Production Steps:', productionSteps);
 
+        await createCustomRecipe(user.email, recipeName, formattedIngredients, formattedProductionSteps);
         // Optionally, you can navigate back to previous screen or perform other actions
     };
 

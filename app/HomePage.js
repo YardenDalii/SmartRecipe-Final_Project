@@ -303,7 +303,7 @@ const HomePage = () => {
         setUser(user);
 
         try {
-          const docRef = doc(db, 'users', user.uid);
+          const docRef = doc(db, 'users', user.email);
           const docSnap = await getDoc(docRef);
           
           if (docSnap.exists()) {

@@ -6,7 +6,7 @@ import LoginPage from '../app/LoginPage';
 import RegisterPage from '../app/RegisterPage';
 import HomePage from '../app/HomePage';
 import styles from '../stylesheets/LoginPageStyles';
-import { auth, db } from '../firebase';
+import { auth, db, createUser } from '../firebase';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { collection, query, where, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
 import SearchScreen from '../app/SearchScreen'; 
@@ -68,7 +68,7 @@ const App = () => {
 
         // Navigate to HomePage and pass user information
         navigation.navigate('HomePage', { 
-          uid: user.uid,
+          uid: user.email,
           fullName,
         });
       } else {
@@ -94,12 +94,14 @@ const App = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      await setDoc(doc(db, 'users', user.uid), {
-        firstName,
-        lastName,
-        email: user.email,
-        // TODO: add personal variables for custom prefrences.
-      });
+      // await setDoc(doc(db, 'users', user.uid), {
+      // await setDoc(doc(db, 'users', user.email), {
+      //   firstName,
+      //   lastName,
+      //   email: user.email,
+      //   // TODO: add personal variables for custom prefrences.
+      // });
+      await createUser(user.email, firstName, lastName);
 
       console.log('User created and stored in Firestore successfully!');
       // Sign out the user immediately after registration
