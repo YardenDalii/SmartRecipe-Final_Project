@@ -16,6 +16,7 @@ import AboutPage from '../app/AboutPage';
 import MyRecipesPage from '../app/MyRecipesPage'; 
 import PasswordResetPage from '../app/PasswordResetPage';
 
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -93,7 +94,7 @@ const App = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      await setDoc(doc(db, 'users', email), {
+      await setDoc(doc(db, 'users', user.uid), {
         firstName,
         lastName,
         email: user.email,
@@ -112,6 +113,7 @@ const App = () => {
     }
   };
 
+  
   const handleResetPass = async (navigation) => {
     try {
       const usersRef = collection(db, 'users');
@@ -139,7 +141,7 @@ const App = () => {
       setLoading(false);
     }
   };
-
+  
 
   const handleLogout = async () => {
     try {
@@ -177,6 +179,7 @@ const App = () => {
     navigation.navigate('RegisterPage');
   };
 
+  
   const switchToReset = (navigation) => {
     setIsLogin(false);
     setEmail('');
@@ -186,6 +189,7 @@ const App = () => {
     setLastName('');
     navigation.navigate("PasswordResetPage")
   };
+
 
   return (
     <NavigationContainer independent={true}>

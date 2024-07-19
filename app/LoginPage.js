@@ -50,6 +50,7 @@ import { View, Text, Button, TextInput } from 'react-native';
 import styles from '../stylesheets/LoginPageStyles';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
+
 const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switchToRegister, switchToReset }) => {
     const navigation = useNavigation();
     
