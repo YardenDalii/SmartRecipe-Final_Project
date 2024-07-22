@@ -6,6 +6,19 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
   },
+  noRecipesText: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 18,
+    color: '#333',
+  },
+  recipeItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   recipeItem: {
     marginBottom: 20,
     borderWidth: 1,
@@ -20,6 +33,11 @@ export default StyleSheet.create({
   },
   recipeDescription: {
     fontSize: 16,
+  },
+  recipeItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   modalContainer: {
     flex: 1,

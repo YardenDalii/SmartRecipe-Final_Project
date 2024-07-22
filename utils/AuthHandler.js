@@ -257,11 +257,13 @@ const App = () => {
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
         <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
         <Stack.Screen name="CamSearchPage" component={CamSearchPage} />
-        <Stack.Screen name="AboutPage" component={AboutPage} />
-        <Stack.Screen name="MyRecipesPage" component={MyRecipesPage} />
+        <Stack.Screen name="MyRecipesPage">
+              {(props) => <MyRecipesPage {...props} user={user} />}
+            </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 export default App;
+
