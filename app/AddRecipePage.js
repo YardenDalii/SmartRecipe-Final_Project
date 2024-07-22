@@ -23,14 +23,16 @@ const AddRecipePage = () => {
     }));
     const formattedProductionSteps = productionSteps.split('\n');
 
+
     if (recipe) {
       // Update existing recipe
       const updatedRecipe = { ...recipe, recipeName, ingredients: formattedIngredients, productionSteps: formattedProductionSteps };
       await updateRecipe(updatedRecipe);
     } else {
       // Create new recipe
-      await createCustomRecipe(user.email, recipeName, formattedIngredients, productionSteps);
+      await createCustomRecipe(user, recipeName, formattedIngredients, productionSteps);
     }
+
 
     navigation.navigate("MyRecipesPage");
   };
