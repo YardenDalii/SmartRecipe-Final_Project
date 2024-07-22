@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getFirestore, collection, query, where, getDocs, setDoc, doc, getDoc, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, arrayUnion , updateDoc} from 'firebase/firestore';
 
 
 const firebaseConfig = {
@@ -22,23 +22,38 @@ const auth = initializeAuth(app, {
 const db = getFirestore(app);
 
 
-const createCustomRecipe = async (userEmail, recipeName, ingredients, productionSteps) => {
-    try {
-        const docName = `${recipeName} by ${userEmail}`
+const createCustomRecipe = async (user, recipeName, ingredients, productionSteps) => {
+    if (!user || !user.email) {
+        throw new Error('Invalid user object');
+    }
 
-        const docRef = await setDoc(doc(db, 'custom_recipes', docName), {
-            userEmail,
-            recipeName,
-            ingredients,
-            productionSteps
+    const newRecipe = {
+        recipeName,
+        ingredients,
+        productionSteps
+    };
+
+    try {
+        const docRef = doc(db, 'custom_recipes', user.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+
+            // Update the document with the filtered recipes
+            await updateDoc(docRef, {
+                recipes: arrayUnion(newRecipe)
             });
-         console.log("Recipe document written by: ", userEmail);
+
+            console.log("Recipe removed successfully!");
+        }
     } catch (error) {
         console.error("Error adding recipe: ", error.message);
     }
 };
 
 const createUser = async (email, firstName, lastName) => {
+
     try {
         await setDoc(doc(db, 'users', email), {
             firstName,
@@ -46,6 +61,19 @@ const createUser = async (email, firstName, lastName) => {
             email: email,
             // TODO: add personal variables for custom prefrences.
         });
+
+        await setDoc(doc(db, 'custom_recipes', email), {
+            userEmail: email,
+            recipes: []
+        }, { merge: true });
+
+        await setDoc(doc(db, 'favorite_recipes', email), {
+            userEmail: email,
+            recipes: [],
+        }, { merge: true });
+
+        console.log("|firebase - createUser| User created succesfully");
+
     } catch (error) {
         console.log("cant save user data: ", error);
     }
@@ -56,7 +84,7 @@ const fetchUserRecipes = async (user) => {
     if (!user || !user.email) {
       throw new Error('Invalid user object');
     }
-  
+
     try {
       const recipesRef = collection(db, 'custom_recipes');
       const q = query(recipesRef, where('userEmail', '==', user.email));
@@ -75,16 +103,60 @@ const fetchUserRecipes = async (user) => {
   };
 
 
-const getUserItem = async (user) => {
-    try {
-        const docRef = doc(db, 'users', user.email);
-        return await getDoc(docRef);
-
-    } catch(error) {
-        console.error("cant find item: ", error);
-        return;
+const addFavRecipe = async (user, recipeImage, recipeName, recipeUri, recipeURL) => {
+    if (!user || !user.email) {
+        throw new Error('Invalid user object');
     }
-}
 
-export { db, auth, createUser, createCustomRecipe, fetchUserRecipes }; 
+    const newRecipe = {
+        recipeImage,
+        recipeName,
+        recipeUri,
+        recipeURL
+    };
+
+    try {
+        const docRef = doc(db, 'favorite_recipes', user.email);
+
+        // Always set the document with the merge option to avoid overwriting
+        await setDoc(docRef, {
+            userEmail: user.email,
+            recipes: arrayUnion(newRecipe)
+        }, { merge: true });
+
+        console.log("Recipe document updated successfully!");
+    } catch (error) {
+        console.error("Error adding recipe: ", error.message);
+    }
+};
+
+
+const deleteFavRecipe = async (user, recipeUri) => {
+    if (!user || !user.email) {
+        throw new Error('Invalid user object');
+    }
+
+    try {
+        const docRef = doc(db, 'favorite_recipes', user.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            const updatedRecipes = userData.recipes.filter(recipe => recipe.recipeUri !== recipeUri);
+
+            // Update the document with the filtered recipes
+            await updateDoc(docRef, {
+                recipes: updatedRecipes
+            });
+
+            console.log("Recipe removed successfully!");
+        } else {
+            console.log("No favorite recipes found for this user.");
+        }
+    } catch (error) {
+        console.error("Error removing recipe: ", error.message);
+    }
+};
+
+export { db, auth, createUser, createCustomRecipe, fetchUserRecipes, addFavRecipe, deleteFavRecipe }; 
 

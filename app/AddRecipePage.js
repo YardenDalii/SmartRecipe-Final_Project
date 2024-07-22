@@ -21,7 +21,7 @@ const AddRecipePage = () => {
         console.log('Ingredients:', ingredients);
         console.log('Production Steps:', productionSteps);
 
-        await createCustomRecipe(user.email, recipeName, formattedIngredients, formattedProductionSteps);
+        await createCustomRecipe(user, recipeName, formattedIngredients, formattedProductionSteps);
         // Optionally, you can navigate back to previous screen or perform other actions
     };
 
