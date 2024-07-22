@@ -1,9 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc  } from 'firebase/firestore';
+import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc, arrayUnion  } from 'firebase/firestore';
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getFirestore, collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, arrayUnion , updateDoc} from 'firebase/firestore';
-
+import { Alert } from 'react-native';
 
 
 const firebaseConfig = {
@@ -23,36 +22,6 @@ const auth = initializeAuth(app, {
 });
 const db = getFirestore(app);
 
-
-const createCustomRecipe = async (user, recipeName, ingredients, productionSteps) => {
-    if (!user || !user.email) {
-        throw new Error('Invalid user object');
-    }
-
-    const newRecipe = {
-        recipeName,
-        ingredients,
-        productionSteps
-    };
-
-    try {
-        const docRef = doc(db, 'custom_recipes', user.email);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            const userData = docSnap.data();
-
-            // Update the document with the filtered recipes
-            await updateDoc(docRef, {
-                recipes: arrayUnion(newRecipe)
-            });
-
-            console.log("Recipe removed successfully!");
-        }
-    } catch (error) {
-        console.error("Error adding recipe: ", error.message);
-    }
-};
 
 const createUser = async (email, firstName, lastName) => {
 
@@ -82,27 +51,48 @@ const createUser = async (email, firstName, lastName) => {
     
 };
 
+// const fetchUserRecipes = async (user) => {
+//     if (!user || !user.email) {
+//       throw new Error('Invalid user object');
+//     }
+
+//     try {
+//       const recipesRef = collection(db, 'custom_recipes');
+//       const q = query(recipesRef, where('userEmail', '==', user.email));
+//       const querySnapshot = await getDocs(q);
+//       const recipes = [];
+  
+//       querySnapshot.forEach((doc) => {
+//         recipes.push({ id: doc.id, ...doc.data() });
+//       });
+  
+//       return recipes;
+//     } catch (error) {
+//       console.error('Error fetching recipes:', error);
+//       return [];
+//     }
+//   };
 const fetchUserRecipes = async (user) => {
     if (!user || !user.email) {
-      throw new Error('Invalid user object');
+        throw new Error('Invalid user object');
     }
 
     try {
-      const recipesRef = collection(db, 'custom_recipes');
-      const q = query(recipesRef, where('userEmail', '==', user.email));
-      const querySnapshot = await getDocs(q);
-      const recipes = [];
-  
-      querySnapshot.forEach((doc) => {
-        recipes.push({ id: doc.id, ...doc.data() });
-      });
-  
-      return recipes;
+        const docRef = doc(db, 'custom_recipes', user.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            return userData.recipes || [];
+        } else {
+            console.log('No custom recipes found for this user.');
+            return [];
+        }
     } catch (error) {
-      console.error('Error fetching recipes:', error);
-      return [];
+        console.error('Error fetching user recipes:', error.message);
+        return [];
     }
-  };
+};
 
 
 const addFavRecipe = async (user, recipeImage, recipeName, recipeUri, recipeURL) => {
@@ -161,30 +151,156 @@ const deleteFavRecipe = async (user, recipeUri) => {
 };
 
 
-const updateRecipe = async (recipe) => {
+// const createCustomRecipe = async (user, recipeName, ingredients, productionSteps) => {
+//     if (!user || !user.email) {
+//         throw new Error('Invalid user object');
+//     }
+
+//     const newRecipe = {
+//         recipeName,
+//         ingredients,
+//         productionSteps
+//     };
+
+//     try {
+//         const docRef = doc(db, 'custom_recipes', user.email);
+//         const docSnap = await getDoc(docRef);
+
+//         if (docSnap.exists()) {
+//             const userData = docSnap.data();
+
+//             // Update the document with the filtered recipes
+//             await updateDoc(docRef, {
+//                 recipes: arrayUnion(newRecipe)
+//             });
+
+//             console.log("Recipe added successfully!");
+//         }
+//     } catch (error) {
+//         console.error("Error adding recipe: ", error.message);
+//     }
+// };
+const createCustomRecipe = async (user, recipeName, ingredients, productionSteps) => {
+    if (!user || !user.email) {
+      throw new Error('Invalid user object');
+    }
+  
+    const newRecipe = {
+      recipeName,
+      ingredients,
+      productionSteps
+    };
+  
     try {
-        const docRef = doc(db, 'custom_recipes', recipe.id);
+      const docRef = doc(db, 'custom_recipes', user.email);
+      const docSnap = await getDoc(docRef);
+  
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        const existingRecipes = userData.recipes || [];
+  
+        const recipeExists = existingRecipes.some(recipe => recipe.recipeName === recipeName);
+  
+        if (recipeExists) {
+            // Add alert
+            Alert.alert(
+                "Can't save recipe",
+                `${recipeName} is already exist.`,
+                [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+  
+        // Update the document with the new recipe
         await updateDoc(docRef, {
-            recipeName: recipe.recipeName,
-            ingredients: recipe.ingredients,
-            productionSteps: recipe.productionSteps
+          recipes: arrayUnion(newRecipe)
         });
-        console.log("Recipe updated successfully");
+        
+        Alert.alert(
+            'Recipe Saved!',
+            `${recipeName} has beed saved successfully.`,
+            [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+        )
+
+        console.log("Recipe added successfully!");
+      } else {
+        // If the document does not exist, create it with the new recipe
+        await setDoc(docRef, {
+          recipes: [newRecipe]
+        });
+  
+        console.log("Recipe document created and added successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding recipe: ", error.message);
+    }
+  };
+
+
+
+const updateCustomRecipe = async (user, oldRecipeName, newRecipe) => {
+    if (!user || !user.email) {
+        throw new Error('Invalid user object');
+    }
+
+    try {
+        const docRef = doc(db, 'custom_recipes', user.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            const updatedRecipes = userData.recipes.map(recipe => 
+                recipe.recipeName === oldRecipeName ? newRecipe : recipe
+            );
+
+            // Update the document with the updated recipes
+            await updateDoc(docRef, {
+                recipes: updatedRecipes
+            });
+
+            console.log("Recipe updated successfully!");
+        } else {
+            // Add alert
+            console.log("No custom recipes found for this user.");
+        }
     } catch (error) {
         console.error("Error updating recipe: ", error.message);
     }
 };
 
-// Add the deleteRecipe function
-const deleteRecipe = async (recipeId) => {
+
+const deleteCustomRecipe = async (user, recipeName) => {
+    if (!user || !user.email) {
+        throw new Error('Invalid user object');
+    }
+
     try {
-        const docRef = doc(db, 'custom_recipes', recipeId);
-        await deleteDoc(docRef);
-        console.log("Recipe deleted successfully");
+        const docRef = doc(db, 'custom_recipes', user.email);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            const updatedRecipes = userData.recipes.filter(recipe => recipe.recipeName !== recipeName);
+
+            // Update the document with the filtered recipes
+            await updateDoc(docRef, {
+                recipes: updatedRecipes
+            });
+
+            console.log("Recipe deleted successfully!");
+        } else {
+            console.log("No custom recipes found for this user.");
+        }
     } catch (error) {
         console.error("Error deleting recipe: ", error.message);
     }
 };
 
-export { db, auth, createUser, createCustomRecipe, fetchUserRecipes, updateRecipe, deleteRecipe }; 
+export { db, auth, createUser, createCustomRecipe, fetchUserRecipes, updateCustomRecipe, deleteCustomRecipe, addFavRecipe, deleteFavRecipe }; 
 

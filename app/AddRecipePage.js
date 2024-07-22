@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
+import { View, TextInput, Button, ScrollView, StyleSheet, Alert } from 'react-native';
 import NavigationBar from '../app/NavigationBar';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { createCustomRecipe, updateRecipe } from '../firebase';
+import { createCustomRecipe, updateCustomRecipe } from '../firebase';
 
 const AddRecipePage = () => {
   const route = useRoute();
@@ -27,10 +27,11 @@ const AddRecipePage = () => {
     if (recipe) {
       // Update existing recipe
       const updatedRecipe = { ...recipe, recipeName, ingredients: formattedIngredients, productionSteps: formattedProductionSteps };
-      await updateRecipe(updatedRecipe);
+      await updateCustomRecipe(user, recipe.recipeName, updatedRecipe);
     } else {
       // Create new recipe
-      await createCustomRecipe(user, recipeName, formattedIngredients, productionSteps);
+        await createCustomRecipe(user, recipeName, formattedIngredients, formattedProductionSteps);
+      
     }
 
 
