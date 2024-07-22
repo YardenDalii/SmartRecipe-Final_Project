@@ -9,6 +9,7 @@ import { deleteUser, reauthenticateWithCredential, EmailAuthProvider, updatePass
 const ProfilePage = ({ user, onClose }) => {
   const navigation = useNavigation();
   const [fullName, setFullName] = useState('');
+  const [originalFullName, setOriginalFullName] = useState('');
   const [email, setEmail] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -25,9 +26,10 @@ const ProfilePage = ({ user, onClose }) => {
         if (docSnap.exists()) {
           const userData = docSnap.data();
           setFullName(`${userData.firstName} ${userData.lastName}`);
+          setOriginalFullName(fullName);
           setEmail(userData.email);
         } else {
-          console.error('User document not found (ProfilePage');
+          console.error('User document not found (ProfilePage)');
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -48,10 +50,16 @@ const ProfilePage = ({ user, onClose }) => {
         lastName,
       });
       setIsEditing(false);
+      setOriginalFullName(fullName);
       console.log('User data updated successfully');
     } catch (error) {
       console.error('Error updating user data:', error);
     }
+  };
+
+  const handleCancelPress = () => {
+    setFullName(originalFullName);
+    setIsEditing(false);
   };
 
   const handleFavoriteRecipesPress = () => {
@@ -61,8 +69,14 @@ const ProfilePage = ({ user, onClose }) => {
 
   const handleMyRecipesPress = () => {
     console.log('My Recipes Button Pressed');
-    navigation.navigate('MyRecipesPage'); // Navigate to MyRecipesPage
+    navigation.navigate('MyRecipesPage', { user }); // Navigate to MyRecipesPage
     onClose(); // Closing the profile Modal
+  };
+  const handleCancelPasswordChange = () => {
+    setShowPasswordFields(false);
+    setOldPassword('');
+    setNewPassword('');
+    setConfirmNewPassword('');
   };
 
   const handleDeleteAccount = async () => {
@@ -104,10 +118,7 @@ const ProfilePage = ({ user, onClose }) => {
       await reauthenticateWithCredential(user, credential);
       await updatePassword(user, newPassword);
       Alert.alert('Success', 'Password changed successfully.');
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmNewPassword('');
-      setShowPasswordFields(false); // Hide password fields after successful change
+      handleCancelPasswordChange();
     } catch (error) {
       let errorMessage = 'Error changing password.';
       if (error.code === 'auth/wrong-password') {
@@ -128,38 +139,49 @@ const ProfilePage = ({ user, onClose }) => {
 
   return (
     <View style={profilePageStyles.container}>
-      <Text style={profilePageStyles.label}>Full Name:</Text>
-      {isEditing ? (
-        <TextInput
-          style={profilePageStyles.input}
-          value={fullName}
-          onChangeText={text => setFullName(text)}
-          autoFocus
-        />
-      ) : (
-        <Text style={profilePageStyles.text}>{fullName}</Text>
+      <View style={profilePageStyles.fullNameContainer}>
+        {isEditing ? (
+          <TextInput
+            style={profilePageStyles.fullNameTitleEditing}
+            value={fullName}
+            onChangeText={text => setFullName(text)}
+            autoFocus
+          />
+        ) : (
+          <Text style={profilePageStyles.fullNameTitle}>{fullName}</Text>
+        )}
+        {!isEditing && (
+          <TouchableOpacity
+            style={profilePageStyles.editButton}
+            onPress={() => setIsEditing(true)}
+          >
+            <Text style={profilePageStyles.editButtonText}>Edit</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      {isEditing && (
+        <View style={profilePageStyles.editButtonContainer}>
+          <TouchableOpacity style={profilePageStyles.saveButton} onPress={handleSavePress}>
+            <Text style={profilePageStyles.saveButtonText}>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={profilePageStyles.cancelButton} onPress={handleCancelPress}>
+            <Text style={profilePageStyles.cancelButtonText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       <Text style={profilePageStyles.label}>Email:</Text>
       <Text style={profilePageStyles.text}>{email}</Text>
 
-      {isEditing ? (
-        <TouchableOpacity style={profilePageStyles.button} onPress={handleSavePress}>
-          <Text style={profilePageStyles.buttonText}>Save</Text>
+      <View style={profilePageStyles.buttonContainer}>
+        <TouchableOpacity style={profilePageStyles.squareButton} onPress={handleMyRecipesPress}>
+          <Text style={profilePageStyles.squareButtonText}>My Recipes</Text>
         </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={profilePageStyles.button} onPress={() => setIsEditing(true)}>
-          <Text style={profilePageStyles.buttonText}>Edit</Text>
+        <TouchableOpacity style={profilePageStyles.squareButton} onPress={handleFavoriteRecipesPress}>
+          <Text style={profilePageStyles.squareButtonText}>Favorite Recipes</Text>
         </TouchableOpacity>
-      )}
-      <TouchableOpacity style={profilePageStyles.button} onPress={handleFavoriteRecipesPress}>
-        <Text style={profilePageStyles.buttonText}>Favorite Recipes</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={profilePageStyles.button} onPress={handleMyRecipesPress}>
-        <Text style={profilePageStyles.buttonText}>My Recipes</Text>
-      </TouchableOpacity>
+      </View>
 
-      {/* Button to Show/Hide Password Fields */}
       <TouchableOpacity
         style={profilePageStyles.button}
         onPress={() => setShowPasswordFields(!showPasswordFields)}
@@ -167,7 +189,6 @@ const ProfilePage = ({ user, onClose }) => {
         <Text style={profilePageStyles.buttonText}>Change Password</Text>
       </TouchableOpacity>
 
-      {/* Change Password Fields */}
       {showPasswordFields && (
         <View style={profilePageStyles.changePasswordContainer}>
           <TextInput
@@ -191,9 +212,14 @@ const ProfilePage = ({ user, onClose }) => {
             onChangeText={setConfirmNewPassword}
             secureTextEntry
           />
-          <TouchableOpacity style={profilePageStyles.button} onPress={handleChangePassword}>
-            <Text style={profilePageStyles.buttonText}>Save New Password</Text>
-          </TouchableOpacity>
+          <View style={profilePageStyles.editButtonContainer}>
+            <TouchableOpacity style={profilePageStyles.saveButton} onPress={handleChangePassword}>
+              <Text style={profilePageStyles.saveButtonText}>Save New Password</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={profilePageStyles.cancelButton} onPress={handleCancelPasswordChange}>
+              <Text style={profilePageStyles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
 
