@@ -59,7 +59,7 @@ const App = () => {
       const user = userCredential.user;
 
       // Fetch user details from Firestore
-      const docRef = doc(db, 'users', user.uid);
+      const docRef = doc(db, 'users', email);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -69,14 +69,13 @@ const App = () => {
 
         // Navigate to HomePage and pass user information
         navigation.navigate('HomePage', { 
-          uid: user.email,
           fullName,
         });
       } else {
-        console.log('No such document!');
+        console.log('|AuthHandler-handleLogin| No such document!');
       }
 
-      console.log('User signed in successfully!');
+      console.log('|AuthHandler-handleLogin| User signed in successfully!');
     } catch (error) {
       console.error('Login error:', error.message);
     }
@@ -252,6 +251,7 @@ const App = () => {
                 />
               )}
             </Stack.Screen>
+            <Stack.Screen name="HomePage" component={HomePage} />
           </>
         )}
         <Stack.Screen name="SearchScreen" component={SearchScreen} />

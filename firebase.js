@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-// import { getFirestore } from 'firebase/firestore';
 import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc  } from 'firebase/firestore';
+import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -17,7 +17,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
 const db = getFirestore(app);
 
 
@@ -111,3 +113,4 @@ const deleteRecipe = async (recipeId) => {
 };
 
 export { db, auth, createUser, createCustomRecipe, fetchUserRecipes, updateRecipe, deleteRecipe }; 
+
