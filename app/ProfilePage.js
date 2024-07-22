@@ -10,7 +10,6 @@ const ProfilePage = ({ user, onClose }) => {
   const navigation = useNavigation();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -21,15 +20,14 @@ const ProfilePage = ({ user, onClose }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const docRef = doc(db, 'users', user.uid);
+        const docRef = doc(db, 'users', user.email);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const userData = docSnap.data();
           setFullName(`${userData.firstName} ${userData.lastName}`);
           setEmail(userData.email);
-          setPhoneNumber(userData.phoneNumber || ''); // Set phoneNumber or default value
         } else {
-          console.error('User document not found');
+          console.error('User document not found (ProfilePage');
         }
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -44,11 +42,10 @@ const ProfilePage = ({ user, onClose }) => {
   const handleSavePress = async () => {
     try {
       const [firstName, lastName] = fullName.split(' ');
-      const docRef = doc(db, 'users', user.uid);
+      const docRef = doc(db, 'users', user.email);
       await updateDoc(docRef, {
         firstName,
         lastName,
-        phoneNumber,
       });
       setIsEditing(false);
       console.log('User data updated successfully');
@@ -65,6 +62,7 @@ const ProfilePage = ({ user, onClose }) => {
   const handleMyRecipesPress = () => {
     console.log('My Recipes Button Pressed');
     navigation.navigate('MyRecipesPage'); // Navigate to MyRecipesPage
+    onClose(); // Closing the profile Modal
   };
 
   const handleDeleteAccount = async () => {
@@ -144,17 +142,6 @@ const ProfilePage = ({ user, onClose }) => {
 
       <Text style={profilePageStyles.label}>Email:</Text>
       <Text style={profilePageStyles.text}>{email}</Text>
-
-      <Text style={profilePageStyles.label}>Phone Number:</Text>
-      {isEditing ? (
-        <TextInput
-          style={profilePageStyles.input}
-          value={phoneNumber}
-          onChangeText={text => setPhoneNumber(text)}
-        />
-      ) : (
-        <Text style={profilePageStyles.text}>{phoneNumber}</Text>
-      )}
 
       {isEditing ? (
         <TouchableOpacity style={profilePageStyles.button} onPress={handleSavePress}>

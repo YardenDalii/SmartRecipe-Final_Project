@@ -2,19 +2,20 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ScrollView, Alert } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginPage from '../app/LoginPage';
-import RegisterPage from '../app/RegisterPage';
-import HomePage from '../app/HomePage';
 import styles from '../stylesheets/LoginPageStyles';
 import { auth, db, createUser } from '../firebase';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { collection, query, where, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
+import LoginPage from '../app/LoginPage';
+import RegisterPage from '../app/RegisterPage';
+import HomePage from '../app/HomePage';
 import SearchScreen from '../app/SearchScreen'; 
 import AddRecipePage from '../app/AddRecipePage';
 import CamSearchPage from '../app/CamSearchPage';
 import AboutPage from '../app/AboutPage';
 import MyRecipesPage from '../app/MyRecipesPage'; 
 import PasswordResetPage from '../app/PasswordResetPage';
+import ProfilePage from '../app/ProfilePage';
 
 
 const Stack = createNativeStackNavigator();
@@ -197,9 +198,14 @@ const App = () => {
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user ? (
-          <Stack.Screen name="HomePage">
-            {(props) => <HomePage {...props} user={user} fullName={fullName} handleLogout={handleLogout} />}
-          </Stack.Screen>
+          <>
+            <Stack.Screen name="HomePage">
+              {(props) => <HomePage {...props} user={user} fullName={fullName} handleLogout={handleLogout} />}
+            </Stack.Screen>
+            <Stack.Screen name="ProfilePage">
+              {(props) => <ProfilePage {...props} user={user} />}
+            </Stack.Screen>
+          </>
         ) : (
           <>
             <Stack.Screen name="LoginPage">
