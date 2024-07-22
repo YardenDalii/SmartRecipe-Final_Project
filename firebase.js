@@ -1,7 +1,8 @@
 import { initializeApp } from 'firebase/app';
+import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc  } from 'firebase/firestore';
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getFirestore, collection, query, where, getDocs, setDoc, doc, getDoc, addDoc } from 'firebase/firestore';
+
 
 
 const firebaseConfig = {
@@ -86,5 +87,30 @@ const getUserItem = async (user) => {
     }
 }
 
-export { db, auth, createUser, createCustomRecipe, fetchUserRecipes }; 
+const updateRecipe = async (recipe) => {
+    try {
+        const docRef = doc(db, 'custom_recipes', recipe.id);
+        await updateDoc(docRef, {
+            recipeName: recipe.recipeName,
+            ingredients: recipe.ingredients,
+            productionSteps: recipe.productionSteps
+        });
+        console.log("Recipe updated successfully");
+    } catch (error) {
+        console.error("Error updating recipe: ", error.message);
+    }
+};
+
+// Add the deleteRecipe function
+const deleteRecipe = async (recipeId) => {
+    try {
+        const docRef = doc(db, 'custom_recipes', recipeId);
+        await deleteDoc(docRef);
+        console.log("Recipe deleted successfully");
+    } catch (error) {
+        console.error("Error deleting recipe: ", error.message);
+    }
+};
+
+export { db, auth, createUser, createCustomRecipe, fetchUserRecipes, updateRecipe, deleteRecipe }; 
 
