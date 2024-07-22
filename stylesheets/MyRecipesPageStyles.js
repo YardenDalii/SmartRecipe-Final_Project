@@ -7,12 +7,10 @@ export default StyleSheet.create({
     padding: 20,
   },
   noRecipesText: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     textAlign: 'center',
     fontSize: 18,
     color: '#333',
+    marginVertical: 20,
   },
   recipeItemContainer: {
     flexDirection: 'row',
@@ -34,11 +32,6 @@ export default StyleSheet.create({
   recipeDescription: {
     fontSize: 16,
   },
-  recipeItemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -54,10 +47,6 @@ export default StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  modalDescription: {
-    fontSize: 18,
     marginBottom: 10,
   },
   modalSubtitle: {
@@ -79,5 +68,34 @@ export default StyleSheet.create({
   modalCloseButtonText: {
     fontSize: 18,
     color: '#fff',
+  },
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bigPlusButton: {
+    alignSelf: 'center',
+    backgroundColor: '#007BFF',
+    padding: 20,
+    borderRadius: 50,
+    marginBottom: 20,
+  },
+  smallPlusButton: {
+    alignSelf: 'center',
+    marginVertical: 10,
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 50,
+  },
+  editButton: {
+    position: 'absolute',
+    bottom: 20,
+    left: '50%',
+    transform: [{ translateX: '-50%' }],
+    backgroundColor: '#007BFF',
+    color: 'white',
+    padding: 10,
+    borderRadius: 5,
   },
 });

@@ -11,7 +11,6 @@ import { db, auth, getUserItem } from '../firebase'; // Import Firebase auth
 import { doc, getDoc } from 'firebase/firestore';
 
 const HomePage = () => {
-  const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const [recipes, setRecipes] = useState([]);
   const [mealType, setMealType] = useState('');
   const [user, setUser] = useState(null); // State to hold user information
@@ -131,13 +130,7 @@ const HomePage = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Welcome {fullName}!</Text>
-        {user && ( // Display profile button only if user is logged in
-          <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
-            <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileImage} />
-          </TouchableOpacity>
-        )}
       </View>
-      
       <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
       <FlatList
         data={recipes}
@@ -151,22 +144,7 @@ const HomePage = () => {
       
       <NavigationBar showHomeIcon={false} navigation={navigation} user={user} />
 
-      {/* Profile Modal */}
-      <Modal
-        visible={isModalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={handleCloseModal}
-      >
-        <View style={modalStyles.modalContainer}>
-          <View style={modalStyles.modalContent}>
-            <ProfilePage user={user} onClose={handleCloseModal} />
-            <TouchableOpacity onPress={handleCloseModal} style={modalStyles.closeButton}>
-              <Text style={modalStyles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      
     </SafeAreaView>
   );
 };
