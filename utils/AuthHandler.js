@@ -54,6 +54,7 @@ const App = () => {
       return () => listenerRef.current();
   }, [loading]);
 
+
   const handleLogin = async (navigation) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -73,19 +74,25 @@ const App = () => {
           fullName,
         });
       } else {
+        // alert
         console.log('|AuthHandler-handleLogin| No such document!');
       }
 
       console.log('|AuthHandler-handleLogin| User signed in successfully!');
     } catch (error) {
+      // Alert
       console.error('Login error:', error.message);
     }
   };
+
 
   const handleRegister = async (navigation) => {
     setLoading(true);
     // Password regex
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    // const emailRegex =
+
+    
 
     // TODO: add password regex
     if (!passwordRegex.test(password)) {
@@ -103,15 +110,9 @@ const App = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // await setDoc(doc(db, 'users', user.uid), {
-      // await setDoc(doc(db, 'users', user.email), {
-      //   firstName,
-      //   lastName,
-      //   email: user.email,
-      //   // TODO: add personal variables for custom prefrences.
-      // });
       await createUser(user.email, firstName, lastName);
 
+      // Alert
       console.log('User created and stored in Firestore successfully!');
       // Sign out the user immediately after registration
       await signOut(auth);
@@ -119,6 +120,7 @@ const App = () => {
       setLoading(false);
       switchToLogin(navigation);
     } catch (error) {
+      // Alert
       console.error('Registration error:', error.message);
       setLoading(false);
     }
@@ -148,6 +150,7 @@ const App = () => {
         )
       }
     } catch (error) {
+      // Alert
       console.error("Error sending reset password email: ", error.message)
       setLoading(false);
     }
