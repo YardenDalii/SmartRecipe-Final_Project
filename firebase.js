@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc, arrayUnion  } from 'firebase/firestore';
+import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc, arrayUnion, increment  } from 'firebase/firestore';
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
+import { Alert } from 'react-native'
 
 
 const firebaseConfig = {
@@ -30,6 +30,8 @@ const createUser = async (email, firstName, lastName) => {
             firstName,
             lastName,
             email: email,
+            createdRecipes: 0,
+            savedRecipes: 0
             // TODO: add personal variables for custom prefrences.
         });
 
@@ -49,49 +51,6 @@ const createUser = async (email, firstName, lastName) => {
         console.log("cant save user data: ", error);
     }
     
-};
-
-// const fetchUserRecipes = async (user) => {
-//     if (!user || !user.email) {
-//       throw new Error('Invalid user object');
-//     }
-
-//     try {
-//       const recipesRef = collection(db, 'custom_recipes');
-//       const q = query(recipesRef, where('userEmail', '==', user.email));
-//       const querySnapshot = await getDocs(q);
-//       const recipes = [];
-  
-//       querySnapshot.forEach((doc) => {
-//         recipes.push({ id: doc.id, ...doc.data() });
-//       });
-  
-//       return recipes;
-//     } catch (error) {
-//       console.error('Error fetching recipes:', error);
-//       return [];
-//     }
-//   };
-const fetchUserRecipes = async (user) => {
-    if (!user || !user.email) {
-        throw new Error('Invalid user object');
-    }
-
-    try {
-        const docRef = doc(db, 'custom_recipes', user.email);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            const userData = docSnap.data();
-            return userData.recipes || [];
-        } else {
-            console.log('No custom recipes found for this user.');
-            return [];
-        }
-    } catch (error) {
-        console.error('Error fetching user recipes:', error.message);
-        return [];
-    }
 };
 
 
@@ -115,6 +74,12 @@ const addFavRecipe = async (user, recipeImage, recipeName, recipeUri, recipeURL)
             userEmail: user.email,
             recipes: arrayUnion(newRecipe)
         }, { merge: true });
+
+        const userDoc = doc(db, 'users', user.email);
+
+        await updateDoc(userDoc, {
+            savedRecipes: increment(1) // Increment the savedRecipes count by 1
+        });
 
         console.log("Recipe document updated successfully!");
     } catch (error) {
@@ -141,6 +106,12 @@ const deleteFavRecipe = async (user, recipeUri) => {
                 recipes: updatedRecipes
             });
 
+            const userDoc = doc(db, 'users', user.email);
+        
+            await updateDoc(userDoc, {
+                savedRecipes: increment(-1) // Increment the savedRecipes count by 1
+            });
+
             console.log("Recipe removed successfully!");
         } else {
             console.log("No favorite recipes found for this user.");
@@ -151,35 +122,29 @@ const deleteFavRecipe = async (user, recipeUri) => {
 };
 
 
-// const createCustomRecipe = async (user, recipeName, ingredients, productionSteps) => {
-//     if (!user || !user.email) {
-//         throw new Error('Invalid user object');
-//     }
+const fetchUserRecipes = async (user) => {
+    if (!user || !user.email) {
+        throw new Error('Invalid user object');
+    }
 
-//     const newRecipe = {
-//         recipeName,
-//         ingredients,
-//         productionSteps
-//     };
+    try {
+        const docRef = doc(db, 'custom_recipes', user.email);
+        const docSnap = await getDoc(docRef);
 
-//     try {
-//         const docRef = doc(db, 'custom_recipes', user.email);
-//         const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            return userData.recipes || [];
+        } else {
+            console.log('No custom recipes found for this user.');
+            return [];
+        }
+    } catch (error) {
+        console.error('Error fetching user recipes:', error.message);
+        return [];
+    }
+};
 
-//         if (docSnap.exists()) {
-//             const userData = docSnap.data();
 
-//             // Update the document with the filtered recipes
-//             await updateDoc(docRef, {
-//                 recipes: arrayUnion(newRecipe)
-//             });
-
-//             console.log("Recipe added successfully!");
-//         }
-//     } catch (error) {
-//         console.error("Error adding recipe: ", error.message);
-//     }
-// };
 const createCustomRecipe = async (user, recipeName, ingredients, productionSteps) => {
     if (!user || !user.email) {
       throw new Error('Invalid user object');
@@ -217,6 +182,12 @@ const createCustomRecipe = async (user, recipeName, ingredients, productionSteps
         // Update the document with the new recipe
         await updateDoc(docRef, {
           recipes: arrayUnion(newRecipe)
+        });
+
+        const userDoc = doc(db, 'users', user.email);
+        
+        await updateDoc(userDoc, {
+            createdRecipes: increment(1) // Increment the savedRecipes count by 1
         });
         
         Alert.alert(
@@ -291,6 +262,12 @@ const deleteCustomRecipe = async (user, recipeName) => {
             // Update the document with the filtered recipes
             await updateDoc(docRef, {
                 recipes: updatedRecipes
+            });
+
+            const userDoc = doc(db, 'users', user.email);
+        
+            await updateDoc(userDoc, {
+                createdRecipes: increment(-1) // Increment the savedRecipes count by 1
             });
 
             console.log("Recipe deleted successfully!");
