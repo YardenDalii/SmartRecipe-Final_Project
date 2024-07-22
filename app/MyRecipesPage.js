@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, Modal, TouchableOpacity, ActivityIndicator, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, FlatList, Modal, TouchableOpacity, ActivityIndicator, Alert, Button } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 import styles from '../stylesheets/MyRecipesPageStyles'; // Import the main page styles
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
+
 import { fetchUserRecipes, deleteCustomRecipe } from '../firebase'; // Make sure these functions are correctly implemented in firebase.js
 import { auth } from '../firebase'; // Ensure correct path to your firebase setup
 import NavigationBar from './NavigationBar';
@@ -37,6 +39,7 @@ const MyRecipesPage = ({ user }) => {
   useFocusEffect(
     useCallback(() => {
       loadRecipes();
+      setEditMode(false); // Reset edit mode when the component is focused
     }, [])
   );
 
@@ -137,38 +140,38 @@ const MyRecipesPage = ({ user }) => {
   return (
     <View style={styles.container}>
       {recipes.length === 0 ? (
-        <Text style={styles.noRecipesText}>There are no recipes saved</Text>
+        <View style={styles.centerContent}>
+          <TouchableOpacity style={styles.bigPlusButton} onPress={() => navigation.navigate('AddRecipePage', { user })}>
+            <Feather name="plus" size={50} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.noRecipesText}>There are no recipes saved, to add a recipe click the plus</Text>
+        </View>
       ) : (
-        <FlatList
+        <>
+          <TouchableOpacity style={styles.smallPlusButton} onPress={() => navigation.navigate('AddRecipePage', { user })}>
+            <Feather name="plus" size={24} color="white" />
+          </TouchableOpacity>
+          <FlatList
           data={recipes}
           renderItem={renderRecipeItem}
           keyExtractor={(item) => item.recipeName}
           contentContainerStyle={{ flexGrow: 1 }}
         />
+        </>
+
+        
       )}
       {renderModalContent()}
       {recipes.length > 0 && (
         <Button
           title={editMode ? "Done" : "Edit"}
           onPress={() => setEditMode(!editMode)}
-          style={buttonStyles.editButton}
+          style={styles.editButton}
         />
       )}
       <NavigationBar user={user} />
     </View>
   );
 };
-
-const buttonStyles = StyleSheet.create({
-  editButton: {
-    position: 'absolute',
-    bottom: 20,
-    left: '50%',
-    backgroundColor: '#007BFF',
-    color: 'white',
-    padding: 10,
-    borderRadius: 5,
-  }
-});
 
 export default MyRecipesPage;
