@@ -8,6 +8,67 @@ const profilePageStyles = StyleSheet.create({
     width: '80%',
     alignItems: 'center',
   },
+  fullNameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    width: '100%',
+  },
+  fullNameTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    flex: 1,
+  },
+  fullNameTitleEditing: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 50,
+    paddingHorizontal: 10,
+    flex: 1,
+  },
+  editButton: {
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+    marginLeft: 10,
+  },
+  editButtonText: {
+    color: 'gray',
+    fontSize: 12,
+  },
+  editButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 15,
+  },
+  saveButton: {
+    backgroundColor: 'green',
+    borderRadius: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginLeft: 5,
+  },
+  saveButtonText: {
+    color: 'white',
+    fontSize: 14,
+  },
+  cancelButton: {
+    backgroundColor: 'red',
+    borderRadius: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginLeft: 5,
+  },
+  cancelButtonText: {
+    color: 'white',
+    fontSize: 14,
+  },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -16,6 +77,26 @@ const profilePageStyles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 15,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  squareButton: {
+    backgroundColor: '#2196F3',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    width: '45%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  squareButtonText: {
+    color: 'white',
+    fontSize: 14,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: '#2196F3',
@@ -43,6 +124,9 @@ const profilePageStyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 16,
+  },
+  changePasswordContainer: {
+    width: '100%',
   },
 });
 
