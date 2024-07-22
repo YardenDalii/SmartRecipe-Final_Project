@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button, Linking } from 'react-native';
 import styles from '../stylesheets/HomePageStyles';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Feather } from '@expo/vector-icons';
 import NavigationBar from '../app/NavigationBar';
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
 import { fetchRecipesByMealType } from '../utils/recipeService';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { db, auth, getUserItem } from '../firebase'; // Import Firebase auth
+import { db, auth, addFavRecipe, deleteFavRecipe } from '../firebase'; // Import Firebase auth
 import { doc, getDoc } from 'firebase/firestore';
 
 const HomePage = () => {
@@ -17,7 +18,7 @@ const HomePage = () => {
   const [fullName, setFullName] = useState(''); // State to hold user's full name
   const navigation = useNavigation();
 
-  
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -87,6 +88,32 @@ const HomePage = () => {
     Linking.openURL(url);
   };
 
+  const handleAddFavorite = async (user, image, label, uri, url) => {
+    try {
+      await addFavRecipe(user, image, label, uri, url);
+      Alert.alert(
+        'Recipe Added!',
+        `${label} has beed added to favorites.`,
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      )
+      console.log('Recipe added to favorites');
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
+    }
+  };
+
+  const handleRemoveFavorite = async (user, uri) => {
+    try {
+      await deleteFavRecipe(user, uri);
+      console.log('Recipe removed from favorites');
+    } catch (error) {
+      console.error('Error removing from favorites:', error);
+    }
+  };
+  
   const handleLogout = () => {
     // if (isGuest) {
     //   navigation.navigate('LoginPage');
@@ -106,6 +133,7 @@ const HomePage = () => {
   };
 
   const renderRecipeItem = ({ item, index }) => {
+    // TODO: add a star button to add into favorites - only if user is authenticated.
     const { recipe } = item;
     return (
       <View key={index} style={styles.recipeCard}>
@@ -113,6 +141,12 @@ const HomePage = () => {
         <Text style={styles.recipeTitle}>{recipe.label}</Text>
         <TouchableOpacity onPress={() => handleOpenURL(recipe.url)}>
           <Text style={styles.recipeUrl}>{recipe.url}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navIcon} onPress={() => handleAddFavorite(user, recipe.image, recipe.label, recipe.uri, recipe.url)}>
+          <Feather name="star" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.navIcon} onPress={() => handleRemoveFavorite(user, recipe.uri)}>
+          <Feather name="minus" size={24} color="black" />
         </TouchableOpacity>
       </View>
     );
