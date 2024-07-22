@@ -51,4 +51,38 @@ const createUser = async (email, firstName, lastName) => {
     
 };
 
-export { db, auth, createUser, createCustomRecipe }; 
+const fetchUserRecipes = async (user) => {
+    if (!user || !user.email) {
+      throw new Error('Invalid user object');
+    }
+  
+    try {
+      const recipesRef = collection(db, 'custom_recipes');
+      const q = query(recipesRef, where('userEmail', '==', user.email));
+      const querySnapshot = await getDocs(q);
+      const recipes = [];
+  
+      querySnapshot.forEach((doc) => {
+        recipes.push({ id: doc.id, ...doc.data() });
+      });
+  
+      return recipes;
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+      return [];
+    }
+  };
+
+
+const getUserItem = async (user) => {
+    try {
+        const docRef = doc(db, 'users', user.email);
+        return await getDoc(docRef);
+
+    } catch(error) {
+        console.error("cant find item: ", error);
+        return;
+    }
+}
+
+export { db, auth, createUser, createCustomRecipe, fetchUserRecipes }; 

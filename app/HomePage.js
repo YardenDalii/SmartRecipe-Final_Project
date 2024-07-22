@@ -286,7 +286,7 @@ import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
 import { fetchRecipesByMealType } from '../utils/recipeService';
 import { useNavigation } from '@react-navigation/native';
-import { db, auth } from '../firebase'; // Import Firebase auth
+import { db, auth, getUserItem } from '../firebase'; // Import Firebase auth
 import { doc, getDoc } from 'firebase/firestore';
 
 const HomePage = () => {
@@ -305,6 +305,7 @@ const HomePage = () => {
         try {
           const docRef = doc(db, 'users', user.email);
           const docSnap = await getDoc(docRef);
+          // const userItem = getUserItem(user);
           
           if (docSnap.exists()) {
             const userData = docSnap.data();
