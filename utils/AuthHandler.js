@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import styles from '../stylesheets/LoginPageStyles';
 import { auth, db, createUser } from '../firebase';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { collection, query, where, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
 import LoginPage from '../app/LoginPage';
 import RegisterPage from '../app/RegisterPage';
