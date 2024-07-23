@@ -64,6 +64,8 @@ const ProfilePage = ({ user, onClose }) => {
 
   const handleFavoriteRecipesPress = () => {
     console.log('Favorite Recipes Button Pressed');
+    navigation.navigate("FavoritesPage", {user});
+    onClose();
     // Add the navigation logic or actions here
   };
 

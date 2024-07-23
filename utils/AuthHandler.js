@@ -16,6 +16,7 @@ import AboutPage from '../app/AboutPage';
 import MyRecipesPage from '../app/MyRecipesPage'; 
 import PasswordResetPage from '../app/PasswordResetPage';
 import ProfilePage from '../app/ProfilePage';
+import FavoriteRecipesPage from '../app/FavoritesPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -203,6 +204,9 @@ const App = () => {
             </Stack.Screen>
             <Stack.Screen name="ProfilePage">
               {(props) => <ProfilePage {...props} user={user} />}
+            </Stack.Screen>
+            <Stack.Screen name="FavoritesPage">
+              {(props) => <FavoriteRecipesPage {...props} user={user}/>}
             </Stack.Screen>
           </>
         ) : (
