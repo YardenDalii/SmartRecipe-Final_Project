@@ -466,14 +466,6 @@ const HomePage = () => {
     }
   };
 
-  const handleRemoveFavorite = async (user, uri) => {
-    try {
-      await deleteFavRecipe(user, uri);
-      console.log('Recipe removed from favorites');
-    } catch (error) {
-      console.error('Error removing from favorites:', error);
-    }
-  };
   
   const handleLogout = () => {
     auth.signOut()
@@ -500,9 +492,6 @@ const HomePage = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.navIcon} onPress={() => handleAddFavorite(user, recipe.image, recipe.label, recipe.uri, recipe.url)}>
           <Feather name="star" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navIcon} onPress={() => handleRemoveFavorite(user, recipe.uri)}>
-          <Feather name="minus" size={24} color="black" />
         </TouchableOpacity>
       </View>
     );

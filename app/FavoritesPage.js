@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, FlatList, Image, TouchableOpacity, Button } from 'react-native';
+import { SafeAreaView, View, Text, FlatList, Image, TouchableOpacity, Button, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 // import styles from '../stylesheets/FavoriteRecipesPageStyles'; // Make sure to create this stylesheet
 import styles from '../stylesheets/HomePageStyles';
@@ -34,19 +34,6 @@ const FavoriteRecipesPage = ({ user }) => {
     fetchFavoriteRecipes();
   }, [user]);
 
-  const handleAddFavorite = async (user, recipeImage, recipeName, recipeUri, recipeURL) => {
-    try {
-      await addFavRecipe(user, recipeImage, recipeName, recipeUri, recipeURL);
-      // Refresh favorite recipes
-      const docRef = doc(db, 'favorite_recipes', user.email);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setRecipes(docSnap.data().recipes || []);
-      }
-    } catch (error) {
-      console.error('Error adding favorite recipe:', error);
-    }
-  };
 
   const handleRemoveFavorite = async (user, recipeUri) => {
     try {
@@ -57,6 +44,15 @@ const FavoriteRecipesPage = ({ user }) => {
       if (docSnap.exists()) {
         setRecipes(docSnap.data().recipes || []);
       }
+
+      Alert.alert(
+        'Recipe Removed!!',
+        `${label} has beed removed from favorites.`,
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      )
     } catch (error) {
       console.error('Error removing favorite recipe:', error);
     }
@@ -69,9 +65,6 @@ const FavoriteRecipesPage = ({ user }) => {
         <Text style={styles.recipeTitle}>{item.recipeName}</Text>
         <TouchableOpacity onPress={() => handleOpenURL(item.recipeURL)}>
           <Text style={styles.recipeUrl}>{item.recipeURL}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navIcon} onPress={() => handleAddFavorite(user, item.recipeImage, item.recipeName, item.recipeUri, item.recipeURL)}>
-          <Feather name="star" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navIcon} onPress={() => handleRemoveFavorite(user, item.recipeUri)}>
           <Feather name="minus" size={24} color="black" />
