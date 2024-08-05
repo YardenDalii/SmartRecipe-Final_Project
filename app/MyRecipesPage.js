@@ -18,6 +18,7 @@ const MyRecipesPage = ({ user }) => {
 
   const loadRecipes = async () => {
     if (user) {
+      console.log("MY_RECIPE_WORK_ALREADY!!!")
       try {
         const fetchedRecipes = await fetchUserRecipes(user);
         setRecipes(fetchedRecipes);

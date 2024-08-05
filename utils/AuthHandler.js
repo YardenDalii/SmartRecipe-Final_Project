@@ -16,7 +16,7 @@ import AboutPage from '../app/AboutPage';
 import MyRecipesPage from '../app/MyRecipesPage'; 
 import PasswordResetPage from '../app/PasswordResetPage';
 import ProfilePage from '../app/ProfilePage';
-import FavoriteRecipesPage from '../app/FavoritesPage';
+import FavoriteRecipesPage from '../app/FavoriteRecipesPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -110,7 +110,7 @@ const App = () => {
       //   email: user.email,
       //   // TODO: add personal variables for custom prefrences.
       // });
-      await createUser(user.email, firstName, lastName);
+      await createUser(user.uid, user.email, firstName, lastName);
 
       console.log('User created and stored in Firestore successfully!');
       // Sign out the user immediately after registration
@@ -213,9 +213,11 @@ const App = () => {
             <Stack.Screen name="ProfilePage">
               {(props) => <ProfilePage {...props} user={user} />}
             </Stack.Screen>
-            <Stack.Screen name="FavoritesPage">
+            <Stack.Screen name="FavoriteRecipesPage">
               {(props) => <FavoriteRecipesPage {...props} user={user}/>}
             </Stack.Screen>
+            <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
+
           </>
         ) : (
           <>
@@ -267,11 +269,11 @@ const App = () => {
           </>
         )}
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
-        <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
         <Stack.Screen name="CamSearchPage" component={CamSearchPage} />
+        
         <Stack.Screen name="MyRecipesPage">
-              {(props) => <MyRecipesPage {...props} user={user} />}
-            </Stack.Screen>
+          {(props) => <MyRecipesPage {...props} user={user} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

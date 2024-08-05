@@ -391,7 +391,7 @@ const HomePage = () => {
         setUser(user);
 
         try {
-          const docRef = doc(db, 'users', user.email);
+          const docRef = doc(db, 'users', user.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const userData = docSnap.data();

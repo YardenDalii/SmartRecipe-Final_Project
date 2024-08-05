@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import styles from '../stylesheets/HomePageStyles';
 import { db, addFavRecipe, deleteFavRecipe } from '../firebase';
 import { getDoc, doc } from 'firebase/firestore';
-import NavigationBar from '../app/NavigationBar';
+import NavigationBar from './NavigationBar';
 import { useNavigation } from '@react-navigation/native';
 
 const FavoriteRecipesPage = ({ user }) => {
@@ -14,9 +14,9 @@ const FavoriteRecipesPage = ({ user }) => {
 
   useEffect(() => {
     const fetchFavoriteRecipes = async () => {
-      if (user && user.email) {
+      if (user || user.email) {
         try {
-          const docRef = doc(db, 'favorite_recipes', user.email);
+          const docRef = doc(db, 'favorite_recipes', user.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             setRecipes(docSnap.data().recipes || []);
@@ -35,11 +35,11 @@ const FavoriteRecipesPage = ({ user }) => {
   }, [user]);
 
 
-  const handleRemoveFavorite = async (user, recipeUri) => {
+  const handleRemoveFavorite = async (user, recipeUri, label) => {
     try {
       await deleteFavRecipe(user, recipeUri);
       // Refresh favorite recipes
-      const docRef = doc(db, 'favorite_recipes', user.email);
+      const docRef = doc(db, 'favorite_recipes', user.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setRecipes(docSnap.data().recipes || []);
@@ -66,7 +66,7 @@ const FavoriteRecipesPage = ({ user }) => {
         <TouchableOpacity onPress={() => handleOpenURL(item.recipeURL)}>
           <Text style={styles.recipeUrl}>{item.recipeURL}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navIcon} onPress={() => handleRemoveFavorite(user, item.recipeUri)}>
+        <TouchableOpacity style={styles.navIcon} onPress={() => handleRemoveFavorite(user, item.recipeUri, item.recipeName)}>
           <Feather name="minus" size={24} color="black" />
         </TouchableOpacity>
       </View>
