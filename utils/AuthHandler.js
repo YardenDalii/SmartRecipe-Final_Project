@@ -84,7 +84,15 @@ const App = () => {
 
   const handleRegister = async (navigation) => {
     setLoading(true);
+    // Password regex
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
     // TODO: add password regex
+    if (!passwordRegex.test(password)) {
+      console.error('Invalid Password.');
+      return;
+    }
+    
     if (password !== confirmPassword) {
       console.error('Passwords do not match!');
       setLoading(false);
