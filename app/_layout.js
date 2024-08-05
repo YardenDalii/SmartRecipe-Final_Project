@@ -13,6 +13,7 @@ import ProfilePage from './ProfilePage';
 import RegisterPage from './RegisterPage';
 import AboutPage from './AboutPage';
 import PasswordResetPage from './PasswordResetPage';
+import FavoriteRecipesPage from './FavoriteRecipesPage';
 
 
 const Stack = createStackNavigator();
@@ -31,7 +32,8 @@ const Layout = () => {
       <Stack.Screen name="MyRecipesPage" component={MyRecipesPage} />
       <Stack.Screen name="PasswordResetPage" component={PasswordResetPage}/>
       <Stack.Screen name="ProfilePage" component={ProfilePage} />
-      <Stack.Screen name='NavigationBar' component={NavigationBar}/>
+      <Stack.Screen name="NavigationBar" component={NavigationBar}/>
+      <Stack.Screen name="FavoriteRecipesPage" component={FavoriteRecipesPage}/>
     </Stack.Navigator>
   );
 };

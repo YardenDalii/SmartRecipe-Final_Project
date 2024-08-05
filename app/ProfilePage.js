@@ -21,7 +21,7 @@ const ProfilePage = ({ user, onClose }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const docRef = doc(db, 'users', user.email);
+        const docRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const userData = docSnap.data();
@@ -44,7 +44,7 @@ const ProfilePage = ({ user, onClose }) => {
   const handleSavePress = async () => {
     try {
       const [firstName, lastName] = fullName.split(' ');
-      const docRef = doc(db, 'users', user.email);
+      const docRef = doc(db, 'users', user.uid);
       await updateDoc(docRef, {
         firstName,
         lastName,
@@ -64,7 +64,8 @@ const ProfilePage = ({ user, onClose }) => {
 
   const handleFavoriteRecipesPress = () => {
     console.log('Favorite Recipes Button Pressed');
-    navigation.navigate("FavoritesPage", {user});
+    console.log(`${user.email}`);
+    navigation.navigate("FavoriteRecipesPage", {user});
     onClose();
     // Add the navigation logic or actions here
   };
@@ -173,7 +174,7 @@ const ProfilePage = ({ user, onClose }) => {
       )}
 
       <Text style={profilePageStyles.label}>Email:</Text>
-      <Text style={profilePageStyles.text}>{email}</Text>
+      <Text style={profilePageStyles.text}>{user.email}</Text>
 
       <View style={profilePageStyles.buttonContainer}>
         <TouchableOpacity style={profilePageStyles.squareButton} onPress={handleMyRecipesPress}>
