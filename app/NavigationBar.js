@@ -151,6 +151,9 @@ const NavigationBar = ({ user }) => {
     if (newPredictions.length > 0) {
       navigation.navigate('CamSearchPage', { predictions: newPredictions, recipes: newRecipes, user });
     }
+    else {
+      navigate.navigate('HomaPage', user);
+    }
   };
 
   const handleProfilePress = () => {
