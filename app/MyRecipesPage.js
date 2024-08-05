@@ -4,6 +4,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import styles from '../stylesheets/MyRecipesPageStyles'; // Import the main page styles
 import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
+
 import { fetchUserRecipes, deleteCustomRecipe } from '../firebase'; // Make sure these functions are correctly implemented in firebase.js
 import { auth } from '../firebase'; // Ensure correct path to your firebase setup
 import NavigationBar from './NavigationBar';
@@ -146,12 +147,19 @@ const MyRecipesPage = ({ user }) => {
           <Text style={styles.noRecipesText}>There are no recipes saved, to add a recipe click the plus</Text>
         </View>
       ) : (
-        <FlatList
+        <>
+          <TouchableOpacity style={styles.smallPlusButton} onPress={() => navigation.navigate('AddRecipePage', { user })}>
+            <Feather name="plus" size={24} color="white" />
+          </TouchableOpacity>
+          <FlatList
           data={recipes}
           renderItem={renderRecipeItem}
           keyExtractor={(item) => item.recipeName}
           contentContainerStyle={{ flexGrow: 1 }}
         />
+        </>
+
+        
       )}
       {renderModalContent()}
       {recipes.length > 0 && (

@@ -1,9 +1,16 @@
+// import { initializeApp } from 'firebase/app';
+// import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc, arrayUnion, increment  } from 'firebase/firestore';
+// import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { Alert } from 'react-native'
+
+
+
 import { initializeApp } from 'firebase/app';
-import { collection, query, where, getDocs, setDoc, doc, getDoc, addDoc, getFirestore, updateDoc, deleteDoc, arrayUnion, increment  } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion, increment } from 'firebase/firestore';
 import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native'
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyCe6aWZMqrJqL1G8OIX2aFCeXtdK3K9ThE",
@@ -14,6 +21,7 @@ const firebaseConfig = {
     appId: "1:200937507860:web:58882ebbe053dbed0aab01",
     measurementId: "G-BGJZL5CSNM"
 };
+
 
 const app = initializeApp(firebaseConfig);
 
@@ -29,7 +37,7 @@ const createUser = async (email, firstName, lastName) => {
         await setDoc(doc(db, 'users', email), {
             firstName,
             lastName,
-            email: email,
+            userEmail: email,
             createdRecipes: 0,
             savedRecipes: 0
             // TODO: add personal variables for custom prefrences.
@@ -52,6 +60,7 @@ const createUser = async (email, firstName, lastName) => {
     }
     
 };
+
 
 
 const addFavRecipe = async (user, recipeImage, recipeName, recipeUri, recipeURL) => {
