@@ -47,17 +47,35 @@ export const openCameraAndSendImage = async (navigation) => {
         
         return { predictions, recipes };
       } catch (error) {
-        console.error('Error converting image to base64:', error);
-        Alert.alert('Error', 'Failed to process the image.');
+        Alert.alert(
+          "Error",
+          `Failed to process the image.`,
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+        );
+        // console.error('Error converting image to base64:', error);
+        // Alert.alert('Error', 'Failed to process the image.');
         return { predictions: [], recipes: [] };
       }
     } else {
-      Alert.alert('Image capture cancelled or failed.');
+      Alert.alert(
+        "Failure",
+        `Image capture cancelled or failed.`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // Alert.alert('Image capture cancelled or failed.');
       return { predictions: [], recipes: [] };
     }
   } catch (error) {
-    console.error('Error opening camera:', error);
-    Alert.alert('Error', 'Failed to open camera.');
+    Alert.alert(
+      "Error",
+      `Failed to open camera.`,
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
+    // console.error('Error opening camera:', error);
+    // Alert.alert('Error', 'Failed to open camera.');
     return { predictions: [], recipes: [] };
   }
 };
@@ -100,7 +118,8 @@ const sendImageToRoboflow = async (base64Image) => {
       return { predictions: [], recipes: [] }; // Return empty arrays if no predictions
     }
   } catch (error) {
-    console.error('Error sending image to Roboflow:', error);
+    
+    // console.error('Error sending image to Roboflow:', error);
     Alert.alert('Error', 'Failed to send image to Roboflow.');
     return { predictions: [], recipes: [] }; // Return empty arrays on error
   }

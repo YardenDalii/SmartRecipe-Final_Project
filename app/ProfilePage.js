@@ -29,10 +29,22 @@ const ProfilePage = ({ user, onClose }) => {
           setOriginalFullName(fullName);
           setEmail(userData.email);
         } else {
-          console.error('User document not found (ProfilePage)');
+          Alert.alert(
+            "User Not Authorized",
+            `Can't find authorized user. Try logging in.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error('User document not found (ProfilePage)');
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        Alert.alert(
+          "Error",
+          `Error fetching user: ${error.message}`,
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+        );
+        // console.error('Error fetching user:', error);
       } finally {
         setLoading(false); // Set loading to false after data is fetched
       }
@@ -53,7 +65,13 @@ const ProfilePage = ({ user, onClose }) => {
       setOriginalFullName(fullName);
       console.log('User data updated successfully');
     } catch (error) {
-      console.error('Error updating user data:', error);
+      Alert.alert(
+        "Error",
+        `Error updating user data: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error('Error updating user data:', error);
     }
   };
 
@@ -89,7 +107,13 @@ const ProfilePage = ({ user, onClose }) => {
       console.log('User account deleted successfully');
       navigation.navigate('LoginPage');
     } catch (error) {
-      console.error('Error deleting user account:', error);
+      Alert.alert(
+        "Error",
+        `Error deleting user account: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error('Error deleting user account:', error);
     }
   };
 
@@ -131,8 +155,13 @@ const ProfilePage = ({ user, onClose }) => {
       } else if (error.code === 'auth/invalid-credential') {
         errorMessage = 'Invalid credentials. Please try again.';
       }
-      Alert.alert('Error', errorMessage);
-      console.error('Error changing password:', error);
+      Alert.alert(
+        "Error",
+        `Error changing password: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error('Error changing password:', error);
     }
   };
 

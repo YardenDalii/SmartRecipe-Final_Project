@@ -23,12 +23,25 @@ const SearchScreen = ( { route } ) => {
       const recipes = await fetchRecipesFromEdamam([], searchTerm, 2, selectedFilters);
       setUpdatedRecipes(recipes);
     } catch (error) {
-      console.error('error fetching recipes:', error);
+      Alert.alert(
+        "Error",
+        `error fetching recipes: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error('error fetching recipes:', error);
     }
   };
 
   const handleOpenURL = (url) => {
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+    Linking.openURL(url).catch(err => Alert.alert(
+                                              "Error",
+                                              `Couldn't load page: ${error.message}`,
+                                              [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+                                              { cancelable: false }
+                                            )
+    // console.error("Couldn't load page", err)
+    );
   };
 
   const handleFilterChange = (category, value) => {

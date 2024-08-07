@@ -44,7 +44,13 @@ const fetchRecipesFromEdamam = async (classes = [], recName = "", option, select
     console.log('response.data', response.data.hits);
     return response.data.hits;
   } catch (error) {
-    console.error('Error fetching recipes from Edamam:', error);
+    Alert.alert(
+      "Can't Load Recipes",
+      `Error fetching recipes from Edamam: ${error.message}`,
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
+    // console.error('Error fetching recipes from Edamam:', error);
     throw error;
   }
 };
@@ -63,7 +69,13 @@ const fetchRecipesByMealType = async (mealType) => {
     const randomRecipes = recipes.sort(() => 0.5 - Math.random()).slice(0, 5);
     return randomRecipes;
   } catch (error) {
-    console.error('Error fetching recipes from Edamam:', error);
+    Alert.alert(
+      "Can't Load Recipes",
+      `Error fetching recipes from Edamam: ${error.message}`,
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
+    // console.error('Error fetching recipes from Edamam:', error);
     throw error;
   }
 };

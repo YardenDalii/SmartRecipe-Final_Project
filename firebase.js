@@ -43,7 +43,23 @@ const createUser = async (uid, email, firstName, lastName) => {
 
         console.log("|firebase - createUser| User created successfully");
     } catch (error) {
-        console.error("Can't save user data: ", error);
+        if (error.code === "auth/email-already-in-use") {
+            Alert.alert(
+                "Can't create user",
+                `${email} already exists.`,
+                [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+                { cancelable: false }
+            );
+        }
+        else {
+            Alert.alert(
+                "Error",
+                `Can't save user data: ${error.message}`,
+                [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+                { cancelable: false }
+            );
+        }
+        // console.error("Can't save user data: ", error);
     }
 };
 
@@ -74,7 +90,13 @@ const addFavRecipe = async (user, recipeImage, recipeName, recipeUri, recipeURL)
 
         console.log("Recipe document updated successfully!");
     } catch (error) {
-        console.error("Error adding recipe: ", error.message);
+        Alert.alert(
+            "Error",
+            `Error adding recipe: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+        // console.error("Error adding recipe: ", error.message);
     }
 };
 
@@ -106,7 +128,13 @@ const deleteFavRecipe = async (user, recipeUri) => {
             console.log("No favorite recipes found for this user.");
         }
     } catch (error) {
-        console.error("Error removing recipe: ", error.message);
+        Alert.alert(
+            "Error",
+            `Error removing recipe: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+        // console.error("Error removing recipe: ", error.message);
     }
 };
 
@@ -127,7 +155,13 @@ const fetchUserRecipes = async (user) => {
             return [];
         }
     } catch (error) {
-        console.error('Error fetching user recipes:', error.message);
+        Alert.alert(
+            "Error",
+            `Error fetching user recipes: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+        // console.error('Error fetching user recipes:', error.message);
         return [];
     }
 };
@@ -189,7 +223,13 @@ const createCustomRecipe = async (user, recipeName, ingredients, productionSteps
             console.log("Recipe document created and added successfully!");
         }
     } catch (error) {
-        console.error("Error adding recipe: ", error.message);
+        Alert.alert(
+            "Error",
+            `Error adding recipe: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+        // console.error("Error adding recipe: ", error.message);
     }
 };
 
@@ -217,7 +257,13 @@ const updateCustomRecipe = async (user, oldRecipeName, newRecipe) => {
             console.log("No custom recipes found for this user.");
         }
     } catch (error) {
-        console.error("Error updating recipe: ", error.message);
+        Alert.alert(
+            "Error",
+            `Error updating recipe: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+        // console.error("Error updating recipe: ", error.message);
     }
 };
 
@@ -249,7 +295,13 @@ const deleteCustomRecipe = async (user, recipeName) => {
             console.log("No custom recipes found for this user.");
         }
     } catch (error) {
-        console.error("Error deleting recipe: ", error.message);
+        Alert.alert(
+            "Error",
+            `Error deleting recipe ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+        // console.error("Error deleting recipe: ", error.message);
     }
 };
 
