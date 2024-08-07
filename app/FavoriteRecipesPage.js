@@ -24,7 +24,13 @@ const FavoriteRecipesPage = ({ user }) => {
             console.log('No favorite recipes found for this user.');
           }
         } catch (error) {
-          console.error('Error fetching favorite recipes:', error);
+          Alert.alert(
+            "Error",
+            `Error fetching favorite recipes: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error('Error fetching favorite recipes:', error);
         }
       } else {
         navigation.navigate('LoginPage'); // Redirect to login if user is not authenticated
@@ -54,7 +60,13 @@ const FavoriteRecipesPage = ({ user }) => {
         { cancelable: false }
       )
     } catch (error) {
-      console.error('Error removing favorite recipe:', error);
+      Alert.alert(
+        "Error",
+        `Error removing favorite recipe: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+    );
+      // console.error('Error removing favorite recipe:', error);
     }
   };
 

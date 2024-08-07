@@ -229,12 +229,25 @@ const CamSearchPage = () => {
       const newRecipes = await fetchRecipesFromEdamam(editedPredictions, '', 1, selectedFilters);
       setUpdatedRecipes(newRecipes);
     } catch (error) {
-      console.error('Error fetching recipes:', error);
+      Alert.alert(
+        "Error",
+        `Error fetching recipes: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      )
+      // console.error('Error fetching recipes:', error);
     }
   };
 
   const handleOpenURL = (url) => {
-    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+    Linking.openURL(url).catch(err => Alert.alert(
+                                        "Error",
+                                        `Couldn't load page: ${error.message}`,
+                                        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+                                        { cancelable: false }
+                                      )
+    //console.error("Couldn't load page", err)
+    );
   };
 
   const handleMeatTypeSubmit = () => {

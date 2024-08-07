@@ -9,11 +9,11 @@ import { collection, query, where, getDocs, setDoc, doc, getDoc } from 'firebase
 import LoginPage from '../app/LoginPage';
 import RegisterPage from '../app/RegisterPage';
 import HomePage from '../app/HomePage';
-import SearchScreen from '../app/SearchScreen'; 
+import SearchScreen from '../app/SearchScreen';
 import AddRecipePage from '../app/AddRecipePage';
 import CamSearchPage from '../app/CamSearchPage';
 import AboutPage from '../app/AboutPage';
-import MyRecipesPage from '../app/MyRecipesPage'; 
+import MyRecipesPage from '../app/MyRecipesPage';
 import PasswordResetPage from '../app/PasswordResetPage';
 import ProfilePage from '../app/ProfilePage';
 import FavoriteRecipesPage from '../app/FavoriteRecipesPage';
@@ -31,27 +31,27 @@ const App = () => {
   const [fullName, setFullName] = useState(''); // Store full name
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and register
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false); 
-    const listenerRef = useRef(null); 
+  const [loading, setLoading] = useState(false);
+  const listenerRef = useRef(null);
 
-    useEffect(() => {
-      listenerRef.current = onAuthStateChanged(auth, async (user) => {
-          if (loading) return; // If loading, bypass setting user state
-          if (user) {
-              const docRef = doc(db, 'users', user.uid);
-              const docSnap = await getDoc(docRef);
+  useEffect(() => {
+    listenerRef.current = onAuthStateChanged(auth, async (user) => {
+      if (loading) return; // If loading, bypass setting user state
+      if (user) {
+        const docRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
 
-              if (docSnap.exists()) {
-                  const userData = docSnap.data();
-                  setFullName(`${userData.firstName} ${userData.lastName}`);
-              }
-              setUser(user);
-          } else {
-              setUser(null);
-          }
-      });
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          setFullName(`${userData.firstName} ${userData.lastName}`);
+        }
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
 
-      return () => listenerRef.current();
+    return () => listenerRef.current();
   }, [loading]);
 
   const handleLogin = async (navigation) => {
@@ -69,7 +69,7 @@ const App = () => {
         setFullName(fullName);
 
         // Navigate to HomePage and pass user information
-        navigation.navigate('HomePage', { 
+        navigation.navigate('HomePage', {
           fullName,
         });
       } else {
@@ -78,9 +78,59 @@ const App = () => {
 
       console.log('|AuthHandler-handleLogin| User signed in successfully!');
     } catch (error) {
-      console.error('Login error:', error.message);
+      switch (error.code) {
+        case "auth/invalid-email":
+          Alert.alert(
+            "Error",
+            `The email address is not valid.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("The email address is not valid.");
+          break;
+        case "auth/user-disabled":
+          Alert.alert(
+            "Error",
+            `The user account has been disabled.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("The user account has been disabled.");
+          break;
+        case "auth/user-not-found":
+          Alert.alert(
+            "Error",
+            `here is no user corresponding to the given email.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("There is no user corresponding to the given email.");
+          break;
+        case "auth/wrong-password":
+          Alert.alert(
+            "Can't Login",
+            `Incorrect password.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("The password is invalid for the given email.");
+          break;
+          case "permission-denied":
+            console.log(`${error.code}`)
+            break;
+        default:
+          Alert.alert(
+            "Error",
+            `An error occurred during sign in: ${error.code}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+        // console.error("An error occurred during sign in:", error.message);
+      }
     }
-  };
+    // console.error('Login error:', error.message);
+  }
+
 
   const handleRegister = async (navigation) => {
     setLoading(true);
@@ -89,12 +139,24 @@ const App = () => {
 
     // TODO: add password regex
     if (!passwordRegex.test(password)) {
-      console.error('Invalid Password.');
+      Alert.alert(
+        "Error",
+        `Invalid Password.`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error('Invalid Password.');
       return;
     }
-    
+
     if (password !== confirmPassword) {
-      console.error('Passwords do not match!');
+      Alert.alert(
+        "Error",
+        `Passwords do not match!`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error('Passwords do not match!');
       setLoading(false);
       return;
     }
@@ -119,12 +181,58 @@ const App = () => {
       setLoading(false);
       switchToLogin(navigation);
     } catch (error) {
-      console.error('Registration error:', error.message);
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          Alert.alert(
+            "Error",
+            `The email address is already in use by another account.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("The email address is already in use by another account.");
+          break;
+        case "auth/invalid-email":
+          Alert.alert(
+            "Error",
+            `The email address is not valid.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("The email address is not valid.");
+          break;
+        case "auth/operation-not-allowed":
+          Alert.alert(
+            "Error",
+            `Email/password accounts are not enabled.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("Email/password accounts are not enabled.");
+          break;
+        case "auth/weak-password":
+          Alert.alert(
+            "Error",
+            `The password is too weak.`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("The password is too weak.");
+          break;
+        default:
+          Alert.alert(
+            "Error",
+            `Registration error: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+          );
+          // console.error("An error occurred during registration:", error.message);
+      }
+      // console.error('Registration error:', error.message);
       setLoading(false);
     }
   };
 
-  
+
   const handleResetPass = async (navigation) => {
     try {
       const usersRef = collection(db, 'users');
@@ -133,7 +241,7 @@ const App = () => {
       const userDoc = result.docs[0].data()
       console.log(userDoc)
 
-      if (userDoc){
+      if (userDoc) {
         await sendPasswordResetEmail(auth, email)
         console.log("Password reset link has been sent to: ", email)
         navigation.navigate('LoginPage')
@@ -148,11 +256,17 @@ const App = () => {
         )
       }
     } catch (error) {
-      console.error("Error sending reset password email: ", error.message)
+      Alert.alert(
+        "Error",
+        `Error sending reset password email: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error("Error sending reset password email: ", error.message)
       setLoading(false);
     }
   };
-  
+
 
   const handleLogout = async () => {
     try {
@@ -190,7 +304,7 @@ const App = () => {
     navigation.navigate('RegisterPage');
   };
 
-  
+
   const switchToReset = (navigation) => {
     setIsLogin(false);
     setEmail('');
@@ -214,7 +328,7 @@ const App = () => {
               {(props) => <ProfilePage {...props} user={user} />}
             </Stack.Screen>
             <Stack.Screen name="FavoriteRecipesPage">
-              {(props) => <FavoriteRecipesPage {...props} user={user}/>}
+              {(props) => <FavoriteRecipesPage {...props} user={user} />}
             </Stack.Screen>
             <Stack.Screen name="AddRecipePage" component={AddRecipePage} />
 
@@ -257,11 +371,11 @@ const App = () => {
             <Stack.Screen name="PasswordResetPage">
               {(props) => (
                 <PasswordResetPage
-                {...props}
-                email={email}
-                setEmail={setEmail}
-                handleResetPass={(navigation) => handleResetPass(navigation)}
-                switchToLogin={(navigation) => switchToLogin(navigation)}
+                  {...props}
+                  email={email}
+                  setEmail={setEmail}
+                  handleResetPass={(navigation) => handleResetPass(navigation)}
+                  switchToLogin={(navigation) => switchToLogin(navigation)}
                 />
               )}
             </Stack.Screen>
@@ -270,7 +384,7 @@ const App = () => {
         )}
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
         <Stack.Screen name="CamSearchPage" component={CamSearchPage} />
-        
+
         <Stack.Screen name="MyRecipesPage">
           {(props) => <MyRecipesPage {...props} user={user} />}
         </Stack.Screen>

@@ -18,12 +18,17 @@ const MyRecipesPage = ({ user }) => {
 
   const loadRecipes = async () => {
     if (user) {
-      console.log("MY_RECIPE_WORK_ALREADY!!!")
       try {
         const fetchedRecipes = await fetchUserRecipes(user);
         setRecipes(fetchedRecipes);
       } catch (error) {
-        console.error('Error fetching user recipes:', error);
+        Alert.alert(
+          "Error",
+          `Error fetching user recipes: ${error.message}`,
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+        );
+        // console.error('Error fetching user recipes:', error);
       } finally {
         setLoading(false);
       }
@@ -79,7 +84,13 @@ const MyRecipesPage = ({ user }) => {
       await deleteCustomRecipe(user, recipeName); // Ensure deleteRecipe is correctly implemented in firebase.js
       setRecipes(recipes.filter(recipe => recipe.recipeName !== recipeName));
     } catch (error) {
-      console.error('Error deleting recipe:', error);
+      Alert.alert(
+        "Error",
+        `Error deleting recipe: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      // console.error('Error deleting recipe:', error);
     }
   };
 

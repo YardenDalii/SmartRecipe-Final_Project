@@ -27,10 +27,22 @@ const HomePage = () => {
             const userData = docSnap.data();
             setFullName(`${userData.firstName} ${userData.lastName}`);
           } else {
-            console.error('User document not found');
+            Alert.alert(
+              "User Not Authorized",
+              `Can't find authorized user. Try logging in.`,
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+              { cancelable: false }
+            );
+            // console.error('User document not found');
           }
         } catch (error) {
-          console.error('Error fetching user:', error);
+          Alert.alert(
+            "Error",
+            `Error fetching user: ${error.message}`,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+          // console.error('Error fetching user:', error);
         }
       } else {
         setUser(null);
@@ -60,7 +72,13 @@ const HomePage = () => {
         const fetchedRecipes = await fetchRecipesByMealType(mealType);
         setRecipes(fetchedRecipes);
       } catch (error) {
-        console.error('Error fetching recipes:', error);
+        Alert.alert(
+          "Error",
+          `Error fetching recipes: ${error.message}`,
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+      );
+        // console.error('Error fetching recipes:', error);
       }
     };
 
@@ -92,7 +110,13 @@ const HomePage = () => {
       )
       console.log('Recipe added to favorites');
     } catch (error) {
-      console.error('Error adding to favorites:', error);
+      Alert.alert(
+        "Error",
+        `Error adding to favorites: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+    );
+      // console.error('Error adding to favorites:', error);
     }
   };
 
@@ -106,7 +130,13 @@ const HomePage = () => {
         navigation.navigate('LoginPage'); // Assuming you have a login page to navigate to
       })
       .catch((error) => {
-        console.error('Error signing out:', error);
+        Alert.alert(
+          "Error",
+          `Error signing out: ${error.message}`,
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+        );
+        // console.error('Error signing out:', error);
       });
   };
 
