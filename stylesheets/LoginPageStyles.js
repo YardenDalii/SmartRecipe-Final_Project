@@ -6,44 +6,64 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: '#f0f0f0',
-      },
-      authContainer: {
+        backgroundColor: '#FFFDD0', // Cream color for background
+    },
+    authContainer: {
         width: '80%',
         maxWidth: 400,
-        backgroundColor: '#fff',
         padding: 16,
         borderRadius: 8,
-        elevation: 3,
-      },
-      title: {
+        borderWidth: 2,
+        borderColor: '#556B2F', // Dark olive green border for the rectangle
+        backgroundColor: '#FFFDD0', // Cream color for frame
+    },
+    title: {
         fontSize: 24,
         marginBottom: 16,
         textAlign: 'center',
-      },
-      input: {
+        fontWeight: 'bold', // Bold title
+    },
+    input: {
         height: 40,
         borderColor: '#ddd',
         borderWidth: 1,
         marginBottom: 16,
         padding: 8,
         borderRadius: 4,
-      },
-      buttonContainer: {
+        backgroundColor: '#FFFFFF', // White background for input fields
+    },
+    buttonContainer: {
         marginBottom: 16,
-      },
-      toggleText: {
-        color: '#3498db',
+        width: '100%', // Ensure buttons take the full width of the container
+    },
+    button: {
+        backgroundColor: '#556B2F', // Dark olive green for buttons
+        padding: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        width: '100%', // Full width buttons
+    },
+    buttonText: {
+        color: '#FFFFFF', // White font for buttons
+        fontSize: 16,
+    },
+    toggleTextContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 16, // Closer to the Sign In button
+    },
+    toggleText: {
+        color: '#556B2F', // Dark olive green for "Need an account"
         textAlign: 'center',
-      },
-      bottomContainer: {
+    },
+    bottomContainer: {
         marginTop: 20,
-      },
-      emailText: {
+    },
+    emailText: {
         fontSize: 18,
         textAlign: 'center',
         marginBottom: 20,
-      },
+    },
 });
 
 export default styles;

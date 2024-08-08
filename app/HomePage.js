@@ -173,6 +173,14 @@ const HomePage = () => {
           <Feather name="log-out" size={20} color="black" />
         </TouchableOpacity>
       </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.squareButton} onPress={() => navigation.navigate('MyRecipesPage')}>
+          <Text style={styles.squareButtonText}>My Recipes</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.squareButton} onPress={() => navigation.navigate('FavoriteRecipesPage')}>
+          <Text style={styles.squareButtonText}>Favorite Recipes</Text>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
       <FlatList
         data={recipes}

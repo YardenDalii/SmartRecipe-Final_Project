@@ -205,14 +205,7 @@ const ProfilePage = ({ user, onClose }) => {
       <Text style={profilePageStyles.label}>Email:</Text>
       <Text style={profilePageStyles.text}>{user.email}</Text>
 
-      <View style={profilePageStyles.buttonContainer}>
-        <TouchableOpacity style={profilePageStyles.squareButton} onPress={handleMyRecipesPress}>
-          <Text style={profilePageStyles.squareButtonText}>My Recipes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={profilePageStyles.squareButton} onPress={handleFavoriteRecipesPress}>
-          <Text style={profilePageStyles.squareButtonText}>Favorite Recipes</Text>
-        </TouchableOpacity>
-      </View>
+      
 
       <TouchableOpacity
         style={profilePageStyles.button}
