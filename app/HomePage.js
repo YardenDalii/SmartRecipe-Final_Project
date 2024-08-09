@@ -85,13 +85,7 @@ const HomePage = () => {
     fetchRecipes();
   }, []);
 
-  const handleProfilePress = () => {
-    setModalVisible(true); // Show the modal
-  };
-
-  const handleCloseModal = () => {
-    setModalVisible(false); // Hide the modal
-  };
+  
 
   const handleOpenURL = (url) => {
     Linking.openURL(url);
@@ -171,14 +165,6 @@ const HomePage = () => {
         <Text style={styles.headerText}>Welcome {fullName}!</Text>
         <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
           <Feather name="log-out" size={20} color="black" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.squareButton} onPress={() => navigation.navigate('MyRecipesPage')}>
-          <Text style={styles.squareButtonText}>My Recipes</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.squareButton} onPress={() => navigation.navigate('FavoriteRecipesPage')}>
-          <Text style={styles.squareButtonText}>Favorite Recipes</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
