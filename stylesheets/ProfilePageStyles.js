@@ -114,6 +114,22 @@ const profilePageStyles = StyleSheet.create({
   changePasswordContainer: {
     width: '100%',
   },
+  squareButton: {
+    backgroundColor: '#2196F3',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    width: '45%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  squareButtonText: {
+    color: 'white',
+    fontSize: 14,
+    textAlign: 'center',
+  },
 });
+
 
 export default profilePageStyles;
