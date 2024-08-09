@@ -149,7 +149,7 @@ const NavigationBar = ({ user }) => {
     setLoading(false);
 
     if (newPredictions.length > 0) {
-      navigation.navigate('CamSearchPage', { predictions: newPredictions, recipes: newRecipes, user });
+      navigation.navigate('CamSearchPage', { predictions: newPredictions, user: user });
     }
     else {
       navigate.navigate('HomaPage', user);
