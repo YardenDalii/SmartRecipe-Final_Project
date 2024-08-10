@@ -71,28 +71,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFDD0', // Cream color for the background
+    borderTopWidth: 1,
+    borderTopColor: '#556B2F', // Dark olive green for the border
   },
   navIcon: {
     padding: 10,
+    color: '#556B2F', // Dark olive green for icons
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
   },
   modalContent: {
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: '#FFFDD0', // Cream color for the modal background
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#556B2F', // Dark olive green for the border
   },
   closeButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#e74c3c',
+    backgroundColor: '#e74c3c', // Red for the close button
     borderRadius: 5,
   },
   closeButtonText: {
