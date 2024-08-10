@@ -15,6 +15,7 @@ const HomePage = () => {
   const [user, setUser] = useState(null); // State to hold user information
   const [fullName, setFullName] = useState(''); // State to hold user's full name
   const navigation = useNavigation();
+  const [favoriteRecipes, setFavoriteRecipes] = useState([]);
 
   // useEffect(() => {
   //   const unsubscribeAuth = auth.onAuthStateChanged((user) => {
@@ -74,11 +75,24 @@ const HomePage = () => {
             setUserRecipes([]); // Clear recipes if none exist
           }
         });
+
+        // Listen to changes in the user's favorite recipes
+        const favoriteRecipesRef = doc(db, 'favorite_recipes', user.uid);
+        const unsubscribeFavoriteRecipes = onSnapshot(favoriteRecipesRef, (favoriteSnap) => {
+          if (favoriteSnap.exists()) {
+            const favoriteRecipesData = favoriteSnap.data().recipes || [];
+            setFavoriteRecipes(favoriteRecipesData); // Update state with favorite recipes data
+          } else {
+            setFavoriteRecipes([]); // Clear favorite recipes if none exist
+          }
+        });
+
   
         // Cleanup both listeners when the component unmounts or user changes
         return () => {
           unsubscribeSnapshot();  // Cleanup user listener
           unsubscribeRecipes();   // Cleanup recipes listener
+          unsubscribeFavoriteRecipes(); // Cleanup favorite recipes listener
         };
   
       } else {
@@ -86,6 +100,7 @@ const HomePage = () => {
         setUser(null);
         setFullName('');
         setUserRecipes([]);
+        setFavoriteRecipes([]);
       }
     });
   
@@ -217,6 +232,16 @@ const HomePage = () => {
       </View>
     );
   };
+
+  const renderFavoriteRecipeItem = ({ item, index }) => (
+    <View key={index} style={styles.recipeCard}>
+      <Image source={{ uri: item.recipeImage }} style={styles.recipeImage} />
+      <Text style={styles.recipeTitle}>{item.recipeName}</Text>
+      <TouchableOpacity onPress={() => handleOpenURL(item.recipeURL)}>
+        <Text style={styles.recipeUrl}>{item.recipeURL}</Text>
+      </TouchableOpacity>
+    </View>
+  );
   
   useEffect(() => {
     navigation.setOptions({
@@ -242,6 +267,17 @@ const HomePage = () => {
         data={userRecipes}
         renderItem={renderUserRecipeItem}
         keyExtractor={(item, index) => `user-recipe-${index}`}
+        horizontal
+      />
+    )}
+     <Text style={styles.subHeader}>Favorite Recipes</Text>
+    {favoriteRecipes.length === 0 ? (
+      <Text style={styles.noRecipesText}>No favorite recipes yet.</Text>
+    ) : (
+      <FlatList
+        data={favoriteRecipes}
+        renderItem={renderFavoriteRecipeItem}
+        keyExtractor={(item, index) => `favorite-recipe-${index}`}
         horizontal
       />
     )}
