@@ -150,6 +150,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 20,
   },
+  refreshContainer: {
+    flexDirection: 'row', // Align refresh button and header text horizontally
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    marginTop: 20,
+  },
+  subHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  refreshButton: {
+    padding: 8, // Padding for the touchable area
+    backgroundColor: '#f0f0f0', // Background color for better visibility
+    borderRadius: 50, // Round the button for aesthetics
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default styles;
