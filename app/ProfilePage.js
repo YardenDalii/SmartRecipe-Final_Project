@@ -182,6 +182,7 @@ const ProfilePage = ({ user, onClose }) => {
         ) : (
           <Text style={profilePageStyles.fullNameTitle}>{fullName}</Text>
         )}
+        
         {!isEditing && (
           <TouchableOpacity
             style={profilePageStyles.editButton}
