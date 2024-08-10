@@ -122,6 +122,7 @@ const HomePage = () => {
       } else if (currentHour >= 16 && currentHour < 22) {
         mealType = 'Dinner';
       }
+      setMealType(mealType);
       try {
         const fetchedRecipes = await fetchRecipesByMealType(mealType);
         setRecommendedRecipes(fetchedRecipes);
@@ -135,7 +136,6 @@ const HomePage = () => {
         // console.error('Error fetching recipes:', error);
       }
     };
-    setMealType(mealType)
     fetchRecommendedRecipes();
   }, [mealType]);
 
@@ -267,6 +267,12 @@ const HomePage = () => {
     }
   };
 
+  const refreshRecommendedRecipes = () => {
+    // Shuffle or randomly pick recommended recipes
+    const shuffledRecipes = [...recommendedRecipes].sort(() => 0.5 - Math.random());
+    setRecommendedRecipes(shuffledRecipes);
+  };
+
   
   useEffect(() => {
     navigation.setOptions({
@@ -307,7 +313,12 @@ const HomePage = () => {
           horizontal
         />
       )}
-        <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
+        <View style={styles.refreshContainer}>
+          <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
+          <TouchableOpacity onPress={refreshRecommendedRecipes} style={styles.refreshButton}>
+            <Feather name="refresh-cw" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         <FlatList
           data={recommendedRecipes}
           renderItem={renderRecommendedRecipeItem}
