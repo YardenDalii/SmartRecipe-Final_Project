@@ -99,16 +99,20 @@ const MyRecipesPage = ({ user }) => {
       <TouchableOpacity style={styles.recipeItem} onPress={() => handleRecipePress(item)}>
         <Text style={styles.recipeTitle}>{item.recipeName}</Text>
         <View style={styles.recipeDescription}>
-        {item.ingredients.map((ingredient, index) => (
-          <Text key={index}>{ingredient.name}: {ingredient.quantity}</Text>
-        ))}
-      </View>
+          {item.ingredients.map((ingredient, index) => (
+            <Text key={index}>{ingredient.name}: {ingredient.quantity}</Text>
+          ))}
+        </View>
       </TouchableOpacity>
       {editMode && (
-        <>
-          <Button title="Edit" onPress={() => handleRecipePress(item)} />
-          <Button title="Delete" onPress={() => confirmDelete(item)} />
-        </>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => handleRecipePress(item)}>
+            <Feather name="edit" size={24} color="#556B2F" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton} onPress={() => confirmDelete(item)}>
+            <Feather name="trash-2" size={24} color="#e74c3c" />
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -175,11 +179,12 @@ const MyRecipesPage = ({ user }) => {
       )}
       {renderModalContent()}
       {recipes.length > 0 && (
-        <Button
-          title={editMode ? "Done" : "Edit"}
+        <TouchableOpacity
+          style={[styles.editButton, { alignSelf: 'center' }]} // Centering the button horizontally
           onPress={() => setEditMode(!editMode)}
-          style={styles.editButton}
-        />
+        >
+          <Text style={styles.editButtonText}>{editMode ? "Done" : "Edit"}</Text>
+        </TouchableOpacity>
       )}
       <NavigationBar user={user} />
     </View>

@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#FFFDD0', // Cream color for background
+    padding: 16,
   },
   scrollContainer: {
     paddingBottom: 20, // Ensure there's space at the bottom
@@ -18,36 +18,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFDD0', // Cream color for frame
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
+    flexDirection: 'row', // Align items in a row
+    justifyContent: 'space-between', // Spread out the text and button
+    alignItems: 'center', // Center them vertically
+    paddingHorizontal: 16, // Add horizontal padding
+    paddingVertical: 10, // Add vertical padding for spacing
+    backgroundColor: '#FFFDD0', // Match background color
   },
   headerText: {
     fontSize: 24,
     fontWeight: 'bold',
-  },
-  profileButton: {
-    padding: 10,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    color: '#556B2F',
   },
   subHeader: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#556B2F', // Dark olive green for subheaders
   },
   recipeCard: {
     width: 200, // Adjust width to make the card smaller
     height: 250, // Adjust height to make the card smaller
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#FFFFFF', // White background for cards
     borderRadius: 8,
     padding: 10,
     margin: 10,
-    elevation: 3, // Light shadow effect for depth
+    borderWidth: 1,
+    borderColor: '#556B2F', // Dark olive green for border
+    elevation: 3, 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -74,7 +71,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logoutButton: {
-    padding: 10,
+    padding: 8, // Padding around the button
+    paddingHorizontal: 10, // Extra horizontal padding for spacing
+    backgroundColor: '#556B2F', // Dark olive green for the button
+    borderRadius: 5, // Rounded corners
+    marginLeft: 10,
   },
   squareButton: {
     backgroundColor: '#2196F3',
@@ -92,17 +93,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   userRecipeCard: {
-    width: 150, // Fixed width
-    height: 80, // Fixed height
-    backgroundColor: '#e0f7fa', // Background color
-    borderRadius: 10, // Rounded corners
-    padding: 10, // Padding for inner spacing
-    margin: 10, // Margin around the card
+    width: 150, 
+    height: 80, 
+    backgroundColor: '#FFFFFF', 
+    borderRadius: 10, 
+    padding: 10, 
+    margin: 10, 
     borderWidth: 1,
-    borderColor: '#00796b', // Border color
-    justifyContent: 'center', // Center content vertically
-    alignItems: 'center', // Center content horizontally
-    elevation: 5, // Shadow for depth
+    borderColor: '#556B2F', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -110,19 +111,24 @@ const styles = StyleSheet.create({
   },
   userRecipeTitle: {
     fontWeight: 'bold',
-    color: '#004d40', // Darker text color for contrast
-    textAlign: 'center', // Center the text
-    // Dynamic font size based on the content
+    color: '#556B2F', 
+    textAlign: 'center', 
     fontSize: 18,
   },
+  modalContainer: {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+  },
   userModalContent: {
-    width: '90%', // Make the modal content take up most of the screen width
-    maxHeight: '85%', // Limit the height to ensure it doesn't overflow the screen
-    backgroundColor: '#ffffff', // White background for the modal content
-    borderRadius: 15, // Rounded corners for a clean look
-    padding: 20, // Padding inside the modal for spacing
-    overflow: 'hidden', // Ensure content doesn't overflow the modal borders
-    elevation: 10, // Stronger shadow for depth
+    width: '90%', 
+    maxHeight: '85%', 
+    backgroundColor: '#FFFFFF', // Cream background for the modal
+    borderRadius: 15, 
+    padding: 20, 
+    overflow: 'hidden', 
+    elevation: 10, 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
@@ -132,7 +138,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#004d40',
+    color: '#556B2F',
+    textAlign: 'center',
   },
   modalSectionTitle: {
     fontSize: 18,
@@ -142,7 +149,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16,
-    color: '#00695c',
+    color: '#000000',
     marginVertical: 8,
   },
   navigationButtons: {
@@ -151,7 +158,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   refreshContainer: {
-    flexDirection: 'row', // Align refresh button and header text horizontally
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
@@ -162,9 +169,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   refreshButton: {
-    padding: 8, // Padding for the touchable area
-    backgroundColor: '#f0f0f0', // Background color for better visibility
-    borderRadius: 50, // Round the button for aesthetics
+    padding: 8, 
+    backgroundColor: '#f0f0f0', 
+    borderRadius: 50, 
     alignItems: 'center',
     justifyContent: 'center',
   },
