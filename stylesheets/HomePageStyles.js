@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFDD0', // Cream color for background
-    padding: 16,
+    paddingTop: 40,
+    padding:16,
   },
   scrollContainer: {
     paddingBottom: 20, // Ensure there's space at the bottom

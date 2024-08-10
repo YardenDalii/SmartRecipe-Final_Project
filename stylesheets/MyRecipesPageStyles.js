@@ -4,7 +4,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFDD0', // Cream color for background
-    padding: 20,
+    paddingTop: 40,
+    padding:16,
   },
   noRecipesText: {
     textAlign: 'center',
