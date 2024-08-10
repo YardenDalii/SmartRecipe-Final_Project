@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button, Linking, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button, Linking, Alert, ScrollView } from 'react-native';
 import styles from '../stylesheets/HomePageStyles';
 import { Feather } from '@expo/vector-icons';
 import NavigationBar from '../app/NavigationBar';
@@ -16,6 +16,8 @@ const HomePage = () => {
   const [fullName, setFullName] = useState(''); // State to hold user's full name
   const navigation = useNavigation();
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
 
   // useEffect(() => {
   //   const unsubscribeAuth = auth.onAuthStateChanged((user) => {
@@ -206,16 +208,20 @@ const HomePage = () => {
       navigation.navigate('AddRecipePage', { recipe, user });
   };
 
-  const renderUserRecipeItem = ({ item }) => {
-    console.log('Rendering User Recipe:', item); // Add log to check what's being rendered
-    return (
-      <View style={styles.recipeItemContainer}>
-        <TouchableOpacity style={styles.recipeItem} onPress={() => handleRecipePress(item)}>
-          <Text style={styles.recipeTitle}>{item.recipeName}</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  const renderUserRecipeItem = ({ item, index }) => (
+    <TouchableOpacity style={styles.userRecipeCard} onPress={() => openRecipeModal(index)}>
+      <Text
+        style={styles.userRecipeTitle}
+        numberOfLines={2} // Limits text to 2 lines (adjust as needed)
+        adjustsFontSizeToFit // Dynamically adjusts font size to fit within the Text component
+        minimumFontScale={0.5} // Allows the font size to shrink to 50% of its original size if needed
+      >
+        {item.recipeName}
+      </Text>
+    </TouchableOpacity>
+  );
+  
+  
 
   const renderRecommendedRecipeItem  = ({ item, index }) => {
     const { recipe } = item;
@@ -242,6 +248,25 @@ const HomePage = () => {
       </TouchableOpacity>
     </View>
   );
+
+  const openRecipeModal = (index) => {
+    if (index >= 0 && index < userRecipes.length) {
+      setCurrentRecipeIndex(index);
+      setModalVisible(true);
+    }
+  };
+
+  const closeRecipeModal = () => {
+    setModalVisible(false);
+  };
+
+  const navigateRecipe = (direction) => {
+    const newIndex = currentRecipeIndex + direction;
+    if (newIndex >= 0 && newIndex < userRecipes.length) {
+      setCurrentRecipeIndex(newIndex);
+    }
+  };
+
   
   useEffect(() => {
     navigation.setOptions({
@@ -253,42 +278,82 @@ const HomePage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Welcome {fullName}!</Text>
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Feather name="log-out" size={20} color="black" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.subHeader}>My Recipes </Text>
-      {userRecipes.length === 0 ? (
-      <Text style={styles.noRecipesText}>No saved recipes yet.</Text>
-    ) : (
-      <FlatList
-        data={userRecipes}
-        renderItem={renderUserRecipeItem}
-        keyExtractor={(item, index) => `user-recipe-${index}`}
-        horizontal
-      />
-    )}
-     <Text style={styles.subHeader}>Favorite Recipes</Text>
-    {favoriteRecipes.length === 0 ? (
-      <Text style={styles.noRecipesText}>No favorite recipes yet.</Text>
-    ) : (
-      <FlatList
-        data={favoriteRecipes}
-        renderItem={renderFavoriteRecipeItem}
-        keyExtractor={(item, index) => `favorite-recipe-${index}`}
-        horizontal
-      />
-    )}
-      <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
-      <FlatList
-        data={recommendedRecipes}
-        renderItem={renderRecommendedRecipeItem}
-        keyExtractor={(item, index) => `recommended-recipe-${index}`}
-        horizontal
-      />
-      <NavigationBar showHomeIcon={false} navigation={navigation} user={user} />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Welcome {fullName}!</Text>
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+            <Feather name="log-out" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.subHeader}>My Recipes </Text>
+        {userRecipes.length === 0 ? (
+        <Text style={styles.noRecipesText}>No saved recipes yet.</Text>
+      ) : (
+        <FlatList
+          data={userRecipes}
+          renderItem={renderUserRecipeItem}
+          keyExtractor={(item, index) => `user-recipe-${index}`}
+          horizontal
+        />
+      )}
+      <Text style={styles.subHeader}>Favorite Recipes</Text>
+      {favoriteRecipes.length === 0 ? (
+        <Text style={styles.noRecipesText}>No favorite recipes yet.</Text>
+      ) : (
+        <FlatList
+          data={favoriteRecipes}
+          renderItem={renderFavoriteRecipeItem}
+          keyExtractor={(item, index) => `favorite-recipe-${index}`}
+          horizontal
+        />
+      )}
+        <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
+        <FlatList
+          data={recommendedRecipes}
+          renderItem={renderRecommendedRecipeItem}
+          keyExtractor={(item, index) => `recommended-recipe-${index}`}
+          horizontal
+        />
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={closeRecipeModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.userModalContent}>
+            {userRecipes[currentRecipeIndex] ? (
+              <ScrollView style={styles.modalScrollView}>
+                <Text style={styles.modalTitle}>{userRecipes[currentRecipeIndex].recipeName}</Text>
+                <Text style={styles.modalSectionTitle}>Ingredients:</Text>
+                {userRecipes[currentRecipeIndex].ingredients.map((ing, i) => (
+                  <Text key={i} style={styles.modalText}>{`${ing.name}: ${ing.quantity}`}</Text>
+                ))}
+                <Text style={styles.modalSectionTitle}>Steps:</Text>
+                {userRecipes[currentRecipeIndex].productionSteps.map((step, i) => (
+                  <Text key={i} style={styles.modalText}>{`${i + 1}. ${step}`}</Text>
+                ))}
+              </ScrollView>
+            ) : (
+              <Text style={styles.modalTitle}>Recipe not found.</Text>
+            )}
+            <View style={styles.navigationButtons}>
+              <TouchableOpacity onPress={() => navigateRecipe(-1)} disabled={currentRecipeIndex === 0}>
+                <Feather name="arrow-left" size={24} color={currentRecipeIndex === 0 ? "#ccc" : "black"} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigateRecipe(1)} disabled={currentRecipeIndex === userRecipes.length - 1}>
+                <Feather name="arrow-right" size={24} color={currentRecipeIndex === userRecipes.length - 1 ? "#ccc" : "black"} />
+              </TouchableOpacity>
+            </View>
+            <Button title="Close" onPress={closeRecipeModal} />
+          </View>
+        </View>
+      </Modal>
+
+        
+        </ScrollView>
+        <NavigationBar showHomeIcon={false} navigation={navigation} user={user} />  
     </SafeAreaView>
   );
 };
