@@ -285,34 +285,38 @@ const HomePage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Welcome {fullName}!</Text>
-          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-            <Feather name="log-out" size={20} color="black" />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.subHeader}>My Recipes </Text>
-        {userRecipes.length === 0 ? (
-        <Text style={styles.noRecipesText}>No saved recipes yet.</Text>
-      ) : (
-        <FlatList
-          data={userRecipes}
-          renderItem={renderUserRecipeItem}
-          keyExtractor={(item, index) => `user-recipe-${index}`}
-          horizontal
-        />
-      )}
-      <Text style={styles.subHeader}>Favorite Recipes</Text>
-      {favoriteRecipes.length === 0 ? (
-        <Text style={styles.noRecipesText}>No favorite recipes yet.</Text>
-      ) : (
-        <FlatList
-          data={favoriteRecipes}
-          renderItem={renderFavoriteRecipeItem}
-          keyExtractor={(item, index) => `favorite-recipe-${index}`}
-          horizontal
-        />
-      )}
+        {user && (
+          <>
+            <View style={styles.header}>
+              <Text style={styles.headerText}>Welcome {fullName}!</Text>
+              <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+                <Feather name="log-out" size={20} color="black" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.subHeader}>My Recipes</Text>
+            {userRecipes.length === 0 ? (
+              <Text style={styles.noRecipesText}>No saved recipes yet.</Text>
+            ) : (
+              <FlatList
+                data={userRecipes}
+                renderItem={renderUserRecipeItem}
+                keyExtractor={(item, index) => `user-recipe-${index}`}
+                horizontal
+              />
+            )}
+            <Text style={styles.subHeader}>Favorite Recipes</Text>
+            {favoriteRecipes.length === 0 ? (
+              <Text style={styles.noRecipesText}>No favorite recipes yet.</Text>
+            ) : (
+              <FlatList
+                data={favoriteRecipes}
+                renderItem={renderFavoriteRecipeItem}
+                keyExtractor={(item, index) => `favorite-recipe-${index}`}
+                horizontal
+              />
+            )}
+          </>
+        )}
         <View style={styles.refreshContainer}>
           <Text style={styles.subHeader}>Recommended Recipes for {mealType}</Text>
           <TouchableOpacity onPress={refreshRecommendedRecipes} style={styles.refreshButton}>
@@ -326,45 +330,44 @@ const HomePage = () => {
           horizontal
         />
 
-      <Modal
-        visible={modalVisible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={closeRecipeModal}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.userModalContent}>
-            {userRecipes[currentRecipeIndex] ? (
-              <ScrollView style={styles.modalScrollView}>
-                <Text style={styles.modalTitle}>{userRecipes[currentRecipeIndex].recipeName}</Text>
-                <Text style={styles.modalSectionTitle}>Ingredients:</Text>
-                {userRecipes[currentRecipeIndex].ingredients.map((ing, i) => (
-                  <Text key={i} style={styles.modalText}>{`${ing.name}: ${ing.quantity}`}</Text>
-                ))}
-                <Text style={styles.modalSectionTitle}>Steps:</Text>
-                {userRecipes[currentRecipeIndex].productionSteps.map((step, i) => (
-                  <Text key={i} style={styles.modalText}>{`${i + 1}. ${step}`}</Text>
-                ))}
-              </ScrollView>
-            ) : (
-              <Text style={styles.modalTitle}>Recipe not found.</Text>
-            )}
-            <View style={styles.navigationButtons}>
-              <TouchableOpacity onPress={() => navigateRecipe(-1)} disabled={currentRecipeIndex === 0}>
-                <Feather name="arrow-left" size={24} color={currentRecipeIndex === 0 ? "#ccc" : "black"} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigateRecipe(1)} disabled={currentRecipeIndex === userRecipes.length - 1}>
-                <Feather name="arrow-right" size={24} color={currentRecipeIndex === userRecipes.length - 1 ? "#ccc" : "black"} />
-              </TouchableOpacity>
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={closeRecipeModal}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.userModalContent}>
+              {userRecipes[currentRecipeIndex] ? (
+                <ScrollView style={styles.modalScrollView}>
+                  <Text style={styles.modalTitle}>{userRecipes[currentRecipeIndex].recipeName}</Text>
+                  <Text style={styles.modalSectionTitle}>Ingredients:</Text>
+                  {userRecipes[currentRecipeIndex].ingredients.map((ing, i) => (
+                    <Text key={i} style={styles.modalText}>{`${ing.name}: ${ing.quantity}`}</Text>
+                  ))}
+                  <Text style={styles.modalSectionTitle}>Steps:</Text>
+                  {userRecipes[currentRecipeIndex].productionSteps.map((step, i) => (
+                    <Text key={i} style={styles.modalText}>{`${i + 1}. ${step}`}</Text>
+                  ))}
+                </ScrollView>
+              ) : (
+                <Text style={styles.modalTitle}>Recipe not found.</Text>
+              )}
+              <View style={styles.navigationButtons}>
+                <TouchableOpacity onPress={() => navigateRecipe(-1)} disabled={currentRecipeIndex === 0}>
+                  <Feather name="arrow-left" size={24} color={currentRecipeIndex === 0 ? "#ccc" : "black"} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigateRecipe(1)} disabled={currentRecipeIndex === userRecipes.length - 1}>
+                  <Feather name="arrow-right" size={24} color={currentRecipeIndex === userRecipes.length - 1 ? "#ccc" : "black"} />
+                </TouchableOpacity>
+              </View>
+              <Button title="Close" onPress={closeRecipeModal} />
             </View>
-            <Button title="Close" onPress={closeRecipeModal} />
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-        
-        </ScrollView>
-        <NavigationBar showHomeIcon={false} navigation={navigation} user={user} />  
+      </ScrollView>
+      <NavigationBar showHomeIcon={false} navigation={navigation} user={user} />
     </SafeAreaView>
   );
 };
