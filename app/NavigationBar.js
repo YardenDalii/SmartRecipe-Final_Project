@@ -154,9 +154,6 @@ const NavigationBar = ({ user }) => {
     else {
       navigate.navigate('HomaPage', user);
     }
-    else {
-      navigate.navigate('HomaPage', user);
-    }
   };
 
   const handleProfilePress = () => {
