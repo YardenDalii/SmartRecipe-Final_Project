@@ -294,12 +294,6 @@ const HomePage = () => {
       </View>
         {user && (
           <>
-            {/* <View style={styles.header}>
-              <Text style={styles.headerText}>Welcome {fullName}!</Text>
-              <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-                <Feather name="log-out" size={20} color="black" />
-              </TouchableOpacity>
-            </View> */}
             <Text style={styles.subHeader}>My Recipes</Text>
             {userRecipes.length === 0 ? (
               <Text style={styles.noRecipesText}>No saved recipes yet.</Text>

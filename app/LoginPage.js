@@ -4,6 +4,7 @@ import styles from '../stylesheets/LoginPageStyles';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 // import AboutPage from './AboutPage';
 
+
 const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switchToRegister, switchToReset }) => {
     const navigation = useNavigation();
 
