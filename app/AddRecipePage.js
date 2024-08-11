@@ -48,7 +48,7 @@ const AddRecipePage = () => {
       />
       <TextInput
         style={[styles.input, { height: 120 }]}
-        placeholder="Ingredients and Amounts"
+        placeholder="Ingredients and Amounts (Example -> Tomato: 10g / Olive Oil: 3spoons) "
         multiline
         numberOfLines={5}
         value={ingredients}
@@ -56,7 +56,7 @@ const AddRecipePage = () => {
       />
       <TextInput
         style={[styles.input, { height: 200 }]}
-        placeholder="Production Steps"
+        placeholder="Production Steps (Each row is a step, example -> Slice the tomatos into cubes.)"
         multiline
         numberOfLines={10}
         value={productionSteps}
