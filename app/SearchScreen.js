@@ -21,10 +21,20 @@ const SearchScreen = ( { route } ) => {
   });
   const [isModalVisible, setModalVisible] = useState(false);
   console.log("user info 2", user);
+
   const handleSearch = async () => {
     try {
       const recipes = await fetchRecipesFromEdamam([], searchTerm, 2, selectedFilters);
       setUpdatedRecipes(recipes);
+      if(recipes.length == 0) {
+        Alert.alert(
+          "Can't Find Recipes",
+          `Cannot find any recipes with the query of: ${searchTerm}`,
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+        );
+      }
+      
     } catch (error) {
       Alert.alert(
         "Error",
