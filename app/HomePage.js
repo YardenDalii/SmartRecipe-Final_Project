@@ -232,6 +232,7 @@ const HomePage = () => {
         <TouchableOpacity onPress={() => handleOpenURL(recipe.url)}>
           <Text style={styles.recipeUrl}>{recipe.url}</Text>
         </TouchableOpacity>
+        {/* <Text style={styles.recipeTitle}>Add to favorites </Text> */}
         <TouchableOpacity style={styles.navIcon} onPress={() => handleAddFavorite(user, recipe.image, recipe.label, recipe.uri, recipe.url)}>
           <Feather name="star" size={24} color="black" />
         </TouchableOpacity>
@@ -285,14 +286,14 @@ const HomePage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Welcome {fullName}!</Text>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Feather name="log-out" size={20} color="black" />
+        </TouchableOpacity>
+      </View>
         {user && (
           <>
-            <View style={styles.header}>
-              <Text style={styles.headerText}>Welcome {fullName}!</Text>
-              <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-                <Feather name="log-out" size={20} color="black" />
-              </TouchableOpacity>
-            </View>
             <Text style={styles.subHeader}>My Recipes</Text>
             {userRecipes.length === 0 ? (
               <Text style={styles.noRecipesText}>No saved recipes yet.</Text>

@@ -316,6 +316,8 @@ const App = () => {
   };
 
 
+
+
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -380,6 +382,7 @@ const App = () => {
               )}
             </Stack.Screen>
             <Stack.Screen name="HomePage" component={HomePage} />
+            <Stack.Screen name="AboutPage" component={AboutPage} />
           </>
         )}
         <Stack.Screen name="SearchScreen" component={SearchScreen} />

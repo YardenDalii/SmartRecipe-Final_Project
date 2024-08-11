@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { Alert } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { View, TextInput, ScrollView, TouchableOpacity, Text, Image, Linking, Modal } from 'react-native';
 import styles from '../stylesheets/SearchScreenStyles';
 import NavigationBar from '../app/NavigationBar';
 import { fetchRecipesFromEdamam, filters } from '../utils/recipeService';
 import { Picker } from '@react-native-picker/picker';
+import { addFavRecipe } from '../firebase';
 
 const SearchScreen = ( { route } ) => {
   const { user } = route.params;
@@ -53,6 +56,46 @@ const SearchScreen = ( { route } ) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const handleAddFavorite = async (user, image, label, uri, url) => {
+    try {
+      await addFavRecipe(user, image, label, uri, url);
+      Alert.alert(
+        'Recipe Added!',
+        `${label} has beed added to favorites.`,
+        [
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      )
+      console.log('Recipe added to favorites');
+    } catch (error) {
+      Alert.alert(
+        "Error",
+        `Error adding to favorites: ${error.message}`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+    );
+      // console.error('Error adding to favorites:', error);
+    }
+  };
+
+  const loadRecipes = async () => {
+    if (user) {
+      try {
+        const fetchedRecipes = await fetchUserRecipes(user);
+        setRecipes(fetchedRecipes);
+      } catch (error) {
+        Alert.alert(
+          "Error",
+          `Error fetching user recipes: ${error.message}`,
+          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+          { cancelable: false }
+        );
+        // console.error('Error fetching user recipes:', error);
+      } 
+    } 
   };
 
   return (
@@ -117,6 +160,9 @@ const SearchScreen = ( { route } ) => {
                 <Text style={styles.recipeTitle}>{recipe.label}</Text>
                 <TouchableOpacity onPress={() => handleOpenURL(recipe.url)}>
                   <Text style={styles.recipeUrl}>{recipe.url}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleAddFavorite(user, recipe.image, recipe.label, recipe.uri, recipe.url)}>
+                  <Feather name="star" size={24} color="black" />
                 </TouchableOpacity>
               </View>
             );

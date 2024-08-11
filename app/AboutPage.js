@@ -8,8 +8,8 @@ const AboutPage = () => {
   const route = useRoute();
   const { user } = route.params || {};
 
-  const handleContinuePress = () => {
-    navigation.navigate('HomePage', { user });
+  const handleDismiss = () => {
+    navigation.navigate('LoginPage');
   };
 
   return (
@@ -19,7 +19,7 @@ const AboutPage = () => {
         This app provides a variety of features including recipe recommendations based on the time of day, searching for recipes using your camera, and more.
       </Text>
       <View style={styles.buttonContainer}>
-        <Button title="Next to Home Page" onPress={handleContinuePress} />
+        <Button title="Dismiss" onPress={handleDismiss} />
       </View>
     </View>
   );

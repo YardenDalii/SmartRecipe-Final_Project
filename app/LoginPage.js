@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import styles from '../stylesheets/LoginPageStyles';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+// import AboutPage from './AboutPage';
+
 
 const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switchToRegister, switchToReset }) => {
     const navigation = useNavigation();
@@ -39,13 +41,13 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                     secureTextEntry
                 />
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => switchToReset(navigation)}>
-                        <Text style={styles.buttonText}>Forgot your password?</Text>
+                    <TouchableOpacity style={styles.button} onPress={() => handleLogin(navigation)}>
+                        <Text style={styles.buttonText}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => handleLogin(navigation)}>
-                        <Text style={styles.buttonText}>Sign In</Text>
+                    <TouchableOpacity style={styles.button} onPress={() => switchToReset(navigation)}>
+                        <Text style={styles.buttonText}>Forgot your password?</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.toggleTextContainer}>
@@ -56,6 +58,11 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={continueWithoutLogin}>
                         <Text style={styles.buttonText}>Continue without Login</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.toggleTextContainer} onPress={() => navigation.navigate("AboutPage")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("AboutPage")}>
+                        <Text styles={styles.toggleText}>About the app</Text>
                     </TouchableOpacity>
                 </View>
             </View>
