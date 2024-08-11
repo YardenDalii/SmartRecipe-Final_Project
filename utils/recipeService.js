@@ -55,18 +55,62 @@ const fetchRecipesFromEdamam = async (classes = [], recName = "", option, select
   }
 };
 
-const fetchRecipesByMealType = async (mealType) => {
+// const fetchRecipesByMealType = async (mealType) => {
+//   const params = {
+//     app_id: appId,
+//     app_key: appKey,
+//     q: '', // Empty query to fetch random recipes
+//     mealType: mealType
+//   };
+
+//   try {
+//     const response = await axios.get(baseUrl, { params });
+//     const recipes = response.data.hits;
+//     const randomRecipes = recipes.sort(() => 0.5 - Math.random()).slice(0, 5);
+//     return randomRecipes;
+//   } catch (error) {
+//     Alert.alert(
+//       "Can't Load Recipes",
+//       `Error fetching recipes from Edamam: ${error.message}`,
+//       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+//       { cancelable: false }
+//     );
+//     // console.error('Error fetching recipes from Edamam:', error);
+//     throw error;
+//   }
+// };
+
+const _ = require('lodash');
+
+const fetchRecipesByMealType = async (mealType, from = 0, to = 50, sliceSize = 10) => {
   const params = {
     app_id: appId,
     app_key: appKey,
-    q: '', // Empty query to fetch random recipes
-    mealType: mealType
+    q: mealType, // Empty query to fetch random recipes
+    // mealType: mealType,
+    from: from, // Start index for fetching recipes
+    to: to     // End index for fetching recipes
   };
 
   try {
     const response = await axios.get(baseUrl, { params });
     const recipes = response.data.hits;
-    const randomRecipes = recipes.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+    // Ensure that the number of recipes fetched is sufficient
+    if (recipes.length < sliceSize) {
+      return recipes; // Return all recipes if there are fewer than sliceSize recipes
+    }
+
+    // Generate a set of unique random indices
+    const randomIndices = new Set();
+    while (randomIndices.size < sliceSize) {
+      const randomIndex = Math.floor(Math.random() * (to - from)) + from;
+      randomIndices.add(randomIndex);
+    }
+
+    // Select the recipes corresponding to the unique random indices
+    const randomRecipes = Array.from(randomIndices).map(index => recipes[index - from]);
+
     return randomRecipes;
   } catch (error) {
     Alert.alert(
@@ -75,7 +119,6 @@ const fetchRecipesByMealType = async (mealType) => {
       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
-    // console.error('Error fetching recipes from Edamam:', error);
     throw error;
   }
 };
