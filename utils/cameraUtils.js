@@ -3,6 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import { Alert, Platform, navigation } from 'react-native';
 import { fetchRecipesFromEdamam } from '../utils/recipeService';
+import * as tf from '@tensorflow/tfjs';
 
 const convertBlobToBase64 = (blob) => {
   return new Promise((resolve, reject) => {
@@ -85,21 +86,37 @@ const sendImageToRoboflow = async (base64Image) => {
   try {
     const response = await axios({
       method: "POST",
-      url: 'https://detect.roboflow.com/smart-recipe/8',
+      url: 'https://detect.roboflow.com/smart-recipe/8', // Our model
+      // url: 'https://outline.roboflow.com/nutriscan-1pvdg/1',
       params: {
         api_key: 'exdYNCvMG7gXuZbha3yL'
       },
       data: base64Image,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json' // Our model
+        // "Content-Type": "application/x-www-form-urlencoded"
       }
     });
 
     const predictions = response.data["predictions"];
     if (predictions && predictions.length > 0) {
+      let beefDetected = false;
       const predictionsMap = new Map();
-      predictions.forEach(prediction => {
+      predictions.forEach(async prediction => {
         if (prediction.confidence >= 0.6) {
+          // -------------------- MINI MODEL CHECKER --------------------
+
+          if(prediction.class == 'beef') {
+            beefDetected = true;
+            const miniImage = preprocessMiniImage(base64Image);
+            const prediction = await predictMiniModel(miniImage);
+        
+            if (prediction > 0.5) {
+              prediction.class = "minced meat";
+            }
+
+          // --------------------------------------------------------------
+          }
           const existingPrediction = predictionsMap.get(prediction.class);
           if (!existingPrediction || prediction.confidence > existingPrediction.confidence) {
             predictionsMap.set(prediction.class, {
@@ -109,6 +126,21 @@ const sendImageToRoboflow = async (base64Image) => {
           }
         }
       });
+
+      // -------------------- MINI MODEL CHECKER --------------------
+      if (!beefDetected) {
+        const miniImage = preprocessMiniImage(base64Image);
+        const miniPrediction = await predictMiniModel(miniImage);
+
+        if (miniPrediction > 0.5) {  // Threshold for classifying as 'minced meat'
+          predictionsMap.set('minced meat', {
+            class: 'minced meat',
+            confidence: miniPrediction.toFixed(2)
+          });
+        }
+      }
+      // --------------------------------------------------------------
+
 
       const classes = Array.from(predictionsMap.values()).map(prediction => prediction.class);
       const recipes = await fetchRecipesFromEdamam(classes);
@@ -124,3 +156,30 @@ const sendImageToRoboflow = async (base64Image) => {
     return { predictions: [], recipes: [] }; // Return empty arrays on error
   }
 };
+
+
+
+
+const loadMiniModel = async () => {
+  const model = await tf.loadLayersModel(require('./minced_meat_model.json'));
+  return model;
+};
+
+
+const predictMiniModel = async (imageTensor) => {
+  const model = await loadMiniModel();
+  const prediction = model.predict(imageTensor).dataSync()[0];  // Get the prediction value
+  return prediction;
+};
+
+
+const preprocessMiniImage = async (img) => {
+  const tensor = tf.browser.fromPixels(img)
+    .resizeNearestNeighbor([128, 128]) 
+    .toFloat()
+    .div(tf.scalar(255.0))
+    .expandDims(); 
+
+  return tensor;
+};
+
