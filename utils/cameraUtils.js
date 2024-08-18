@@ -3,7 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import { Alert, Platform, navigation } from 'react-native';
 import { fetchRecipesFromEdamam } from '../utils/recipeService';
-import * as tf from '@tensorflow/tfjs';
+
 
 const convertBlobToBase64 = (blob) => {
   return new Promise((resolve, reject) => {
@@ -156,30 +156,3 @@ const sendImageToRoboflow = async (base64Image) => {
     return { predictions: [], recipes: [] }; // Return empty arrays on error
   }
 };
-
-
-
-
-const loadMiniModel = async () => {
-  const model = await tf.loadLayersModel(require('./minced_meat_model.json'));
-  return model;
-};
-
-
-const predictMiniModel = async (imageTensor) => {
-  const model = await loadMiniModel();
-  const prediction = model.predict(imageTensor).dataSync()[0];  // Get the prediction value
-  return prediction;
-};
-
-
-const preprocessMiniImage = async (img) => {
-  const tensor = tf.browser.fromPixels(img)
-    .resizeNearestNeighbor([128, 128]) 
-    .toFloat()
-    .div(tf.scalar(255.0))
-    .expandDims(); 
-
-  return tensor;
-};
-
