@@ -106,17 +106,18 @@ const sendImageToRoboflow = async (base64Image) => {
         if (prediction.confidence >= 0.6) {
           // -------------------- MINI MODEL CHECKER --------------------
 
-          if(prediction.class == 'beef') {
-            beefDetected = true;
-            const miniImage = preprocessMiniImage(base64Image);
-            const prediction = await predictMiniModel(miniImage);
+          // if(prediction.class == 'beef') {
+          //   beefDetected = true;
+          //   const miniImage = preprocessMiniImage(base64Image);
+          //   const prediction = await predictMiniModel(miniImage);
         
-            if (prediction > 0.5) {
-              prediction.class = "minced meat";
-            }
+          //   if (prediction > 0.5) {
+          //     prediction.class = "minced meat";
+          //   }
 
+          // }
           // --------------------------------------------------------------
-          }
+
           const existingPrediction = predictionsMap.get(prediction.class);
           if (!existingPrediction || prediction.confidence > existingPrediction.confidence) {
             predictionsMap.set(prediction.class, {
@@ -128,17 +129,17 @@ const sendImageToRoboflow = async (base64Image) => {
       });
 
       // -------------------- MINI MODEL CHECKER --------------------
-      if (!beefDetected) {
-        const miniImage = preprocessMiniImage(base64Image);
-        const miniPrediction = await predictMiniModel(miniImage);
+      // if (!beefDetected) {
+      //   const miniImage = preprocessMiniImage(base64Image);
+      //   const miniPrediction = await predictMiniModel(miniImage);
 
-        if (miniPrediction > 0.5) {  // Threshold for classifying as 'minced meat'
-          predictionsMap.set('minced meat', {
-            class: 'minced meat',
-            confidence: miniPrediction.toFixed(2)
-          });
-        }
-      }
+      //   if (miniPrediction > 0.5) {  // Threshold for classifying as 'minced meat'
+      //     predictionsMap.set('minced meat', {
+      //       class: 'minced meat',
+      //       confidence: miniPrediction.toFixed(2)
+      //     });
+      //   }
+      // }
       // --------------------------------------------------------------
 
 
