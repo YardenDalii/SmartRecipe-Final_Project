@@ -32,24 +32,36 @@ const CamSearchPage = () => {
     const initialText = predictions ? predictions.map(pred => pred.class).join(', ') : '';
     console.log("initialText", initialText);
     setPredictionText(initialText);
-    if (initialText.toLowerCase().includes('beef')) {
+
+    const hasBeef = initialText.toLowerCase().includes('beef');
+    const hasMincedMeat = initialText.toLowerCase().includes('minced meat');
+
+    if (hasBeef && hasMincedMeat) {
+      setShowMeatInput(false);
+    } else if (hasBeef) {
       setShowMeatInput(true);
     } else {
       setShowMeatInput(false);
     }
-    console.log("showMeatInput", showMeatInput);
   }, [predictions]);
 
   const handleDoneEditing = () => {
     setIsEditing(false);
     const editedPredictions = predictionText.split(',').map(item => item.trim());
     console.log("predictionText", predictionText);
-    if (predictionText.toLowerCase().includes('beef')) {
-      setShowMeatInput(true);
-    } else {
-      setShowMeatInput(false);
-    }
-  };
+
+    const hasBeef = predictionText.toLowerCase().includes('beef');
+    const hasMincedMeat = predictionText.toLowerCase().includes('minced meat');
+
+    if (hasBeef && hasMincedMeat) {
+    Alert.alert("Clarification Needed", "Both 'beef' and 'minced meat' detected. Please clarify.");
+    setShowMeatInput(true);
+  } else if (hasBeef) {
+    setShowMeatInput(true);
+  } else {
+    setShowMeatInput(false);
+  }
+};
 
   const handleSearch = async () => {
     try {
