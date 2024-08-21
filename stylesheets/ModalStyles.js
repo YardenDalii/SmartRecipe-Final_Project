@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 const modalStyles = StyleSheet.create({
   modalContainer: {

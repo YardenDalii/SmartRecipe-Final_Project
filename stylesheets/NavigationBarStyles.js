@@ -63,6 +63,8 @@
 
 
 import { StyleSheet } from 'react-native';
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 const styles = StyleSheet.create({
   navContainer: {
@@ -71,13 +73,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     padding: 10,
-    backgroundColor: '#FFFDD0', // Cream color for the background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for the background
     borderTopWidth: 1,
-    borderTopColor: '#556B2F', // Dark olive green for the border
+    borderTopColor: OLIVE_GREEN_COLOR, // Dark olive green for the border
   },
   navIcon: {
     padding: 10,
-    color: '#556B2F', // Dark olive green for icons
+    color: OLIVE_GREEN_COLOR, // Dark olive green for icons
   },
   modalContainer: {
     flex: 1,
@@ -87,12 +89,12 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '80%',
-    backgroundColor: '#FFFDD0', // Cream color for the modal background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for the modal background
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for the border
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for the border
   },
   closeButton: {
     marginTop: 20,

@@ -139,6 +139,7 @@ const sendImageToRoboflow = async (base64Image) => {
       }
     }
 
+
     for (const miniPrediction of miniModelPredictions) {
       if (miniPrediction.class === 'minced-meat' && miniPrediction.confidence > 0.5) {
         // If "minced meat" is detected, it should override "beef"
