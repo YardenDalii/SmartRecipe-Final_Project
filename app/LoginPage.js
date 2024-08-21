@@ -145,11 +145,6 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                         <Text style={styles.buttonText}>Sign in with Google</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.toggleTextContainer} onPress={() => navigation.navigate("AboutPage")}>
-                    <TouchableOpacity onPress={() => navigation.navigate("AboutPage")}>
-                        <Text styles={styles.toggleText}>About the app</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
         </View>
     );

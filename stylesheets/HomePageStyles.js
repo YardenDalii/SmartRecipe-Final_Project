@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFDD0', // Cream color for background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for background
     paddingTop: 40,
     padding:16,
   },
@@ -15,8 +17,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#556B2F', // Dark olive green border for the rectangle
-    backgroundColor: '#FFFDD0', // Cream color for frame
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green border for the rectangle
+    backgroundColor: BACKGROUND_COLOR, // Cream color for frame
   },
   header: {
     flexDirection: 'row', // Align items in a row
@@ -24,17 +26,17 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Center them vertically
     paddingHorizontal: 16, // Add horizontal padding
     paddingVertical: 10, // Add vertical padding for spacing
-    backgroundColor: '#FFFDD0', // Match background color
+    backgroundColor: BACKGROUND_COLOR, // Match background color
   },
   headerText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#556B2F',
+    color: OLIVE_GREEN_COLOR,
   },
   subHeader: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#556B2F', // Dark olive green for subheaders
+    color: OLIVE_GREEN_COLOR, // Dark olive green for subheaders
   },
   recipeCard: {
     width: 200, // Adjust width to make the card smaller
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for border
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for border
     elevation: 3, 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     padding: 8, // Padding around the button
     paddingHorizontal: 10, // Extra horizontal padding for spacing
-    backgroundColor: '#556B2F', // Dark olive green for the button
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for the button
     borderRadius: 5, // Rounded corners
     marginLeft: 10,
   },
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     padding: 10, 
     margin: 10, 
     borderWidth: 1,
-    borderColor: '#556B2F', 
+    borderColor: OLIVE_GREEN_COLOR, 
     justifyContent: 'center', 
     alignItems: 'center', 
     elevation: 5,
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
   },
   userRecipeTitle: {
     fontWeight: 'bold',
-    color: '#556B2F', 
+    color: OLIVE_GREEN_COLOR, 
     textAlign: 'center', 
     fontSize: 18,
   },
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#556B2F',
+    color: OLIVE_GREEN_COLOR,
     textAlign: 'center',
   },
   modalSectionTitle: {

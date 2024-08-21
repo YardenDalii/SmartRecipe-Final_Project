@@ -1,16 +1,18 @@
 import { StyleSheet } from 'react-native';
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFDD0', // Cream color for background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for background
     paddingTop: 40,
     padding:16,
   },
   noRecipesText: {
     textAlign: 'center',
     fontSize: 18,
-    color: '#556B2F', // Dark olive green for text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for text
     marginVertical: 20,
   },
   recipeItemContainer: {
@@ -23,7 +25,7 @@ export default StyleSheet.create({
     flex: 1,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
     padding: 10,
     borderRadius: 5,
     backgroundColor: '#FFFFFF', // White background for recipe items
@@ -32,11 +34,11 @@ export default StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#556B2F', // Dark olive green for recipe titles
+    color: OLIVE_GREEN_COLOR, // Dark olive green for recipe titles
   },
   recipeDescription: {
     fontSize: 16,
-    color: '#556B2F', // Dark olive green for recipe descriptions
+    color: OLIVE_GREEN_COLOR, // Dark olive green for recipe descriptions
   },
   modalContainer: {
     flex: 1,
@@ -45,29 +47,29 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#FFFDD0', // Cream color for modal background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for modal background
     borderRadius: 10,
     padding: 20,
     width: '80%',
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for modal borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for modal borders
   },
   modalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#556B2F', // Dark olive green for modal title
+    color: OLIVE_GREEN_COLOR, // Dark olive green for modal title
   },
   modalSubtitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
-    color: '#556B2F', // Dark olive green for modal subtitle
+    color: OLIVE_GREEN_COLOR, // Dark olive green for modal subtitle
   },
   modalText: {
     fontSize: 16,
     marginBottom: 5,
-    color: '#556B2F', // Dark olive green for modal text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for modal text
   },
   modalCloseButton: {
     marginTop: 20,
@@ -87,7 +89,7 @@ export default StyleSheet.create({
   },
   bigPlusButton: {
     alignSelf: 'center',
-    backgroundColor: '#556B2F', // Dark olive green for the plus button
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for the plus button
     padding: 20,
     borderRadius: 50,
     marginBottom: 20,
@@ -95,7 +97,7 @@ export default StyleSheet.create({
   smallPlusButton: {
     alignSelf: 'center',
     marginVertical: 10,
-    backgroundColor: '#556B2F', // Dark olive green for small plus button
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for small plus button
     padding: 10,
     borderRadius: 50,
   },
@@ -105,7 +107,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   editButton: {
-    backgroundColor: '#556B2F', // Dark olive green background
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green background
     padding: 10,
     borderRadius: 5,
     marginRight: 10,

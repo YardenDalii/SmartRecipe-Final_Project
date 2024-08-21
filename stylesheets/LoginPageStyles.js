@@ -1,4 +1,6 @@
 import { StyleSheet } from "react-native";
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -6,7 +8,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: '#FFFDD0', // Cream color for background
+        backgroundColor: BACKGROUND_COLOR, // Cream color for background
     },
     authContainer: {
         width: '80%',
@@ -14,8 +16,8 @@ const styles = StyleSheet.create({
         padding: 16,
         borderRadius: 8,
         borderWidth: 2,
-        borderColor: '#556B2F', // Dark olive green border for the rectangle
-        backgroundColor: '#FFFDD0', // Cream color for frame
+        borderColor: OLIVE_GREEN_COLOR, // Dark olive green border for the rectangle
+        backgroundColor: BACKGROUND_COLOR, // Cream color for frame
     },
     title: {
         fontSize: 24,
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
         width: '100%', // Ensure buttons take the full width of the container
     },
     button: {
-        backgroundColor: '#556B2F', // Dark olive green for buttons
+        backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for buttons
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
         marginBottom: 16, // Closer to the Sign In button
     },
     toggleText: {
-        color: '#556B2F', // Dark olive green for "Need an account"
+        color: OLIVE_GREEN_COLOR, // Dark olive green for "Need an account"
         textAlign: 'center',
     },
     bottomContainer: {
