@@ -566,7 +566,7 @@ const HomePage = () => {
   const navigateToAboutUsPage = () => {
     closeMenuModal();
     setMenuModalVisible(false);
-    navigation.navigate('AboutUs');
+    navigation.navigate('AboutUsPage', {user});
   };
 
   const renderUserRecipeItem = ({ item, index }) => (
