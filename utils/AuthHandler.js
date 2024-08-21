@@ -382,12 +382,11 @@ const App = () => {
               )}
             </Stack.Screen>
             <Stack.Screen name="HomePage" component={HomePage} />
-            <Stack.Screen name="AboutPage" component={AboutPage} />
           </>
         )}
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
         <Stack.Screen name="CamSearchPage" component={CamSearchPage} />
-
+        <Stack.Screen name="AboutPage" component={AboutPage} />
         <Stack.Screen name="MyRecipesPage">
           {(props) => <MyRecipesPage {...props} user={user} />}
         </Stack.Screen>

@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 const profilePageStyles = StyleSheet.create({
   container: {
@@ -18,7 +20,7 @@ const profilePageStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     flex: 1,
-    color: '#556B2F', // Dark olive green for the title text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for the title text
   },
   fullNameTitleEditing: {
     fontSize: 24,
@@ -28,11 +30,11 @@ const profilePageStyles = StyleSheet.create({
     borderRadius: 50,
     paddingHorizontal: 10,
     flex: 1,
-    color: '#556B2F', // Dark olive green for the title text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for the title text
   },
   editButton: {
     backgroundColor: '#FFFFFF', // Match the background color
-    borderColor: '#556B2F', // Dark olive green border
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green border
     borderWidth: 1,
     borderRadius: 5,
     paddingVertical: 3,
@@ -40,7 +42,7 @@ const profilePageStyles = StyleSheet.create({
     marginLeft: 10,
   },
   editButtonText: {
-    color: '#556B2F', // Dark olive green for button text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for button text
     fontSize: 12,
   },
   editButtonContainer: {
@@ -50,7 +52,7 @@ const profilePageStyles = StyleSheet.create({
     marginBottom: 15,
   },
   saveButton: {
-    backgroundColor: '#556B2F', // Dark olive green for save button
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for save button
     borderRadius: 5,
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -75,12 +77,12 @@ const profilePageStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#556B2F', // Dark olive green for labels
+    color: OLIVE_GREEN_COLOR, // Dark olive green for labels
   },
   text: {
     fontSize: 16,
     marginBottom: 15,
-    color: '#556B2F', // Dark olive green for text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for text
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -89,7 +91,7 @@ const profilePageStyles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#556B2F', // Dark olive green for buttons
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for buttons
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -120,7 +122,7 @@ const profilePageStyles = StyleSheet.create({
     width: '100%',
   },
   squareButton: {
-    backgroundColor: '#556B2F', // Dark olive green for square buttons
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for square buttons
     paddingVertical: 20,
     paddingHorizontal: 10,
     borderRadius: 5,

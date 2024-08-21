@@ -1,29 +1,31 @@
 import { StyleSheet } from 'react-native';
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFFDD0', // Cream color for background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for background
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#556B2F', // Dark olive green for text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for text
   },
   predictionContainer: {
     margin: 5,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
     borderRadius: 5,
     width: '100%',
     backgroundColor: '#FFFFFF', // White background for input container
   },
   textInput: {
     height: 100,
-    borderColor: '#556B2F', // Dark olive green for borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
@@ -34,12 +36,12 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: 'bold',
-    color: '#556B2F', // Dark olive green for bold text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for bold text
   },
   searchButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#556B2F', // Dark olive green for buttons
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for buttons
     borderRadius: 5,
   },
   searchButtonText: {
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
   editButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#556B2F', // Dark olive green for edit button
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for edit button
     borderRadius: 5,
   },
   buttonText: {
@@ -76,17 +78,17 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '80%',
-    backgroundColor: '#FFFDD0', // Cream color for modal background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for modal background
     borderRadius: 10,
     padding: 20,
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for modal borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for modal borders
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#556B2F', // Dark olive green for modal title
+    color: OLIVE_GREEN_COLOR, // Dark olive green for modal title
   },
   modalCloseButton: {
     backgroundColor: '#e74c3c', // Red for the close button
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filterButton: {
-    backgroundColor: '#556B2F', // Dark olive green for filter buttons
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for filter buttons
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
     borderRadius: 5,
     width: '100%',
     alignItems: 'center',
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 10,
-    color: '#556B2F', // Dark olive green for recipe title
+    color: OLIVE_GREEN_COLOR, // Dark olive green for recipe title
   },
   recipeUrl: {
     fontSize: 14,
@@ -141,14 +143,14 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#556B2F', // Dark olive green for borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
     borderRadius: 5,
     width: '100%',
     backgroundColor: '#FFFFFF', // White background for input container
   },
   meatInput: {
     height: 50,
-    borderColor: '#556B2F', // Dark olive green for borders
+    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
   meatInputButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#556B2F', // Dark olive green for buttons
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for buttons
     borderRadius: 5,
   },
   meatInputButtonText: {
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
   meatInputLabel: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#556B2F', // Dark olive green for labels
+    color: OLIVE_GREEN_COLOR, // Dark olive green for labels
   },
 });
 

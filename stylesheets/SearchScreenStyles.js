@@ -1,16 +1,18 @@
 import { StyleSheet } from 'react-native';
+import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40,
     padding:16,
-    backgroundColor: '#FFFDD0', // Cream color for background
+    backgroundColor: BACKGROUND_COLOR, // Cream color for background
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#556B2F', // Dark olive green for the title text
+    color: OLIVE_GREEN_COLOR, // Dark olive green for the title text
     marginBottom: 16, // Add space below the title
   },
   searchInput: {
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF', // White background for input fields
   },
   searchButton: {
-    backgroundColor: '#556B2F', // Dark olive green for the button
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for the button
     padding: 10,
     borderRadius: 50,
     marginBottom: 30,
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filterButton: {
-    backgroundColor: '#556B2F', // Dark olive green for filter buttons
+    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for filter buttons
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#556B2F', // Dark olive green for modal titles
+    color: OLIVE_GREEN_COLOR, // Dark olive green for modal titles
     marginBottom: 20,
   },
   modalCloseButton: {
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
   recipeTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#556B2F', // Dark olive green for the recipe title
+    color: OLIVE_GREEN_COLOR, // Dark olive green for the recipe title
     marginVertical: 10,
   },
   recipeUrl: {
