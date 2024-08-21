@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from '../stylesheets/AboutPageStyles';
 
@@ -8,18 +8,33 @@ const AboutPage = () => {
   const route = useRoute();
   const { user } = route.params || {};
 
-  const handleDismiss = () => {
-    navigation.navigate('LoginPage');
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>About Our App</Text>
+      <Text style={styles.title}>how to find the perfect recipe in the shortest time?</Text>
       <Text style={styles.description}>
-        This app provides a variety of features including recipe recommendations based on the time of day, searching for recipes using your camera, and more.
+        ✔ Searching for a recipe by picturing the ingredients you have.
+      </Text>
+      <Text style={styles.description}>
+        ✔ Image recognition model with 80% accuracy.
+      </Text>
+      <Text style={styles.description}>
+        ✔ Recipe Management platform:
+      </Text>
+      <View style={styles.subList}>
+        <Text style={styles.description}>
+          ✔ Option to save favorite recipes.
+        </Text>
+        <Text style={styles.description}>
+          ✔ Option to write down and save your own recipes.
+        </Text>
+      </View>
+      <Text style={styles.description}>
+        ✔ Searching by a recipe name.
       </Text>
       <View style={styles.buttonContainer}>
-        <Button title="Dismiss" onPress={handleDismiss} />
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("LoginPage")}>
+              <Text style={styles.buttonText}>Back To Login Page</Text>
+          </TouchableOpacity>
       </View>
     </View>
   );
