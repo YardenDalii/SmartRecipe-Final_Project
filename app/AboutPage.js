@@ -32,8 +32,8 @@ const AboutPage = () => {
         ✔ Searching by a recipe name.
       </Text>
       <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("LoginPage")}>
-              <Text style={styles.buttonText}>Back To Login Page</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("HomePage", { user })}>
+              <Text style={styles.buttonText}>back</Text>
           </TouchableOpacity>
       </View>
     </View>
