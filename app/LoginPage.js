@@ -45,9 +45,13 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                         <Text style={styles.buttonText}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
+                <View style={styles.toggleTextContainer}>
+                        <Text style={styles.toggleText} onPress={() => switchToReset(navigation)}>
+                            Forgot your password?</Text>
+                </View>
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={() => switchToReset(navigation)}>
-                        <Text style={styles.buttonText}>Forgot your password?</Text>
+                    <TouchableOpacity style={styles.button} onPress={continueWithoutLogin}>
+                        <Text style={styles.buttonText}>Continue without Login</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.toggleTextContainer}>
@@ -55,14 +59,9 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                         Need an account? Sign Up
                     </Text>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={continueWithoutLogin}>
-                        <Text style={styles.buttonText}>Continue without Login</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.toggleTextContainer} onPress={() => navigation.navigate("AboutPage")}>
-                    <TouchableOpacity onPress={() => navigation.navigate("AboutPage")}>
-                        <Text styles={styles.toggleText}>About the app</Text>
+                <View style={styles.buttonContainer} >
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("AboutPage")}>
+                        <Text styles={styles.buttonText}>About the app</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: '#FFFDD0', // Cream color for background
+        backgroundColor: '#F5F5DC', // Cream color for background
     },
     authContainer: {
         width: '80%',
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 2,
         borderColor: '#556B2F', // Dark olive green border for the rectangle
-        backgroundColor: '#FFFDD0', // Cream color for frame
+        backgroundColor: '#F5F5DC', // Cream color for frame
     },
     title: {
         fontSize: 24,

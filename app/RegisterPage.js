@@ -43,7 +43,7 @@ const RegisterPage = ({
     return (
         <View style={styles.container}>
             <View style={styles.authContainer}>
-                <Text style={styles.title}>Sign Up</Text>
+                <Text style={styles.title}>Create Account</Text>
                 <TextInput
                     style={styles.input}
                     value={firstName}
