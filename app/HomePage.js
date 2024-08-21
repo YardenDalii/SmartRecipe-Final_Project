@@ -484,6 +484,16 @@ const HomePage = () => {
   };
 
   const handleAddFavorite = async (user, image, label, uri, url) => {
+    if (!user) {
+      // If the user is not logged in, show an alert
+      Alert.alert(
+        'Sign In Required',
+        'In order to pick a favorite recipe, you need to sign in to the app.',
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+        { cancelable: false }
+      );
+      return;
+    }
     try {
       await addFavRecipe(user, image, label, uri, url);
       Alert.alert(
