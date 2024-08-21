@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button, Linking, Alert, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, Modal, Button, Linking, Alert, ScrollView, Animated } from 'react-native';
 import styles from '../stylesheets/HomePageStyles';
 import menuStyles from '../stylesheets/MenuModalStyles';
 import { Feather } from '@expo/vector-icons';
@@ -8,7 +8,6 @@ import { fetchRecipesByMealType } from '../utils/recipeService';
 import { useNavigation } from '@react-navigation/native';
 import { db, auth, addFavRecipe, fetchUserRecipes } from '../firebase';
 import { onSnapshot, doc } from 'firebase/firestore';
-import { Animated } from 'react-native'; // Import Animated from react-native
 
 
 const HomePage = () => {
