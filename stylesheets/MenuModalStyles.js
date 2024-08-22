@@ -19,6 +19,7 @@ const menuStyles = StyleSheet.create({
     },
     menuButton: {
       padding: 10,
+      color: "#000000",
     },
     overlay: {
       position: 'absolute',

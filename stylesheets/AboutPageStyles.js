@@ -1,42 +1,58 @@
 import { StyleSheet } from 'react-native';
 import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: 40,
     padding: 16,
-    backgroundColor: '#F5F5DC',
+    backgroundColor: BACKGROUND_COLOR,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 20,
+    textAlign: 'left', // Align title text to the left
+    color: OLIVE_GREEN_COLOR,
   },
-  description: {
+  tutorialBox: {
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: '#FFFFFF', 
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  boxTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'left',
+    color: OLIVE_GREEN_COLOR,
+  },
+  boxDescription: {
     fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 32,
+    lineHeight: 22,
+    textAlign: 'left',
   },
   buttonContainer: {
-    marginBottom: 16,
-    width: '100%', // Ensure buttons take the full width of the container
-},
-button: {
-    backgroundColor: '#556B2F', // Dark olive green for buttons
-    padding: 10,
-    borderRadius: 5,
+    marginTop: 20,
     alignItems: 'center',
-    width: '100%', // Full width buttons
-},
-buttonText: {
-    color: '#FFFFFF', // White font for buttons
-    fontSize: 16,
-},
-  subList: {
-    marginLeft: 16, // Indent for sub-list items
+  },
+  button: {
+    backgroundColor: OLIVE_GREEN_COLOR,
+    padding: 15,
+    borderRadius: 30,
+    alignItems: 'center',
+    width: '80%',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
-
 export default styles;

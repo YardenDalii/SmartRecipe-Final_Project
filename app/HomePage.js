@@ -388,7 +388,6 @@ import { db, auth, addFavRecipe, fetchUserRecipes } from '../firebase';
 import { onSnapshot, doc } from 'firebase/firestore';
 import { Animated } from 'react-native'; // Import Animated from react-native
 
-
 const HomePage = () => {
   const [userRecipes, setUserRecipes] = useState([]);
   const [recommendedRecipes, setRecommendedRecipes] = useState([]);
@@ -753,11 +752,11 @@ const HomePage = () => {
             </TouchableOpacity>
             <View style={menuStyles.divider} />
             <View style={menuStyles.menuItem}>
-              <Button title="About" onPress={navigateToAboutPage} color="#fff" />
+              <Button title="About" onPress={navigateToAboutPage} color="#000000" />
             </View>
             <View style={menuStyles.divider} />
             <View style={menuStyles.menuItem}>
-              <Button title="About Us" onPress={navigateToAboutUsPage} color="#fff" />
+              <Button title="About Us" onPress={navigateToAboutUsPage} color="#000000"  />
             </View>
             <View style={menuStyles.divider} />
             <View style={menuStyles.menuItem}>
