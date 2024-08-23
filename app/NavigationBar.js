@@ -111,6 +111,7 @@ import styles from '../stylesheets/NavigationBarStyles';
 import { openCameraAndSendImage } from '../utils/cameraUtils';
 import { auth } from '../firebase'; // Import Firebase auth
 import ProfilePage from './ProfilePage'; 
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 const NavigationBar = ({ user }) => {
   const navigation = useNavigation();
@@ -184,7 +185,7 @@ const NavigationBar = ({ user }) => {
       </TouchableOpacity>
       {loading && (
         <View style={[StyleSheet.absoluteFill, { justifyContent: 'center', alignItems: 'center' }]}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color={DARK_GREEN} />
         </View>
       )}
       <Modal

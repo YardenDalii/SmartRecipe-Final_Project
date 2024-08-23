@@ -1,60 +1,69 @@
 import { StyleSheet } from 'react-native';
-import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+// import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 40,
-        padding: 16,
-        justifyContent: 'flex-start', // Align content to the top
-        backgroundColor: BACKGROUND_COLOR, // Cream color for background
+        paddingHorizontal: 20, // Consistent padding
+        justifyContent: 'flex-start', 
+        backgroundColor: LIGHT_GRAY, // Light gray background
     },
     title: {
-        fontSize: 24,
+        fontSize: 26, // Larger title for emphasis
         fontWeight: 'bold',
-        marginBottom: 20,
-        color: OLIVE_GREEN_COLOR,
-        textAlign: 'left', // Align title text to the left
+        marginBottom: 24,
+        color: DARK_GREEN,
+        textAlign: 'center', // Centered for a balanced look
     },
     description: {
-        fontSize: 16,
-        marginBottom: 8,
-        textAlign: 'left', // Align description text to the left
+        fontSize: 18,
+        marginBottom: 12,
+        textAlign: 'left',
+        color: DARK_GREEN, // Consistent color usage
     },
     subList: {
-        marginLeft: 50,
+        marginLeft: 16, // Slight indentation for sublist
+        marginBottom: 12,
     },
     developerSection: {
-        marginTop: 40, // Space between recipe section and developer section
-        padding: 16,
-        backgroundColor: '#FFFFFF', // Light gray background for developer section
-        borderRadius: 10,
+        marginTop: 40,
+        padding: 18,
+        backgroundColor: WHITE,
+        borderRadius: 12,
+        shadowColor: DARK_GREEN,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+        elevation: 6,
     },
     developerTitle: {
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 10,
-        textAlign: 'left', // Align developer title text to the left
+        textAlign: 'left',
+        color: DARK_GREEN,
     },
     developerDescription: {
         fontSize: 16,
         lineHeight: 24,
-        textAlign: 'left', // Align developer description text to the left
-        backgroundColor: "#FFFFFF",
+        textAlign: 'left',
+        color: DARK_GREEN,
     },
     buttonContainer: {
-        marginTop: 20,
+        marginTop: 30,
         alignItems: 'center',
     },
     button: {
-        backgroundColor: OLIVE_GREEN_COLOR, // Orange button color
-        padding: 15,
-        borderRadius: 30,
+        backgroundColor: DARK_GREEN,
+        padding: 16,
+        borderRadius: 8,
         alignItems: 'center',
-        width: '80%',
+        width: '85%',
     },
     buttonText: {
-        color: '#FFFFFF',
+        color: WHITE,
         fontSize: 18,
         fontWeight: '600',
     },

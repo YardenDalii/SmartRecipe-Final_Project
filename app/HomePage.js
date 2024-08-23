@@ -598,7 +598,7 @@ const HomePage = () => {
         <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
         <Text style={styles.recipeTitle}>{recipe.label}</Text>
         <TouchableOpacity onPress={() => handleOpenURL(recipe.url)}>
-          <Text style={styles.recipeUrl}>{recipe.url}</Text>
+          <Text style={styles.recipeUrl}  numberOfLines={2} ellipsizeMode="tail">{recipe.url}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navIcon} onPress={() => handleAddFavorite(user, recipe.image, recipe.label, recipe.uri, recipe.url)}>
           <Feather name="star" size={24} color="black" />
@@ -728,7 +728,9 @@ const HomePage = () => {
                   <Feather name="arrow-right" size={24} color={currentRecipeIndex === userRecipes.length - 1 ? "#ccc" : "black"} />
                 </TouchableOpacity>
               </View>
-              <Button title="Close" onPress={closeRecipeModal} />
+              <TouchableOpacity style={styles.closeButton} onPress={closeRecipeModal}>
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -751,17 +753,20 @@ const HomePage = () => {
               <Feather name="x" size={24} color="white" />
             </TouchableOpacity>
             <View style={menuStyles.divider} />
-            <View style={menuStyles.menuItem}>
-              <Button title="About" onPress={navigateToAboutPage} color="#000000" />
-            </View>
+              <TouchableOpacity style={menuStyles.menuItem} onPress={navigateToAboutPage}>
+                <Text style={menuStyles.menuItemText}>How to use the camera feature?</Text>
+              </TouchableOpacity>
             <View style={menuStyles.divider} />
-            <View style={menuStyles.menuItem}>
-              <Button title="About Us" onPress={navigateToAboutUsPage} color="#000000"  />
-            </View>
+            <TouchableOpacity style={menuStyles.menuItem} onPress={navigateToAboutUsPage}>
+                <Text style={menuStyles.menuItemText}>About Us</Text>
+              </TouchableOpacity>
             <View style={menuStyles.divider} />
-            <View style={menuStyles.menuItem}>
+            <TouchableOpacity style={menuStyles.menuItemLogout} onPress={handleLogout}>
+              <Text style={menuStyles.menuItemLogoutText}>Logout</Text>
+            </TouchableOpacity>
+            {/* <View style={menuStyles.menuItem}>
               <Button title="Logout" onPress={handleLogout} color="#e74c3c" />
-            </View>
+            </View> */}
           </Animated.View>
         </Modal>
       )}

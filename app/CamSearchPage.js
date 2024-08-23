@@ -134,8 +134,8 @@ const CamSearchPage = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-        <Text style={styles.title}>The Ingredients:</Text>
+      <Text style={styles.title}>The Ingredients:</Text>
+      <ScrollView contentContainerStyle={{ alignItems: 'center' }}> 
         <View style={styles.predictionContainer}>
           <TextInput
             style={[styles.textInput, styles.boldText]}
@@ -158,20 +158,26 @@ const CamSearchPage = () => {
             </TouchableOpacity>
           </View>
         )}
-        <TouchableOpacity style={styles.editButton} onPress={() => setIsEditing(!isEditing)}>
-          <Text style={styles.buttonText}>{isEditing ? 'Done' : 'Edit'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.filterImageButton} onPress={toggleModal}>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.editButton} onPress={() => setIsEditing(!isEditing)}>
+            <Text style={styles.buttonText}>{isEditing ? 'Done' : 'Edit'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.filterButton} onPress={toggleModal}>
           <Image
             source={require('../assets/filter.jpg')}
             style={styles.filterImage}
-          />
-        </TouchableOpacity>
+          />   
+          </TouchableOpacity>
+
+        </View>
         {!isEditing && (
           <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Text style={styles.searchButtonText}>Search</Text>
+            <Text style={styles.buttonText}>Search</Text>
           </TouchableOpacity>
         )}
+
+        
+        
         {updatedRecipes && updatedRecipes.length > 0 && (
           updatedRecipes.map((recipeData, index) => {
             const { recipe } = recipeData;

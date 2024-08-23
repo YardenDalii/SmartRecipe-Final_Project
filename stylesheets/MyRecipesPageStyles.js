@@ -1,18 +1,17 @@
 import { StyleSheet } from 'react-native';
-import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
-
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BACKGROUND_COLOR, // Cream color for background
+    backgroundColor: LIGHT_GRAY, // Light gray for background
     paddingTop: 40,
-    padding:16,
+    padding: 16,
   },
   noRecipesText: {
     textAlign: 'center',
     fontSize: 18,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for text
+    color: DARK_GREEN, // Dark green for text
     marginVertical: 20,
   },
   recipeItemContainer: {
@@ -25,20 +24,20 @@ export default StyleSheet.create({
     flex: 1,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
+    borderColor: DARK_GREEN, // Dark green for borders
     padding: 10,
-    borderRadius: 5,
-    backgroundColor: '#FFFFFF', // White background for recipe items
+    borderRadius: 8,
+    backgroundColor: WHITE, // White background for recipe items
   },
   recipeTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for recipe titles
+    color: DARK_GREEN, // Dark green for recipe titles
   },
   recipeDescription: {
     fontSize: 16,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for recipe descriptions
+    color: DARK_GREEN, // Dark green for recipe descriptions
   },
   modalContainer: {
     flex: 1,
@@ -47,40 +46,42 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: BACKGROUND_COLOR, // Cream color for modal background
+    backgroundColor: WHITE, // White background for modal
     borderRadius: 10,
     padding: 20,
     width: '80%',
     borderWidth: 1,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for modal borders
+    borderColor: DARK_GREEN, // Dark green for modal borders
   },
   modalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for modal title
+    color: DARK_GREEN, // Dark green for modal title
   },
   modalSubtitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for modal subtitle
+    marginBottom: 10,
+    color: LIGHT_GREEN, // Dark green for modal subtitle
   },
   modalText: {
     fontSize: 16,
+    color: DARK_GREEN,
     marginBottom: 5,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for modal text
+    textAlign: 'left', // Align text to the left
   },
   modalCloseButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#e74c3c', // Red color for close button
-    borderRadius: 5,
-    alignSelf: 'flex-end',
+    backgroundColor: '#e74c3c', // Red for close button
+    borderRadius: 8,
+    alignSelf: 'center',
   },
   modalCloseButtonText: {
     fontSize: 18,
-    color: '#FFFFFF', // White text color for close button
+    color: WHITE, // White text for close button
   },
   centerContent: {
     flex: 1,
@@ -89,7 +90,7 @@ export default StyleSheet.create({
   },
   bigPlusButton: {
     alignSelf: 'center',
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for the plus button
+    backgroundColor: DARK_GREEN, // Dark green for the plus button
     padding: 20,
     borderRadius: 50,
     marginBottom: 20,
@@ -97,33 +98,32 @@ export default StyleSheet.create({
   smallPlusButton: {
     alignSelf: 'center',
     marginVertical: 10,
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for small plus button
+    backgroundColor: DARK_GREEN, // Dark green for small plus button
     padding: 10,
     borderRadius: 50,
   },
   smallPlusButtonText: {
-    color: '#FFFFFF', // White text color for plus button text
+    color: WHITE, // White text for plus button
     fontSize: 16,
     textAlign: 'center',
   },
   editButton: {
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green background
+    backgroundColor: DARK_GREEN, // Dark green background
     padding: 10,
-    borderRadius: 5,
-    marginRight: 10,
+    borderRadius: 8,
+    marginVertical: 10, // Add margin for spacing from the list
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   editButtonText: {
-    color: '#FFFFFF', // White text color for edit button
+    color: WHITE, // White text
     fontSize: 16,
+    fontWeight: 'bold',
   },
   deleteButton: {
     backgroundColor: '#e74c3c', // Red background for delete button
     padding: 10,
-    borderRadius: 5,
-  },
-  editButtonText: {
-    color: '#FFFFFF', // White text color
-    fontSize: 16,
+    borderRadius: 8,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -131,6 +131,15 @@ export default StyleSheet.create({
   iconButton: {
     padding: 10, // Padding around the icon
   },
+  modalNavigation: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 20,
+  },
+  navButton: {
+    padding: 10,
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
 });
-
-
