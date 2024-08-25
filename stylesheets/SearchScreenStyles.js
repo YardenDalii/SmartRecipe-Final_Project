@@ -4,13 +4,19 @@ import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsCont
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 50,
     padding: 16,
     backgroundColor: WHITE, // White background
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
+    color: DARK_GREEN, // Dark green for the title text
+    marginBottom: 16, // Add space below the title
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 18,
     color: DARK_GREEN, // Dark green for the title text
     marginBottom: 16, // Add space below the title
   },
@@ -21,27 +27,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     backgroundColor: WHITE, // White background for input fields
-  },
-  searchButton: {
-    backgroundColor: DARK_GREEN, // Dark green for the button
-    padding: 10,
-    borderRadius: 10,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  searchButtonText: {
-    color: WHITE, // White text color
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  filterImageButton: {
-    width: 30,
-    height: 30,
-    marginBottom: 10,
-  },
-  filterImage: {
-    width: '100%',
-    height: '100%',
   },
   modalOverlay: {
     flex: 1,
@@ -73,10 +58,7 @@ const styles = StyleSheet.create({
   modalCloseButtonText: {
     color: WHITE, // White text for the close button
   },
-  filterSection: {
-    marginVertical: 20,
-    marginHorizontal: 20,
-  },
+  
   recipeCard: {
     borderColor: LIGHT_GRAY,
     borderWidth: 1,
@@ -99,6 +81,14 @@ const styles = StyleSheet.create({
   recipeUrl: {
     color: LIGHT_GREEN, // Light green for the URL
     textDecorationLine: 'underline',
+    marginBottom: 10,
+  },
+  iconRow: {
+    flexDirection: 'row',  // Aligns items in a row
+    justifyContent: 'space-between',  // Ensures the filter image is on the left and the edit icon is on the right
+    alignItems: 'center',  // Vertically centers the icons within the row
+    width: '100%',  // Takes the full width of the container
+    paddingHorizontal: 10,  // Add some horizontal padding
     marginBottom: 10,
   },
 });

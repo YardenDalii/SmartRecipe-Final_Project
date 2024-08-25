@@ -6,7 +6,7 @@ import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsCont
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 50,
     padding: 20,
     backgroundColor: LIGHT_GRAY, // Light gray background for consistency
   },
@@ -40,24 +40,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // Space buttons evenly
     marginBottom: 20,
   },
-  editButton: {
-    flex: 1,
-    paddingVertical: 14,
-    backgroundColor: LIGHT_GREEN, // Lighter green for edit button
-    borderRadius: 8,
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  filterButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  filterImage: {
-    width: 50,
-    height: 50,
+  editIcon: {
+    alignItems: 'flex-end',  // Align to the end of the row (right)
   },
   searchButton: {
     marginTop: 5,
@@ -171,6 +155,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: DARK_GREEN, // Dark green for labels
+  },
+  
+  iconRow: {
+    flexDirection: 'row',  // Aligns items in a row
+    justifyContent: 'space-between',  // Ensures the filter image is on the left and the edit icon is on the right
+    alignItems: 'center',  // Vertically centers the icons within the row
+    width: '100%',  // Takes the full width of the container
+    paddingHorizontal: 10,  // Add some horizontal padding
   },
 });
 

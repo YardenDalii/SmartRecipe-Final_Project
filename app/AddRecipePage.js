@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, ScrollView, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import NavigationBar from '../app/NavigationBar';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { createCustomRecipe, updateCustomRecipe } from '../firebase';
-import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 const AddRecipePage = () => {
   const route = useRoute();
@@ -17,13 +16,57 @@ const AddRecipePage = () => {
   );
   const navigation = useNavigation();
 
+  // Validation function for ingredients
+  const validateIngredients = () => {
+    const ingredientLines = ingredients.split('\n');
+    for (let line of ingredientLines) {
+      if (!line.includes(':') || line.split(':').length !== 2) {
+        return false;
+      }
+      const [name, quantity] = line.split(':');
+      if (name.trim() === '' || quantity.trim() === '') {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Validation function for production steps
+  const validateProductionSteps = () => {
+    const steps = productionSteps.split('\n').filter(step => step.trim() !== '');
+    return steps.length > 0;
+  };
+  
+  // Check if recipe name already exists
+  const checkIfRecipeNameExists = async () => {
+    const recipes = await getRecipesByUser(user); // Fetch user's recipes
+    return recipes.some(r => r.recipeName.toLowerCase() === recipeName.toLowerCase());
+  };
+
   const handleSave = async () => {
+    if (!validateIngredients()) {
+      Alert.alert(
+        "Invalid Ingredient Format",
+        "Please enter ingredients in the format: 'Ingredient: Quantity'. Example: 'Tomato: 10g'.",
+        [{ text: "OK" }]
+      );
+      return;
+    }
+
+    if (!validateProductionSteps()) {
+      Alert.alert(
+        "No Production Steps",
+        "Please enter at least one production step.",
+        [{ text: "OK" }]
+      );
+      return;
+    }
+
     const formattedIngredients = ingredients.split('\n').map(ingredient => ({
       name: ingredient.split(':')[0].trim(),
       quantity: ingredient.split(':')[1].trim()
     }));
-    const formattedProductionSteps = productionSteps.split('\n');
-
+    const formattedProductionSteps = productionSteps.split('\n').filter(step => step.trim() !== '');
 
     if (recipe) {
       // Update existing recipe
@@ -31,10 +74,8 @@ const AddRecipePage = () => {
       await updateCustomRecipe(user, recipe.recipeName, updatedRecipe);
     } else {
       // Create new recipe
-        await createCustomRecipe(user, recipeName, formattedIngredients, formattedProductionSteps);
-      
+      await createCustomRecipe(user, recipeName, formattedIngredients, formattedProductionSteps);
     }
-
 
     navigation.navigate("MyRecipesPage");
   };
@@ -52,7 +93,7 @@ const AddRecipePage = () => {
         />
         <TextInput
           style={[styles.input, styles.textArea]}
-          placeholder="Ingredients and Amounts (Example -> Tomato: 10g / Olive Oil: 3spoons) "
+          placeholder="Ingredients and Amounts (Example -> Tomato: 10g / Olive Oil: 3spoons)"
           multiline
           numberOfLines={5}
           value={ingredients}
@@ -74,7 +115,6 @@ const AddRecipePage = () => {
       </ScrollView>
       <NavigationBar user={user} />
     </View>
-    
   );
 };
 

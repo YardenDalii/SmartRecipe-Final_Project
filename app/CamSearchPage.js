@@ -92,6 +92,16 @@ const CamSearchPage = () => {
 
 
   const handleAddFavorite = async (user, image, label, uri, url) => {
+    if (!user) {
+      // If the user is not logged in, show an alert
+      Alert.alert(
+        'Sign In Required',
+        'In order to pick a favorite recipe, you need to sign in to the app.',
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+        { cancelable: false }
+      );
+      return;
+    }
     try {
       await addFavRecipe(user, image, label, uri, url);
       Alert.alert(
@@ -158,23 +168,23 @@ const CamSearchPage = () => {
             </TouchableOpacity>
           </View>
         )}
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.editButton} onPress={() => setIsEditing(!isEditing)}>
-            <Text style={styles.buttonText}>{isEditing ? 'Done' : 'Edit'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton} onPress={toggleModal}>
-          <Image
-            source={require('../assets/filter.jpg')}
-            style={styles.filterImage}
-          />   
+        <View style={styles.iconRow}>
+          <TouchableOpacity onPress={toggleModal} style={styles.transparentButton}>
+            <Feather name="filter" size={24} color="black" />
           </TouchableOpacity>
 
-        </View>
-        {!isEditing && (
-          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Text style={styles.buttonText}>Search</Text>
+          {!isEditing && (
+            <TouchableOpacity onPress={() => console.log('Search pressed')} style={styles.transparentButton}>
+              <Feather name="search" size={24} color="black" />
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity onPress={() => setIsEditing(!isEditing)} style={styles.editIcon}>
+            <Feather name={isEditing ? "check" : "edit"} size={24} color="black" />
           </TouchableOpacity>
-        )}
+          
+        </View>
+       
 
         
         
