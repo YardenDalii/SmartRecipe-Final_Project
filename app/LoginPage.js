@@ -49,10 +49,6 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                         <Text style={styles.buttonText}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <View style={styles.toggleTextContainer}>
-                        <Text style={styles.toggleText} onPress={() => switchToReset(navigation)}>
-                            Forgot your password?</Text>
-                </View> */}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={continueWithoutLogin}>
                         <Text style={styles.buttonText}>Continue without Login</Text>
