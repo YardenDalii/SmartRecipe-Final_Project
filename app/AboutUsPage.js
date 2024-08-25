@@ -41,4 +41,7 @@ const AboutUsPage = ({ navigation, user }) => {
     );
 };
 
+
+
 export default AboutUsPage;
+
