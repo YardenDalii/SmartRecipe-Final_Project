@@ -178,6 +178,8 @@ const ProfilePage = ({ user, onClose }) => {
             value={fullName}
             onChangeText={text => setFullName(text)}
             autoFocus
+            numberOfLines={1} // Ensure it stays on one line
+            ellipsizeMode="tail"  
           />
         ) : (
           <Text style={profilePageStyles.fullNameTitle}>{fullName}</Text>
@@ -204,7 +206,13 @@ const ProfilePage = ({ user, onClose }) => {
       )}
 
       <Text style={profilePageStyles.label}>Email:</Text>
-      <Text style={profilePageStyles.text}>{user.email}</Text>
+      <Text 
+      style={profilePageStyles.text}   
+      numberOfLines={1}
+      ellipsizeMode="tail"
+      >
+        {user.email}
+      </Text>
 
       <View style={profilePageStyles.buttonContainer}>
         <TouchableOpacity style={profilePageStyles.squareButton} onPress={handleMyRecipesPress}>

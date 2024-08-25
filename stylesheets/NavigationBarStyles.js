@@ -63,23 +63,21 @@
 
 
 import { StyleSheet } from 'react-native';
-import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
-
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 const styles = StyleSheet.create({
   navContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around', // Ensure even spacing between icons
+    justifyContent: 'space-around', // Evenly space the icons
     alignItems: 'center',
     width: '100%',
     padding: 10,
-    backgroundColor: BACKGROUND_COLOR, // Cream color for the background
+    backgroundColor: WHITE, // White background for the navigation bar
     borderTopWidth: 1,
-    borderTopColor: OLIVE_GREEN_COLOR, // Dark olive green for the border
+    borderTopColor: DARK_GREEN, // Dark green border on top
   },
   navIcon: {
     padding: 10,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for icons
   },
   modalContainer: {
     flex: 1,
@@ -89,21 +87,22 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '80%',
-    backgroundColor: BACKGROUND_COLOR, // Cream color for the modal background
+    backgroundColor: WHITE, // White background for the modal
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for the border
+    borderColor: DARK_GREEN, // Dark green border for the modal
   },
   closeButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#e74c3c', // Red for the close button
+    backgroundColor: '#e74c3c', // Red background for the close button
     borderRadius: 5,
   },
   closeButtonText: {
-    color: 'white',
+    color: WHITE, // White text for the close button
+    fontWeight: 'bold',
   },
 });
 

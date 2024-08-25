@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import styles from '../stylesheets/AboutPageStyles';
 
@@ -7,36 +7,47 @@ const AboutPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = route.params || {};
-
+    
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>how to find the perfect recipe in the shortest time?</Text>
-      <Text style={styles.description}>
-        ✔ Searching for a recipe by picturing the ingredients you have.
-      </Text>
-      <Text style={styles.description}>
-        ✔ Image recognition model with 80% accuracy.
-      </Text>
-      <Text style={styles.description}>
-        ✔ Recipe Management platform:
-      </Text>
-      <View style={styles.subList}>
-        <Text style={styles.description}>
-          ✔ Option to save favorite recipes.
-        </Text>
-        <Text style={styles.description}>
-          ✔ Option to write down and save your own recipes.
-        </Text>
-      </View>
-      <Text style={styles.description}>
-        ✔ Searching by a recipe name.
-      </Text>
-      <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("HomePage", { user })}>
-              <Text style={styles.buttonText}>back</Text>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <Text style={styles.title}>How to picture your ingredients in the best way:</Text>
+        
+        <View style={styles.tutorialBox}>
+          <Text style={styles.boxTitle}>✔ Flash</Text>
+          <Text style={styles.boxDescription}>
+            The flash is needed to ensure the ingredients are well-lit, which improves the model's recognition accuracy.
+          </Text>
+        </View>
+
+        <View style={styles.tutorialBox}>
+          <Text style={styles.boxTitle}>✔ Distance</Text>
+          <Text style={styles.boxDescription}>
+            The ingredients should be pictured in a way that each one is fully visible without capturing unconnected objects.
+          </Text>
+        </View>
+
+        <View style={styles.tutorialBox}>
+          <Text style={styles.boxTitle}>✔ Amount of Ingredients</Text>
+          <Text style={styles.boxDescription}>
+            The amount of ingredients in a picture is unlimited and doesn't affect the model's accuracy.
+          </Text>
+        </View>
+
+        <View style={styles.tutorialBox}>
+          <Text style={styles.boxTitle}>✔ Background</Text>
+          <Text style={styles.boxDescription}>
+            There is no restriction on the background behind the ingredients, so feel free to use any setting.
+          </Text>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomePage', { user })}>
+            <Text style={styles.buttonText}>Back to Home</Text>
           </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>  
   );
 };
 

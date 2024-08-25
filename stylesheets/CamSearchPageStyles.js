@@ -1,74 +1,60 @@
 import { StyleSheet } from 'react-native';
-import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+// import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
     padding: 20,
-    backgroundColor: BACKGROUND_COLOR, // Cream color for background
+    backgroundColor: LIGHT_GRAY, // Light gray background for consistency
   },
   title: {
-    fontSize: 18,
+    fontSize: 26, // Increase font size for emphasis
     fontWeight: 'bold',
-    marginBottom: 10,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for text
+    marginBottom: 20,
+    color: DARK_GREEN, // Dark green for text consistency
+    textAlign: 'center',
   },
   predictionContainer: {
-    margin: 5,
-    padding: 10,
+    marginBottom: 20,
+    padding: 15,
     borderWidth: 1,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
-    borderRadius: 5,
+    borderColor: DARK_GREEN, // Dark green for borders
+    borderRadius: 8,
     width: '100%',
-    backgroundColor: '#FFFFFF', // White background for input container
+    backgroundColor: WHITE, // White background for input container
   },
   textInput: {
-    height: 100,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
-    borderWidth: 1,
-    borderRadius: 5,
+    height: 120, // Increase height for better input space
+    borderColor: DARK_GREEN, // Dark green for borders
+    borderWidth: 1.5,
+    borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 10,
-    width: '100%',
     textAlignVertical: 'top',
-    color: '#000', // Black text color
+    color: DARK_GREEN, // Dark green text color
   },
-  boldText: {
-    fontWeight: 'bold',
-    color: OLIVE_GREEN_COLOR, // Dark olive green for bold text
+  buttonsContainer: {
+    flexDirection: 'row', // Arrange buttons horizontally
+    justifyContent: 'space-between', // Space buttons evenly
+    marginBottom: 20,
+  },
+  editIcon: {
+    alignItems: 'flex-end',  // Align to the end of the row (right)
   },
   searchButton: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for buttons
-    borderRadius: 5,
-  },
-  searchButtonText: {
-    color: '#FFF', // White text color
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  editButton: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for edit button
-    borderRadius: 5,
+    marginTop: 5,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    backgroundColor: DARK_GREEN, // Dark green for search button
+    borderRadius: 8,
+    alignItems: 'center',
   },
   buttonText: {
-    color: '#FFF', // White text color
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  filterImageButton: {
-    width: 30,
-    height: 30,
-    marginVertical: 10,
-  },
-  filterImage: {
-    width: '100%',
-    height: '100%',
-    padding: 10,
+    color: WHITE, // White text color
+    fontSize: 18,
+    fontWeight: '600',
   },
   modalOverlay: {
     flex: 1,
@@ -78,59 +64,54 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '80%',
-    backgroundColor: BACKGROUND_COLOR, // Cream color for modal background
-    borderRadius: 10,
+    backgroundColor: WHITE, // White for modal background
+    borderRadius: 12,
     padding: 20,
     borderWidth: 1,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for modal borders
+    borderColor: DARK_GREEN, // Dark green for modal borders
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for modal title
+    color: DARK_GREEN, // Dark green for modal title
   },
   modalCloseButton: {
     backgroundColor: '#e74c3c', // Red for the close button
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 20,
+    alignItems: 'center',
   },
   modalCloseButtonText: {
-    color: '#FFF', // White text color
-    textAlign: 'center',
-  },
-  filterButton: {
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for filter buttons
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    color: WHITE, // White text color
+    fontSize: 16,
   },
   filterSection: {
     marginVertical: 20,
     marginHorizontal: 20,
   },
   recipeCard: {
-    marginVertical: 10,
-    padding: 10,
+    marginVertical: 15,
+    padding: 15,
     borderWidth: 1,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
-    borderRadius: 5,
+    borderColor: DARK_GREEN, // Dark green for borders
+    borderRadius: 8,
     width: '100%',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF', // White background for cards
+    backgroundColor: WHITE, // White background for cards
   },
   recipeImage: {
     width: '100%',
     height: 200,
-    borderRadius: 5,
+    borderRadius: 8,
   },
   recipeTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 10,
-    color: OLIVE_GREEN_COLOR, // Dark olive green for recipe title
+    color: DARK_GREEN, // Dark green for recipe title
   },
   recipeUrl: {
     fontSize: 14,
@@ -140,39 +121,48 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   meatInputContainer: {
-    margin: 5,
-    padding: 10,
+    margin: 10,
+    padding: 15,
     borderWidth: 1,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
-    borderRadius: 5,
+    borderColor: DARK_GREEN, // Dark green for borders
+    borderRadius: 8,
     width: '100%',
-    backgroundColor: '#FFFFFF', // White background for input container
+    backgroundColor: WHITE, // White background for input container
   },
   meatInput: {
     height: 50,
-    borderColor: OLIVE_GREEN_COLOR, // Dark olive green for borders
-    borderWidth: 1,
-    borderRadius: 5,
+    borderColor: DARK_GREEN, // Dark green for borders
+    borderWidth: 1.5,
+    borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 16,
     textAlignVertical: 'top',
-    color: '#000', // Black text color
+    color: DARK_GREEN, // Dark green text color
   },
   meatInputButton: {
     marginTop: 10,
-    padding: 10,
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for buttons
-    borderRadius: 5,
+    padding: 16,
+    backgroundColor: DARK_GREEN, // Dark green for buttons
+    borderRadius: 8,
+    alignItems: 'center',
   },
   meatInputButtonText: {
-    color: '#FFF', // White text color
-    fontSize: 16,
-    textAlign: 'center',
+    color: WHITE, // White text color
+    fontSize: 18,
+    fontWeight: '600',
   },
   meatInputLabel: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: OLIVE_GREEN_COLOR, // Dark olive green for labels
+    color: DARK_GREEN, // Dark green for labels
+  },
+  
+  iconRow: {
+    flexDirection: 'row',  // Aligns items in a row
+    justifyContent: 'space-between',  // Ensures the filter image is on the left and the edit icon is on the right
+    alignItems: 'center',  // Vertically centers the icons within the row
+    width: '100%',  // Takes the full width of the container
+    paddingHorizontal: 10,  // Add some horizontal padding
   },
 });
 

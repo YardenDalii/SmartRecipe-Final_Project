@@ -69,6 +69,16 @@ const SearchScreen = ( { route } ) => {
   };
 
   const handleAddFavorite = async (user, image, label, uri, url) => {
+    if (!user) {
+      // If the user is not logged in, show an alert
+      Alert.alert(
+        'Sign In Required',
+        'In order to pick a favorite recipe, you need to sign in to the app.',
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+        { cancelable: false }
+      );
+      return;
+    }
     try {
       await addFavRecipe(user, image, label, uri, url);
       Alert.alert(
@@ -110,23 +120,24 @@ const SearchScreen = ( { route } ) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>General Search Page</Text>
-      <Text>Enter recipe names and ingredient names</Text>
+      <Text style={styles.title}>Looking for a recipe?</Text>
+      <Text style={styles.subtitle}>Enter recipe names and ingredient names</Text>
       <TextInput
         style={styles.searchInput}
         onChangeText={setSearchTerm}
         value={searchTerm}
         multiline
       />
-      <TouchableOpacity style={styles.filterImageButton} onPress={toggleModal}>
-        <Image
-          source={require('../assets/filter.jpg')}
-          style={styles.filterImage}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-        <Text style={styles.searchButtonText}>Search</Text>
-      </TouchableOpacity>
+ 
+      <View style={styles.iconRow}>
+        <TouchableOpacity onPress={toggleModal} style={styles.filterButton}>
+          <Feather name="filter" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSearch} style={styles.filterButton}>
+          <Feather name="search" size={24} color="black" />
+        </TouchableOpacity>
+        
+      </View>
       
 
       <Modal
