@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+// import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 
 const styles = StyleSheet.create({
@@ -7,65 +8,68 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 16,
-        backgroundColor: BACKGROUND_COLOR, // Cream color for background
+        padding: 20,
+        backgroundColor: LIGHT_GRAY, // Light gray background
     },
     authContainer: {
-        width: '80%',
+        width: '90%',
         maxWidth: 400,
-        padding: 16,
-        borderRadius: 8,
+        padding: 25,
+        borderRadius: 15, // More rounded for a modern look
         borderWidth: 2,
-        borderColor: OLIVE_GREEN_COLOR, // Dark olive green border for the rectangle
-        backgroundColor: BACKGROUND_COLOR, // Cream color for frame
+        borderColor: DARK_GREEN,
+        backgroundColor: WHITE, // White for clear visibility
+        shadowColor: DARK_GREEN,
+        shadowOpacity: 0.15,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 10,
+        elevation: 6, // Slightly higher shadow for depth
     },
     title: {
-        fontSize: 24,
-        marginBottom: 16,
+        fontSize: 28, // Larger and more impactful
+        marginBottom: 24,
         textAlign: 'center',
-        fontWeight: 'bold', // Bold title
+        fontWeight: 'bold',
+        color: DARK_GREEN,
     },
     input: {
-        height: 40,
-        borderColor: '#ddd',
-        borderWidth: 1,
-        marginBottom: 16,
-        padding: 8,
-        borderRadius: 4,
-        backgroundColor: '#FFFFFF', // White background for input fields
+        height: 45,
+        borderColor: LIGHT_GREEN, // Use the light green for borders
+        borderWidth: 1.5,
+        marginBottom: 18,
+        padding: 10,
+        borderRadius: 8,
+        backgroundColor: WHITE,
+        color: DARK_GREEN,
     },
     buttonContainer: {
-        marginBottom: 16,
-        width: '100%', // Ensure buttons take the full width of the container
+        marginBottom: 20,
+        width: '100%',
     },
     button: {
-        backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for buttons
-        padding: 10,
-        borderRadius: 5,
+        backgroundColor: DARK_GREEN, // Dark green buttons for emphasis
+        padding: 14,
+        borderRadius: 8,
         alignItems: 'center',
-        width: '100%', // Full width buttons
+        width: '100%',
     },
     buttonText: {
-        color: '#FFFFFF', // White font for buttons
-        fontSize: 16,
+        color: WHITE,
+        fontSize: 18, // Larger font for better readability
+        fontWeight: '600',
     },
     toggleTextContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginBottom: 16, // Closer to the Sign In button
+        marginVertical: 10, // Adjust spacing between toggles
     },
     toggleText: {
-        color: OLIVE_GREEN_COLOR, // Dark olive green for "Need an account"
+        color: LIGHT_GREEN, // Light green for less critical actions
         textAlign: 'center',
-    },
-    bottomContainer: {
-        marginTop: 20,
-    },
-    emailText: {
-        fontSize: 18,
-        textAlign: 'center',
-        marginBottom: 20,
+        fontSize: 16, // Increase font size
+        fontWeight: '500',
     },
 });
+
 
 export default styles;

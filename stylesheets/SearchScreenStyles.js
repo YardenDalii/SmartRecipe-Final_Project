@@ -1,59 +1,32 @@
 import { StyleSheet } from 'react-native';
-import { OLIVE_GREEN_COLOR, BACKGROUND_COLOR } from '../assets/colorsConts';
-
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
-    padding:16,
-    backgroundColor: BACKGROUND_COLOR, // Cream color for background
+    paddingTop: 50,
+    padding: 16,
+    backgroundColor: WHITE, // White background
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: OLIVE_GREEN_COLOR, // Dark olive green for the title text
+    color: DARK_GREEN, // Dark green for the title text
+    marginBottom: 16, // Add space below the title
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 18,
+    color: DARK_GREEN, // Dark green for the title text
     marginBottom: 16, // Add space below the title
   },
   searchInput: {
-    borderColor: '#ccc',
+    borderColor: LIGHT_GRAY,
     borderWidth: 1,
     padding: 10,
     marginBottom: 10,
-    borderRadius: 70,
-    backgroundColor: '#FFFFFF', // White background for input fields
-  },
-  searchButton: {
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for the button
-    padding: 10,
-    borderRadius: 50,
-    marginBottom: 30,
-    marginTop: 10,
-    marginHorizontal: 117,
-    width: '40%', 
-    alignItems: 'center',
-  },
-  searchButtonText: {
-    color: '#FFFFFF', // White text color
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  filterButton: {
-    backgroundColor: OLIVE_GREEN_COLOR, // Dark olive green for filter buttons
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    alignItems: 'center',
-  },
-  filterImageButton: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
-  filterImage: {
-    width: '100%',
-    height: '100%',
-    padding: 10,
+    borderRadius: 10,
+    backgroundColor: WHITE, // White background for input fields
   },
   modalOverlay: {
     flex: 1,
@@ -63,36 +36,35 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '80%',
-    backgroundColor: '#FFFFFF', // Cream color for the modal content
+    backgroundColor: WHITE, // White background for the modal content
     borderRadius: 10,
     padding: 20,
+    borderWidth: 1,
+    borderColor: DARK_GREEN, // Dark green border for the modal
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: OLIVE_GREEN_COLOR, // Dark olive green for modal titles
+    color: DARK_GREEN, // Dark green for modal titles
     marginBottom: 20,
   },
   modalCloseButton: {
-    backgroundColor: '#dc3545', // Red for the close button
+    backgroundColor: '#e74c3c', // Red for the close button
     padding: 10,
     borderRadius: 5,
     marginTop: 10,
+    alignItems: 'center',
   },
   modalCloseButtonText: {
-    color: '#FFFFFF', // White text for the close button
-    textAlign: 'center',
+    color: WHITE, // White text for the close button
   },
-  filterSection: {
-    marginVertical: 20,
-    marginHorizontal: 20,
-  },
+  
   recipeCard: {
-    borderColor: '#ccc',
+    borderColor: LIGHT_GRAY,
     borderWidth: 1,
     padding: 10,
     marginBottom: 10,
-    backgroundColor: '#FFFFFF', // White background for cards
+    backgroundColor: WHITE, // White background for cards
     borderRadius: 8, // Rounded corners for consistency
   },
   recipeImage: {
@@ -103,12 +75,21 @@ const styles = StyleSheet.create({
   recipeTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: OLIVE_GREEN_COLOR, // Dark olive green for the recipe title
+    color: DARK_GREEN, // Dark green for the recipe title
     marginVertical: 10,
   },
   recipeUrl: {
-    color: '#007BFF',
+    color: LIGHT_GREEN, // Light green for the URL
     textDecorationLine: 'underline',
+    marginBottom: 10,
+  },
+  iconRow: {
+    flexDirection: 'row',  // Aligns items in a row
+    justifyContent: 'space-between',  // Ensures the filter image is on the left and the edit icon is on the right
+    alignItems: 'center',  // Vertically centers the icons within the row
+    width: '100%',  // Takes the full width of the container
+    paddingHorizontal: 10,  // Add some horizontal padding
+    marginBottom: 10,
   },
 });
 

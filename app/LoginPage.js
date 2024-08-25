@@ -24,7 +24,7 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
     return (
         <View style={styles.container}>
             <View style={styles.authContainer}>
-                <Text style={styles.title}>Login</Text>
+                <Text style={styles.title}>Smart Recipe</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Email"
@@ -48,6 +48,10 @@ const LoginPage = ({ email, setEmail, password, setPassword, handleLogin, switch
                     <TouchableOpacity style={styles.button} onPress={() => handleLogin(navigation)}>
                         <Text style={styles.buttonText}>Sign In</Text>
                     </TouchableOpacity>
+                </View>
+                <View style={styles.toggleTextContainer}>
+                        <Text style={styles.toggleText} onPress={() => switchToReset(navigation)}>
+                            Forgot your password?</Text>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={continueWithoutLogin}>

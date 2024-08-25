@@ -96,70 +96,93 @@ const sendImageToRoboflow = async (base64Image) => {
       }
     });
 
-    const miniModelResponse = await axios({
-      method: "POST",
-      url: 'https://detect.roboflow.com/smartrecipe-smaller-model/1',
-      params: {
-        api_key: 'exdYNCvMG7gXuZbha3yL'
-      },
-      data: base64Image,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const predictions = response.data["predictions"];
 
-    // Log responses for debugging
-    console.log('General Model Response:', generalModelResponse.data);
-    console.log('Mini Model Response:', miniModelResponse.data);
-
-    const generalModelPredictions = generalModelResponse.data["predictions"];
-    const miniModelPredictions = miniModelResponse.data["predictions"];
-
-    if (!generalModelPredictions || !miniModelPredictions) {
-      throw new Error('Predictions are missing in the response');
-    }
-    
-    const predictionsMap = new Map();
-    let beefDetected = false;
-
-    for (const prediction of generalModelPredictions) {
-      console.log('General Model Prediction:', prediction); // Debugging log
-      if (prediction.confidence >= 0.6) {
-        if (prediction.class === 'beef') {
-          beefDetected = true;
+    if (predictions && predictions.length > 0) {
+      const predictionsMap = new Map();
+      predictions.forEach(prediction => {
+        if (prediction.confidence >= 0.6) {
+          const existingPrediction = predictionsMap.get(prediction.class);
+          if (!existingPrediction || prediction.confidence > existingPrediction.confidence) {
+            predictionsMap.set(prediction.class, {
+              class: prediction.class,
+              confidence: prediction.confidence.toFixed(2)
+            });
+          }
         }
-        
-        const existingPrediction = predictionsMap.get(prediction.class);
-        if (!existingPrediction || prediction.confidence > existingPrediction.confidence) {
-          predictionsMap.set(prediction.class, {
-            class: prediction.class,
-            confidence: prediction.confidence?.toFixed(2) // Add safe navigation
-          });
-        }
-      }
-    }
-
-    for (const miniPrediction of miniModelPredictions) {
-      if (miniPrediction.class === 'minced-meat' && miniPrediction.confidence > 0.5) {
-        // If "minced meat" is detected, it should override "beef"
-        if (predictionsMap.has('beef') && miniPrediction.confidence > predictionsMap.get('beef').confidence) {
-          predictionsMap.delete('beef'); // Remove beef if it's less confident
-        }
-        predictionsMap.set('minced-meat', {
-          class: 'minced-meat',
-          confidence: miniPrediction.confidence.toFixed(2)
-        });
-        beefDetected = false; // Ensure beef is not considered detected
-      }
-    }
-    console.log('predictionsMap', predictionsMap);
+      });
+          
     const classes = Array.from(predictionsMap.values()).map(prediction => prediction.class);
     const recipes = await fetchRecipesFromEdamam(classes);
     const updatedPredictions = Array.from(predictionsMap.values());
-
-    console.log('updatedPredictions', updatedPredictions);
-
     return { predictions: updatedPredictions, recipes };
+    }else{
+      return { predictions: [], recipes: [] };
+    }
+//     const miniModelResponse = await axios({
+//       method: "POST",
+//       url: 'https://detect.roboflow.com/smartrecipe-smaller-model/1',
+//       params: {
+//         api_key: 'exdYNCvMG7gXuZbha3yL'
+//       },
+//       data: base64Image,
+//       headers: {
+//         'Content-Type': 'application/json'
+//       }
+//     });
+
+//     // Log responses for debugging
+//     console.log('General Model Response:', generalModelResponse.data);
+//     console.log('Mini Model Response:', miniModelResponse.data);
+
+//     const generalModelPredictions = generalModelResponse.data["predictions"];
+//     const miniModelPredictions = miniModelResponse.data["predictions"];
+
+//     if (!generalModelPredictions || !miniModelPredictions) {
+//       throw new Error('Predictions are missing in the response');
+//     }
+    
+//     const predictionsMap = new Map();
+//     let beefDetected = false;
+
+//     for (const prediction of generalModelPredictions) {
+//       console.log('General Model Prediction:', prediction); // Debugging log
+//       if (prediction.confidence >= 0.6) {
+//         if (prediction.class === 'beef') {
+//           beefDetected = true;
+//         }
+        
+//         const existingPrediction = predictionsMap.get(prediction.class);
+//         if (!existingPrediction || prediction.confidence > existingPrediction.confidence) {
+//           predictionsMap.set(prediction.class, {
+//             class: prediction.class,
+//             confidence: prediction.confidence?.toFixed(2) // Add safe navigation
+//           });
+//         }
+//       }
+//     }
+
+//     for (const miniPrediction of miniModelPredictions) {
+//       if (miniPrediction.class === 'minced-meat' && miniPrediction.confidence > 0.5) {
+//         // If "minced meat" is detected, it should override "beef"
+//         if (predictionsMap.has('beef') && miniPrediction.confidence > predictionsMap.get('beef').confidence) {
+//           predictionsMap.delete('beef'); // Remove beef if it's less confident
+//         }
+//         predictionsMap.set('minced-meat', {
+//           class: 'minced-meat',
+//           confidence: miniPrediction.confidence.toFixed(2)
+//         });
+//         beefDetected = false; // Ensure beef is not considered detected
+//       }
+//     }
+//     console.log('predictionsMap', predictionsMap);
+//     const classes = Array.from(predictionsMap.values()).map(prediction => prediction.class);
+//     const recipes = await fetchRecipesFromEdamam(classes);
+//     const updatedPredictions = Array.from(predictionsMap.values());
+
+//     console.log('updatedPredictions', updatedPredictions);
+
+//     return { predictions: updatedPredictions, recipes };
   } catch (error) {
     console.error('Error sending image to Roboflow:', error);
     Alert.alert('Error', 'Failed to send image to Roboflow.');

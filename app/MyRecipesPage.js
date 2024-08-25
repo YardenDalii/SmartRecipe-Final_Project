@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, Modal, TouchableOpacity, ActivityIndicator, Alert, Button } from 'react-native';
+import { View, Text, FlatList, Modal, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-import styles from '../stylesheets/MyRecipesPageStyles'; // Import the main page styles
-import modalStyles from '../stylesheets/ModalStyles'; // Import the modal styles
+import styles from '../stylesheets/MyRecipesPageStyles';
+import { DARK_GREEN, LIGHT_GREEN, WHITE, LIGHT_GRAY } from '../assets/colorsConts';
 
-import { fetchUserRecipes, deleteCustomRecipe } from '../firebase'; // Make sure these functions are correctly implemented in firebase.js
-import { auth } from '../firebase'; // Ensure correct path to your firebase setup
+import { fetchUserRecipes, deleteCustomRecipe } from '../firebase';
+import { auth } from '../firebase';
 import NavigationBar from './NavigationBar';
 
 const MyRecipesPage = ({ user }) => {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(0); // Track the index of the current recipe
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const navigation = useNavigation();
@@ -22,19 +23,13 @@ const MyRecipesPage = ({ user }) => {
         const fetchedRecipes = await fetchUserRecipes(user);
         setRecipes(fetchedRecipes);
       } catch (error) {
-        Alert.alert(
-          "Error",
-          `Error fetching user recipes: ${error.message}`,
-          [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-          { cancelable: false }
-        );
-        // console.error('Error fetching user recipes:', error);
+        Alert.alert("Error", `Error fetching user recipes: ${error.message}`);
       } finally {
         setLoading(false);
       }
     } else {
       setLoading(false);
-      navigation.navigate('LoginPage'); // Redirect to login if user is not authenticated
+      navigation.navigate('LoginPage');
     }
   };
 
@@ -45,69 +40,66 @@ const MyRecipesPage = ({ user }) => {
   useFocusEffect(
     useCallback(() => {
       loadRecipes();
-      setEditMode(false); // Reset edit mode when the component is focused
+      setEditMode(false);
     }, [])
   );
 
-  const handleRecipePress = (recipe) => {
+  const handleRecipePress = (recipe, index) => {
     if (editMode) {
       navigation.navigate('AddRecipePage', { recipe, user });
     } else {
       setSelectedRecipe(recipe);
+      setSelectedRecipeIndex(index); // Set the current recipe index
     }
   };
 
   const closeModal = () => {
     setSelectedRecipe(null);
+    setSelectedRecipeIndex(0); // Reset index on close
+  };
+
+  const navigateRecipe = (direction) => {
+    const newIndex = selectedRecipeIndex + direction;
+    if (newIndex >= 0 && newIndex < recipes.length) {
+      setSelectedRecipeIndex(newIndex);
+      setSelectedRecipe(recipes[newIndex]); // Update the selected recipe based on the new index
+    }
   };
 
   const confirmDelete = (recipe) => {
-    console.log("RECIPE ID: ", recipe.recipeName);
     Alert.alert(
       "Are you sure?",
       "Do you really want to delete this recipe?",
       [
-        {
-          text: "No",
-          style: "cancel"
-        },
-        {
-          text: "Yes",
-          onPress: () => handleDelete(recipe.recipeName)
-        }
+        { text: "No", style: "cancel" },
+        { text: "Yes", onPress: () => handleDelete(recipe.recipeName) }
       ]
     );
   };
 
   const handleDelete = async (recipeName) => {
     try {
-      await deleteCustomRecipe(user, recipeName); // Ensure deleteRecipe is correctly implemented in firebase.js
+      await deleteCustomRecipe(user, recipeName);
       setRecipes(recipes.filter(recipe => recipe.recipeName !== recipeName));
     } catch (error) {
-      Alert.alert(
-        "Error",
-        `Error deleting recipe: ${error.message}`,
-        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-        { cancelable: false }
-      );
-      // console.error('Error deleting recipe:', error);
+      Alert.alert("Error", `Error deleting recipe: ${error.message}`);
     }
   };
 
-  const renderRecipeItem = ({ item }) => (
+  const renderRecipeItem = ({ item, index }) => (
     <View style={styles.recipeItemContainer}>
-      <TouchableOpacity style={styles.recipeItem} onPress={() => handleRecipePress(item)}>
+      <TouchableOpacity style={styles.recipeItem} onPress={() => handleRecipePress(item, index)}>
         <Text style={styles.recipeTitle}>{item.recipeName}</Text>
         <View style={styles.recipeDescription}>
-          {item.ingredients.map((ingredient, index) => (
-            <Text key={index}>{ingredient.name}: {ingredient.quantity}</Text>
+          {item.ingredients.map((ingredient, i) => (
+            <Text key={i}>{ingredient.name}: {ingredient.quantity}</Text>
           ))}
         </View>
       </TouchableOpacity>
       {editMode && (
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButton} onPress={() => handleRecipePress(item)}>
-            <Feather name="edit" size={24} color="#556B2F" />
+          <TouchableOpacity style={styles.iconButton} onPress={() => handleRecipePress(item, index)}>
+            <Feather name="edit" size={24} color={DARK_GREEN} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton} onPress={() => confirmDelete(item)}>
             <Feather name="trash-2" size={24} color="#e74c3c" />
@@ -122,22 +114,43 @@ const MyRecipesPage = ({ user }) => {
 
     return (
       <Modal visible={!!selectedRecipe} animationType="slide" transparent>
-        <View style={modalStyles.modalContainer}>
-          <View style={modalStyles.modalContent}>
-            <Text style={modalStyles.modalTitle}>{selectedRecipe.recipeName}</Text>
-            <Text style={modalStyles.modalSubtitle}>Ingredients:</Text>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{selectedRecipe.recipeName}</Text>
+            <Text style={styles.modalSubtitle}>Ingredients:</Text>
             <FlatList
               data={selectedRecipe.ingredients}
-              renderItem={({ item }) => <Text style={modalStyles.modalText}>{item.name}: {item.quantity}</Text>}
+              renderItem={({ item, index }) => (
+                <Text style={styles.modalText}>{`${index + 1}. ${item.name}: ${item.quantity}`}</Text>
+              )}
+              keyExtractor={(item, index) => `ingredient-${index}`}
             />
-            <Text style={modalStyles.modalSubtitle}>Steps:</Text>
+            <Text style={styles.modalSubtitle}>Steps:</Text>
             <FlatList
               data={selectedRecipe.productionSteps}
-              renderItem={({ item }) => <Text style={modalStyles.modalText}>{item}</Text>}
+              renderItem={({ item, index }) => (
+                <Text style={styles.modalText}>{`${index + 1}. ${item}`}</Text>
+              )}
               keyExtractor={(item, index) => `step-${index}`}
             />
-            <TouchableOpacity style={modalStyles.modalCloseButton} onPress={closeModal}>
-              <Text style={modalStyles.modalCloseButtonText}>Close</Text>
+            <View style={styles.modalNavigation}>
+              <TouchableOpacity
+                style={[styles.navButton, selectedRecipeIndex === 0 && styles.disabledButton]}
+                onPress={() => navigateRecipe(-1)}
+                disabled={selectedRecipeIndex === 0}
+              >
+                <Feather name="arrow-left" size={24} color={selectedRecipeIndex === 0 ? LIGHT_GRAY : DARK_GREEN} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.navButton, selectedRecipeIndex === recipes.length - 1 && styles.disabledButton]}
+                onPress={() => navigateRecipe(1)}
+                disabled={selectedRecipeIndex === recipes.length - 1}
+              >
+                <Feather name="arrow-right" size={24} color={selectedRecipeIndex === recipes.length - 1 ? LIGHT_GRAY : DARK_GREEN} />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.modalCloseButton} onPress={closeModal}>
+              <Text style={styles.modalCloseButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -148,7 +161,7 @@ const MyRecipesPage = ({ user }) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={DARK_GREEN} />
       </View>
     );
   }
@@ -158,24 +171,22 @@ const MyRecipesPage = ({ user }) => {
       {recipes.length === 0 ? (
         <View style={styles.centerContent}>
           <TouchableOpacity style={styles.bigPlusButton} onPress={() => navigation.navigate('AddRecipePage', { user })}>
-            <Feather name="plus" size={50} color="white" />
+            <Feather name="plus" size={50} color={WHITE} />
           </TouchableOpacity>
           <Text style={styles.noRecipesText}>There are no recipes saved, to add a recipe click the plus</Text>
         </View>
       ) : (
         <>
           <TouchableOpacity style={styles.smallPlusButton} onPress={() => navigation.navigate('AddRecipePage', { user })}>
-            <Feather name="plus" size={24} color="white" />
+            <Feather name="plus" size={24} color={WHITE} />
           </TouchableOpacity>
           <FlatList
-          data={recipes}
-          renderItem={renderRecipeItem}
-          keyExtractor={(item) => item.recipeName}
-          contentContainerStyle={{ flexGrow: 1 }}
-        />
+            data={recipes}
+            renderItem={renderRecipeItem}
+            keyExtractor={(item) => item.recipeName}
+            contentContainerStyle={{ flexGrow: 1 }}
+          />
         </>
-
-        
       )}
       {renderModalContent()}
       {recipes.length > 0 && (
