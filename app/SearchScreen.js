@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { View, TextInput, ScrollView, TouchableOpacity, Text, Image, Linking, Modal } from 'react-native';
 import styles from '../stylesheets/SearchScreenStyles';
@@ -23,6 +23,7 @@ const SearchScreen = ( { route } ) => {
   console.log("user info 2", user);
 
   const handleSearch = async () => {
+    Keyboard.dismiss();
     try {
       const recipes = await fetchRecipesFromEdamam([], searchTerm, 2, selectedFilters);
       setUpdatedRecipes(recipes);
@@ -126,7 +127,9 @@ const SearchScreen = ( { route } ) => {
         style={styles.searchInput}
         onChangeText={setSearchTerm}
         value={searchTerm}
-        multiline
+        // multiline
+        returnKeyType="search"
+        onSubmitEditing={handleSearch}
       />
  
       <View style={styles.iconRow}>
