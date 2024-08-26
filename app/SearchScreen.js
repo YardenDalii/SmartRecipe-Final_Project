@@ -121,7 +121,7 @@ const SearchScreen = ( { route } ) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Looking for a recipe?</Text>
-      <Text style={styles.subtitle}>Enter recipe names and ingredient names</Text>
+      <Text style={styles.subtitle}>Enter the Name of the Recipe or the Ingredients names:</Text>
       <TextInput
         style={styles.searchInput}
         onChangeText={setSearchTerm}
