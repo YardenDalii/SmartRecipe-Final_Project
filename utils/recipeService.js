@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 
-const appId = 'c16fb94a';
-const appKey = '12d51a7d52eb0848281f09c84de1bc11';
+// const appId = 'c16fb94a'; // Ester
+// const appKey = '12d51a7d52eb0848281f09c84de1bc11'; // Ester
+const appId = '9c1cfdae';
+const appKey = '7c151817389f2a524a4feef22dbd7800';
 const baseUrl = `https://api.edamam.com/search`;
 const filters = {"diet": ["none","balanced", "high-fiber", "high-protein", "low-carb", "low-fat", "low-sodium"],
   "health": ["none","alcohol-cocktail","alcohol-free","celery-free","crustacean-free","dairy-free","DASH","egg-free","fish-free","fodmap-free","gluten-free",
