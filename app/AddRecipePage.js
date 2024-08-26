@@ -68,17 +68,28 @@ const AddRecipePage = () => {
     }));
     const formattedProductionSteps = productionSteps.split('\n').filter(step => step.trim() !== '');
 
-    if (recipe) {
-      // Update existing recipe
-      const updatedRecipe = { ...recipe, recipeName, ingredients: formattedIngredients, productionSteps: formattedProductionSteps };
-      await updateCustomRecipe(user, recipe.recipeName, updatedRecipe);
-    } else {
-      // Create new recipe
-      await createCustomRecipe(user, recipeName, formattedIngredients, formattedProductionSteps);
+    try {
+        if (recipe) {
+            // Update existing recipe
+            const updatedRecipe = { ...recipe, recipeName, ingredients: formattedIngredients, productionSteps: formattedProductionSteps };
+            await updateCustomRecipe(user, recipe.recipeName, updatedRecipe);
+        } else {
+            // Create new recipe
+            await createCustomRecipe(user, recipeName, formattedIngredients, formattedProductionSteps);
+        }
+        // Navigate only if there were no errors
+        navigation.navigate("MyRecipesPage");
+    } catch (error) {
+        // Handle error and show an alert
+        Alert.alert(
+            "Error",
+            error.message,
+            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+            { cancelable: false }
+        );
+        // Do not navigate if there was an error
     }
-
-    navigation.navigate("MyRecipesPage");
-  };
+};
 
   return (
     <View style={styles.container}>

@@ -76,7 +76,7 @@ const ProfilePage = ({ user, onClose }) => {
   };
 
   const handleCancelPress = () => {
-    setFullName(originalFullName);
+    setFullName(fullName);
     setIsEditing(false);
   };
 

@@ -188,13 +188,7 @@ const createCustomRecipe = async (user, recipeName, ingredients, productionSteps
             const recipeExists = existingRecipes.some(recipe => recipe.recipeName === recipeName);
 
             if (recipeExists) {
-                Alert.alert(
-                    "Can't save recipe",
-                    `${recipeName} already exists.`,
-                    [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-                    { cancelable: false }
-                );
-                return;
+                throw new Error(`${recipeName} already exists.`);
             }
 
             await updateDoc(docRef, {
@@ -207,13 +201,6 @@ const createCustomRecipe = async (user, recipeName, ingredients, productionSteps
                 createdRecipes: increment(1)
             });
 
-            Alert.alert(
-                'Recipe Saved!',
-                `${recipeName} has been saved successfully.`,
-                [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-                { cancelable: false }
-            );
-
             console.log("Recipe added successfully!");
         } else {
             await setDoc(docRef, {
@@ -223,15 +210,11 @@ const createCustomRecipe = async (user, recipeName, ingredients, productionSteps
             console.log("Recipe document created and added successfully!");
         }
     } catch (error) {
-        Alert.alert(
-            "Error",
-            `Error adding recipe: ${error.message}`,
-            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-            { cancelable: false }
-        );
-        // console.error("Error adding recipe: ", error.message);
+        // If you want to propagate the error to the caller, rethrow it
+        throw new Error(`Error adding recipe: ${error.message}`);
     }
 };
+
 
 const updateCustomRecipe = async (user, oldRecipeName, newRecipe) => {
     if (!user || !user.uid) {
@@ -244,7 +227,19 @@ const updateCustomRecipe = async (user, oldRecipeName, newRecipe) => {
 
         if (docSnap.exists()) {
             const userData = docSnap.data();
-            const updatedRecipes = userData.recipes.map(recipe =>
+            const existingRecipes = userData.recipes || [];
+
+            // Check if the new recipe name already exists and is different from the old name
+            const nameConflict = existingRecipes.some(recipe =>
+                recipe.recipeName === newRecipe.recipeName && recipe.recipeName !== oldRecipeName
+            );
+
+            if (nameConflict) {
+                throw new Error(`A recipe with the name "${newRecipe.recipeName}" already exists. Please choose a different name.`);
+            }
+
+            // Proceed to update the recipe
+            const updatedRecipes = existingRecipes.map(recipe =>
                 recipe.recipeName === oldRecipeName ? newRecipe : recipe
             );
 
@@ -257,13 +252,8 @@ const updateCustomRecipe = async (user, oldRecipeName, newRecipe) => {
             console.log("No custom recipes found for this user.");
         }
     } catch (error) {
-        Alert.alert(
-            "Error",
-            `Error updating recipe: ${error.message}`,
-            [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-            { cancelable: false }
-        );
-        // console.error("Error updating recipe: ", error.message);
+        // Re-throw the error to handle it in the calling function, or show an alert here if necessary
+        throw new Error(`Error updating recipe: ${error.message}`);
     }
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { View, TextInput, ScrollView, TouchableOpacity, Text, Image, Linking, Modal } from 'react-native';
+import { View, TextInput, ScrollView, TouchableOpacity, Text, Image, Linking, Modal, SafeAreaView } from 'react-native';
 import styles from '../stylesheets/SearchScreenStyles';
 import NavigationBar from '../app/NavigationBar';
 import { fetchRecipesFromEdamam, filters } from '../utils/recipeService';
@@ -23,6 +23,7 @@ const SearchScreen = ( { route } ) => {
   console.log("user info 2", user);
 
   const handleSearch = async () => {
+    Keyboard.dismiss();
     try {
       const recipes = await fetchRecipesFromEdamam([], searchTerm, 2, selectedFilters);
       setUpdatedRecipes(recipes);
@@ -126,7 +127,9 @@ const SearchScreen = ( { route } ) => {
         style={styles.searchInput}
         onChangeText={setSearchTerm}
         value={searchTerm}
-        multiline
+        // multiline
+        returnKeyType="search"
+        onSubmitEditing={handleSearch}
       />
  
       <View style={styles.iconRow}>
@@ -140,7 +143,7 @@ const SearchScreen = ( { route } ) => {
       </View>
       
 
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={isModalVisible}
@@ -169,7 +172,44 @@ const SearchScreen = ( { route } ) => {
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
+      <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isModalVisible}
+      onRequestClose={toggleModal}
+    >
+      <View style={styles.modalOverlay}>
+        <SafeAreaView style={styles.modalContentContainer}>
+          <View style={styles.modalContent}>
+            <ScrollView contentContainerStyle={styles.modalScrollContent}>
+            <Text style={styles.modalTitle}>Select Filters</Text>
+              {Object.keys(filters).map((category, index) => (
+                <View key={category} style={styles.filterSection}>
+                  {index < Object.keys(filters).length && (
+                    <View style={styles.divider} />
+                  )}
+                  <Text style={styles.filterTitle}>{category}</Text>
+                  <Picker
+                    selectedValue={selectedFilters[category]}
+                    // style={styles.picker} // Add style for full width
+                    onValueChange={value => handleFilterChange(category, value)}
+                  >
+                    {filters[category].map(option => (
+                      <Picker.Item key={option} label={option} value={option} />
+                    ))}
+                  </Picker>
+                  
+                </View>
+              ))}
+            </ScrollView>
+            <TouchableOpacity style={styles.modalCloseButton} onPress={toggleModal}>
+              <Text style={styles.modalCloseButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </View>
+    </Modal>
 
       <ScrollView>
         {updatedRecipes && updatedRecipes.length > 0 && (

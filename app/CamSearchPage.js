@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Linking, Modal } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Image, Linking, Modal, SafeAreaView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { fetchRecipesFromEdamam, filters } from '../utils/recipeService';
 import styles from '../stylesheets/CamSearchPageStyles';
@@ -207,26 +207,32 @@ const CamSearchPage = () => {
         )}
       </ScrollView>
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={toggleModal}
-      >
-        <View style={styles.modalOverlay}>
+      animationType="slide"
+      transparent={true}
+      visible={isModalVisible}
+      onRequestClose={toggleModal}
+    >
+      <View style={styles.modalOverlay}>
+        <SafeAreaView style={styles.modalContentContainer}>
           <View style={styles.modalContent}>
+            <ScrollView contentContainerStyle={styles.modalScrollContent}>
             <Text style={styles.modalTitle}>Select Filters</Text>
-            <ScrollView>
-              {Object.keys(filters).map(category => (
+              {Object.keys(filters).map((category, index) => (
                 <View key={category} style={styles.filterSection}>
+                  {index < Object.keys(filters).length && (
+                    <View style={styles.divider} />
+                  )}
                   <Text style={styles.filterTitle}>{category}</Text>
                   <Picker
                     selectedValue={selectedFilters[category]}
+                    // style={styles.picker} // Add style for full width
                     onValueChange={value => handleFilterChange(category, value)}
                   >
                     {filters[category].map(option => (
                       <Picker.Item key={option} label={option} value={option} />
                     ))}
                   </Picker>
+                  
                 </View>
               ))}
             </ScrollView>
@@ -234,8 +240,9 @@ const CamSearchPage = () => {
               <Text style={styles.modalCloseButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
-        </View>
-      </Modal>
+        </SafeAreaView>
+      </View>
+    </Modal>
       <NavigationBar user={user} />
     </View>
   );

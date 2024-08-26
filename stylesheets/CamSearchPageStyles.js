@@ -62,34 +62,63 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
   },
-  modalContent: {
-    width: '80%',
-    backgroundColor: WHITE, // White for modal background
-    borderRadius: 12,
+  modalContentContainer: {
+    width: '90%', // More flexible width
+    maxHeight: '80%', // Limit the maximum height to avoid going off-screen
+    backgroundColor: WHITE, // White background for the modal content
+    borderRadius: 10,
     padding: 20,
     borderWidth: 1,
-    borderColor: DARK_GREEN, // Dark green for modal borders
+    borderColor: DARK_GREEN, // Dark green border for the modal
+    // justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '100%', // Full width within container
+    // alignItems: 'center', // Center the content
+  },
+  modalScrollContent: {
+    width: '100%', // Ensure full width
+    paddingBottom: 20, // Ensure there's some space at the bottom
   },
   modalTitle: {
+    paddingTop: 10,
     fontSize: 20,
     fontWeight: 'bold',
+    color: DARK_GREEN, // Dark green for modal titles
     marginBottom: 20,
-    color: DARK_GREEN, // Dark green for modal title
+    textAlign: 'center', // Center the title text
   },
   modalCloseButton: {
     backgroundColor: '#e74c3c', // Red for the close button
-    padding: 12,
-    borderRadius: 8,
-    marginTop: 20,
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
     alignItems: 'center',
   },
   modalCloseButtonText: {
-    color: WHITE, // White text color
-    fontSize: 16,
+    color: WHITE, // White text for the close button
   },
+
   filterSection: {
-    marginVertical: 20,
-    marginHorizontal: 20,
+    paddingTop: 15,
+    width: '100%', // Full width for each section
+    paddingHorizontal: 10, // Padding to ensure text isn't right up against the edge
+  },
+  filterTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: DARK_GREEN, // Dark green for filter titles
+    alignSelf: 'center',
+  },
+  picker: {
+    width: '100', // Ensures picker uses full width of the container
+  },
+  divider: {
+    height: 1, // Thickness of the divider
+    backgroundColor: LIGHT_GRAY, // Color of the divider
+    marginVertical: 10, // Space around the divider
+    width: '100%', // Full width
   },
   recipeCard: {
     marginVertical: 15,
