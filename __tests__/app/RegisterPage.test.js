@@ -9,6 +9,7 @@ jest.mock('@react-navigation/native', () => ({
   useNavigation: () => ({
     navigate: mockNavigate,
   }),
+  NavigationContainer: ({ children }) => children,
 }));
 
 describe('RegisterPage', () => {
@@ -19,6 +20,10 @@ describe('RegisterPage', () => {
   const mockSetLastName = jest.fn();
   const mockHandleRegister = jest.fn();
   const mockSwitchToLogin = jest.fn();
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('renders all elements correctly', () => {
     const { getByPlaceholderText, getByText } = render(
@@ -95,59 +100,60 @@ describe('RegisterPage', () => {
     const signUpButton = getByText('Sign Up');
     expect(signUpButton.props.disabled).toBe(true);
   });
+  it('calls switchToLogin when Sign In is pressed', () => {
+    const { getByText } = render(
+      <RegisterPage
+        email=""
+        setEmail={mockSetEmail}
+        password=""
+        setPassword={mockSetPassword}
+        confirmPassword=""
+        setConfirmPassword={mockSetConfirmPassword}
+        firstName=""
+        setFirstName={mockSetFirstName}
+        lastName=""
+        setLastName={mockSetLastName}
+        handleRegister={mockHandleRegister}
+        switchToLogin={mockSwitchToLogin}
+      />
+    );
+  
+    fireEvent.press(getByText('Already have an account? Sign In'));
+  
+    // Check that switchToLogin is called with the navigation object
+    expect(mockSwitchToLogin).toHaveBeenCalledWith({ navigate: mockNavigate });
+  });
 
-//   it('calls handleRegister with correct values when Sign Up is pressed', () => {
-//     const mockHandleRegister = jest.fn();
-//     const { getByText } = render(
-//       <RegisterPage
-//         email="test@example.com"
-//         setEmail={mockSetEmail}
-//         password="Password123"
-//         setPassword={mockSetPassword}
-//         confirmPassword="Password123"
-//         setConfirmPassword={mockSetConfirmPassword}
-//         firstName="John"
-//         setFirstName={mockSetFirstName}
-//         lastName="Doe"
-//         setLastName={mockSetLastName}
-//         handleRegister={mockHandleRegister}
-//         switchToLogin={mockSwitchToLogin}
-//       />
-//     );
+  it('calls handleRegister with correct values when Sign Up is pressed', () => {
+    const { getByText, getByPlaceholderText } = render(
+      <RegisterPage
+        email="test@example.com"
+        setEmail={mockSetEmail}
+        password="Password123"
+        setPassword={mockSetPassword}
+        confirmPassword="Password123"
+        setConfirmPassword={mockSetConfirmPassword}
+        firstName="John"
+        setFirstName={mockSetFirstName}
+        lastName="Doe"
+        setLastName={mockSetLastName}
+        handleRegister={mockHandleRegister}
+        switchToLogin={mockSwitchToLogin}
+      />
+    );
   
-//     fireEvent.press(getByText('Sign Up'));
+    // Ensure the button is enabled by meeting all validation criteria
+    fireEvent.changeText(getByPlaceholderText('First Name'), 'John');
+    fireEvent.changeText(getByPlaceholderText('Last Name'), 'Doe');
+    fireEvent.changeText(getByPlaceholderText('Email'), 'test@example.com');
+    fireEvent.changeText(getByPlaceholderText('Password'), 'Password123');
+    fireEvent.changeText(getByPlaceholderText('Confirm Password'), 'Password123');
   
-//     // Log what is being passed to mockHandleRegister
-//     console.log("mockHandleRegister called with:", mockHandleRegister.mock.calls);
+    const signUpButton = getByText('Sign Up');
+    expect(signUpButton.props.disabled).toBe(false);  // Ensure the button is enabled
   
-//     expect(mockHandleRegister).toHaveBeenCalledWith(mockNavigate);
-//   });
+    fireEvent.press(signUpButton);
   
-
-//   it('calls switchToLogin when Sign In is pressed', () => {
-//     const { getByText } = render(
-//       <RegisterPage
-//         email=""
-//         setEmail={mockSetEmail}
-//         password=""
-//         setPassword={mockSetPassword}
-//         confirmPassword=""
-//         setConfirmPassword={mockSetConfirmPassword}
-//         firstName=""
-//         setFirstName={mockSetFirstName}
-//         lastName=""
-//         setLastName={mockSetLastName}
-//         handleRegister={mockHandleRegister}
-//         switchToLogin={mockSwitchToLogin}
-//       />
-//     );
-  
-//     fireEvent.press(getByText('Already have an account? Sign In'));
-  
-//     // Log what is being passed to mockSwitchToLogin
-//     console.log("mockSwitchToLogin called with:", mockSwitchToLogin.mock.calls);
-  
-//     expect(mockSwitchToLogin).toHaveBeenCalledWith(mockNavigate);
-//   });
-  
+    expect(mockHandleRegister).toHaveBeenCalledWith(expect.any(Object));  // Check that the function was called
+  }); 
 });

@@ -37,7 +37,7 @@ const AboutPage = () => {
         <View style={styles.tutorialBox}>
           <Text style={styles.boxTitle}>✔ Background</Text>
           <Text style={styles.boxDescription}>
-            There is no restriction on the background behind the ingredients, so feel free to use any setting.
+            There is no restriction on the background behind the ingredients.
           </Text>
         </View>
 

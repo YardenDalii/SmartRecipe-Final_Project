@@ -142,4 +142,11 @@ export default StyleSheet.create({
   disabledButton: {
     opacity: 0.5,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20, // Space around the title
+    color: "#2F4F4F", // Dark green text color
+  },
 });

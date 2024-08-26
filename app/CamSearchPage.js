@@ -174,7 +174,7 @@ const CamSearchPage = () => {
           </TouchableOpacity>
 
           {!isEditing && (
-            <TouchableOpacity onPress={() => console.log('Search pressed')} style={styles.transparentButton}>
+            <TouchableOpacity onPress={handleSearch} style={styles.transparentButton}>
               <Feather name="search" size={24} color="black" />
             </TouchableOpacity>
           )}

@@ -168,6 +168,7 @@ const MyRecipesPage = ({ user }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>My Recipes</Text>
       {recipes.length === 0 ? (
         <View style={styles.centerContent}>
           <TouchableOpacity style={styles.bigPlusButton} onPress={() => navigation.navigate('AddRecipePage', { user })}>

@@ -82,7 +82,7 @@ const AddRecipePage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Your recipe details</Text>
+      <Text style={styles.title}>The Recipe</Text>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <TextInput
           style={styles.input}
