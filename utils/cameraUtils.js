@@ -84,9 +84,9 @@ export const openCameraAndSendImage = async (navigation) => {
 
 const sendImageToRoboflow = async (base64Image) => {
   try {
-    const generalModelResponse = await axios({
+    const response = await axios({
       method: "POST",
-      url: 'https://detect.roboflow.com/smart-recipe/8',
+      url: 'https://detect.roboflow.com/smart-recipe/16',
       params: {
         api_key: 'exdYNCvMG7gXuZbha3yL'
       },
